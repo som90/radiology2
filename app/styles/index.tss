@@ -1,0 +1,13 @@
+"Window": {
+	backgroundColor: "black"
+},
+"#win": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "white",
+	font: {
+		fontSize: 20,
+		fontFamily: 'Helvetica Neue'
+	},
+	textAlign: 'center'
+} 
