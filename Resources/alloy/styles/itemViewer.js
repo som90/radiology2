@@ -1,1 +1,0 @@
-module.exports = [{"isId":true,"priority":100000.0007,"key":"win","style":{color:"white",}},{"isId":true,"priority":100000.0008,"key":"scrollableView","style":{bottom:20,width:Ti.UI.SIZE,height:Ti.UI.SIZE,color:"white",}}];

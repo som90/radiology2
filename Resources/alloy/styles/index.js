@@ -1,1 +1,0 @@
-module.exports = [{"isApi":true,"priority":1000.0004,"key":"Window","style":{backgroundColor:"black",}},{"isId":true,"priority":100000.0005,"key":"win","style":{width:Ti.UI.SIZE,height:Ti.UI.SIZE,color:"white",font:{fontSize:20,fontFamily:"Helvetica Neue",},textAlign:"center",}}];
