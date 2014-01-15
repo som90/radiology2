@@ -1,0 +1,19 @@
+
+"#win": {
+	color:"white"
+},
+
+"#scrollableView":{
+	bottom:20,
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color:"white"
+}
+/*
+"#imageView":{
+	image:"http://mcsmith.blogs.com/.a/6a00d83451ccc469e2019b00400d00970b-pi",
+	width:24,
+	height:24,
+	top:100
+}
+*/
