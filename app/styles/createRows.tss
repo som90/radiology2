@@ -1,11 +1,12 @@
 ".container" : {
  	width: Ti.UI.SIZE,
 	height: Ti.UI.SIZE,
-	backgroundColor:"black",
-	color: "white",
 	font: {
 		fontSize: 1,
-		fontFamily: 'Helvetica Neue'
+		fontFamily: 'Helvetica Neue',
+		color : "blue"
 	},
-	textAlign: 'center'
+	font : "red",
+	textAlign: 'center',
+	backgroundColor:'transparent'
 }

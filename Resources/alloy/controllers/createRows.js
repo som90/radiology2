@@ -9,13 +9,9 @@ function Controller() {
     $.__views.newRow = Ti.UI.createTableViewRow({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
-        backgroundColor: "black",
-        color: "white",
-        font: {
-            fontSize: 1,
-            fontFamily: "Helvetica Neue"
-        },
+        font: "red",
         textAlign: "center",
+        backgroundColor: "transparent",
         id: "newRow"
     });
     $.__views.newRow && $.addTopLevelView($.__views.newRow);

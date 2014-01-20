@@ -1,1 +1,1 @@
-module.exports = [{"isClass":true,"priority":10000.0002,"key":"container","style":{width:Ti.UI.SIZE,height:Ti.UI.SIZE,backgroundColor:"black",color:"white",font:{fontSize:1,fontFamily:"Helvetica Neue",},textAlign:"center",}}];
+module.exports = [{"isClass":true,"priority":10000.0002,"key":"container","style":{width:Ti.UI.SIZE,height:Ti.UI.SIZE,font:"red",textAlign:"center",backgroundColor:"transparent",}}];

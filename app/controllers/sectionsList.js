@@ -16,6 +16,7 @@ $.win.title=args.title;
 		 $.table.appendRow(sections[i]);
  }
 
+
 // Open new window with list of subsections
 	function subsectionsWindow(event){
 		var addWindow = Alloy.createController("subsectionsList", {title: event.row.title}).getView();

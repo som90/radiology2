@@ -13,9 +13,9 @@ $.win.title=args.title;
 
  for (var i in subsections) 
  {
-
 		 $.table.appendRow(subsections[i]);
  }
+
 
 // Open new window with the item
 	function itemsWindow(event){

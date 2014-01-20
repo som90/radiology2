@@ -17,10 +17,11 @@ function Controller() {
         id: "sectionsList"
     });
     $.__views.win = Ti.UI.createWindow({
-        title: "Home",
+        backgroundImage: "http://www.fashiongonerogue.com/wp-content/uploads/2013/04/dream-angels-2013-candice-swaanepoel-push-up-bra-victorias-secret-hi-res.jpg",
         id: "win"
     });
     $.__views.table = Ti.UI.createTableView({
+        backgroundColor: "transparent",
         id: "table"
     });
     $.__views.win.add($.__views.table);
@@ -32,22 +33,6 @@ function Controller() {
         icon: "KS_nav_ui.png"
     });
     $.__views.sectionsList.addTab($.__views.tabSections);
-    $.__views.__alloyId6 = Ti.UI.createWindow({
-        title: "Tab 2",
-        id: "__alloyId6"
-    });
-    $.__views.__alloyId7 = Ti.UI.createLabel({
-        text: "I am Window 2",
-        id: "__alloyId7"
-    });
-    $.__views.__alloyId6.add($.__views.__alloyId7);
-    $.__views.__alloyId5 = Ti.UI.createTab({
-        window: $.__views.__alloyId6,
-        title: "Tab 2",
-        icon: "KS_nav_views.png",
-        id: "__alloyId5"
-    });
-    $.__views.sectionsList.addTab($.__views.__alloyId5);
     $.__views.sectionsList && $.addTopLevelView($.__views.sectionsList);
     exports.destroy = function() {};
     _.extend($, $.__views);

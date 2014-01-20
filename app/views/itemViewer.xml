@@ -1,6 +1,8 @@
 <Alloy>
-	<Window title="Items" id="win">
-		<ScrollableView id="scrollableView" width="100%" height="100%" showPagingControl="true"></ScrollableView>
+	<Window id="win">
+		<ScrollableView id="scrollableView" width="100%" height="100%" showPagingControl="true">
+			<ScrollView id="scrollView"></ScrollView>
+		</ScrollableView>		
 		
 	</Window>
 </Alloy>

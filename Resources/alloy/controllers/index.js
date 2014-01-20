@@ -17,19 +17,12 @@ function Controller() {
         id: "index"
     });
     $.__views.win = Ti.UI.createWindow({
-        backgroundColor: "black",
-        width: Ti.UI.SIZE,
-        height: Ti.UI.SIZE,
-        color: "white",
-        font: {
-            fontSize: 20,
-            fontFamily: "Helvetica Neue"
-        },
-        textAlign: "center",
+        backgroundImage: "http://www.fashiongonerogue.com/wp-content/uploads/2013/04/dream-angels-2013-candice-swaanepoel-push-up-bra-victorias-secret-hi-res.jpg",
         title: "Home",
         id: "win"
     });
     $.__views.table = Ti.UI.createTableView({
+        backgroundColor: "transparent",
         id: "table"
     });
     $.__views.win.add($.__views.table);
@@ -41,29 +34,13 @@ function Controller() {
         icon: "KS_nav_ui.png"
     });
     $.__views.index.addTab($.__views.tabChapters);
-    $.__views.__alloyId2 = Ti.UI.createWindow({
-        backgroundColor: "black",
-        title: "Tab 2",
-        id: "__alloyId2"
-    });
-    $.__views.__alloyId3 = Ti.UI.createLabel({
-        text: "I am Window 2",
-        id: "__alloyId3"
-    });
-    $.__views.__alloyId2.add($.__views.__alloyId3);
-    $.__views.__alloyId1 = Ti.UI.createTab({
-        window: $.__views.__alloyId2,
-        title: "Tab 2",
-        icon: "KS_nav_views.png",
-        id: "__alloyId1"
-    });
-    $.__views.index.addTab($.__views.__alloyId1);
     $.__views.index && $.addTopLevelView($.__views.index);
     exports.destroy = function() {};
     _.extend($, $.__views);
     $.index.open();
     Alloy.Globals.tabChapters = $.tabChapters;
-    $.table.setData(Alloy.Globals.radiologyDB.chapters());
+    var chapters = Alloy.Globals.radiologyDB.chapters();
+    for (var i in chapters) $.table.appendRow(chapters[i]);
     __defers["$.__views.table!click!sectionsWindow"] && $.__views.table.addEventListener("click", sectionsWindow);
     _.extend($, exports);
 }

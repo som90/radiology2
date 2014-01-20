@@ -4,11 +4,16 @@
  */
 
 $.index.open();
-
 //This creates a global reference to the tab
 Alloy.Globals.tabChapters = $.tabChapters;
-     
-$.table.setData(Alloy.Globals.radiologyDB.chapters());
+
+var chapters = Alloy.Globals.radiologyDB.chapters();
+
+for (var i in chapters) 
+ {
+
+		 $.table.appendRow(chapters[i]);
+ }   
 
 
 // Open new window with list of sections
@@ -19,3 +24,6 @@ $.table.setData(Alloy.Globals.radiologyDB.chapters());
 		//The following works to add a new Window which allows to get down to subsections, but loses reversal
 			//addWindow.open();
 	};
+	
+
+
