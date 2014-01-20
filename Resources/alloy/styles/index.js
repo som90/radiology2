@@ -1,1 +1,1 @@
-module.exports = [{"isId":true,"priority":100000.0004,"key":"win","style":{backgroundImage:"http://www.fashiongonerogue.com/wp-content/uploads/2013/04/dream-angels-2013-candice-swaanepoel-push-up-bra-victorias-secret-hi-res.jpg",}},{"isId":true,"priority":100000.0005,"key":"table","style":{backgroundColor:"transparent",}}];
+module.exports = [{"isApi":true,"priority":1000.0001,"key":"Window","style":{backgroundColor:"gray",}},{"isApi":true,"priority":1000.0002,"key":"TableView","style":{backgroundColor:"transparent",minRowHeight:"44dp",}}];

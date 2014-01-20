@@ -1,7 +1,7 @@
 function Controller() {
     function itemsWindow(event) {
         var addWindow = Alloy.createController("itemViewer", {
-            title: event.row.title
+            title: event.row.name
         }).getView();
         Alloy.Globals.tabChapters.open(addWindow);
     }
@@ -13,27 +13,18 @@ function Controller() {
     var $ = this;
     var exports = {};
     var __defers = {};
-    $.__views.subsectionsList = Ti.UI.createTabGroup({
-        id: "subsectionsList"
-    });
     $.__views.win = Ti.UI.createWindow({
-        backgroundImage: "http://www.fashiongonerogue.com/wp-content/uploads/2013/04/dream-angels-2013-candice-swaanepoel-push-up-bra-victorias-secret-hi-res.jpg",
+        backgroundColor: "gray",
         id: "win"
     });
+    $.__views.win && $.addTopLevelView($.__views.win);
     $.__views.table = Ti.UI.createTableView({
         backgroundColor: "transparent",
+        minRowHeight: "44dp",
         id: "table"
     });
     $.__views.win.add($.__views.table);
     itemsWindow ? $.__views.table.addEventListener("click", itemsWindow) : __defers["$.__views.table!click!itemsWindow"] = true;
-    $.__views.tabSubSections = Ti.UI.createTab({
-        window: $.__views.win,
-        id: "tabSubSections",
-        title: "Subsections",
-        icon: "KS_nav_ui.png"
-    });
-    $.__views.subsectionsList.addTab($.__views.tabSubSections);
-    $.__views.subsectionsList && $.addTopLevelView($.__views.subsectionsList);
     exports.destroy = function() {};
     _.extend($, $.__views);
     var args = arguments[0] || {};

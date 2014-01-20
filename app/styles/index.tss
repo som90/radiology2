@@ -1,9 +1,0 @@
-
-"#win": {
-	backgroundImage: "http://www.fashiongonerogue.com/wp-content/uploads/2013/04/dream-angels-2013-candice-swaanepoel-push-up-bra-victorias-secret-hi-res.jpg"
-	//backgroundImage: "/Users/som90/Documents/Titanium_Studio_Workspace/radiology/app/images/kramer7.jpg"	
-}
-"#table" : {
-	backgroundColor:'transparent',
-}
-

@@ -1,0 +1,7 @@
+<Alloy>
+	<View class="container">
+		<Label>Heading Here</Label>
+		<Label>Text Here</Label>
+		<ImageView image="/images/barca.jpg"></ImageView>
+	</View>
+</Alloy>

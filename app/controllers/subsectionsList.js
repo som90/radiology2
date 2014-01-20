@@ -19,7 +19,7 @@ $.win.title=args.title;
 
 // Open new window with the item
 	function itemsWindow(event){
-		var addWindow = Alloy.createController("itemViewer", {title: event.row.title}).getView();
+		var addWindow = Alloy.createController("itemViewer", {title: event.row.name}).getView();
 		
 		Alloy.Globals.tabChapters.open( addWindow );
 	};

@@ -4,7 +4,7 @@
  * 
  */
 var args = arguments[0] || {}; //Put arguments into args, or empty object (if errors)
-Ti.API.info(args.title);
+Ti.API.info("Page Title "+args.title);
 var sections = Alloy.Globals.radiologyDB.sections(args.title);
 //Ti.API.info(JSON.stringify(sections));
 
@@ -19,7 +19,7 @@ $.win.title=args.title;
 
 // Open new window with list of subsections
 	function subsectionsWindow(event){
-		var addWindow = Alloy.createController("subsectionsList", {title: event.row.title}).getView();
+		var addWindow = Alloy.createController("subsectionsList", {title: event.row.name}).getView();
 		
 		Alloy.Globals.tabChapters.open( addWindow );
 	};

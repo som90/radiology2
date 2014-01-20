@@ -1,0 +1,9 @@
+"Window" : {
+	//backgroundImage: "/images/barca1.jpg"
+	backgroundColor: "gray"
+}
+
+"TableView" : {
+	backgroundColor:'transparent',
+	minRowHeight: "44dp"
+}

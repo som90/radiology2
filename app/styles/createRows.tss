@@ -8,5 +8,12 @@
 	},
 	font : "red",
 	textAlign: 'center',
-	backgroundColor:'transparent'
+	backgroundColor:'transparent',
+	hasChild: true
+}
+
+"Label" : {
+	textAlign : "left",
+	width: "95%",
+	height: Ti.UI.SIZE
 }

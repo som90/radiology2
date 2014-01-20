@@ -1,1 +1,1 @@
-module.exports = [{"isId":true,"priority":100000.0007,"key":"scrollableView","style":{color:"black",}}];
+module.exports = [{"isApi":true,"priority":1000.0001,"key":"Window","style":{backgroundColor:"gray",}},{"isApi":true,"priority":1000.0002,"key":"TableView","style":{backgroundColor:"transparent",minRowHeight:"44dp",}},{"isId":true,"priority":100000.0008,"key":"scrollableView","style":{color:"black",}}];

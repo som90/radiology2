@@ -1,5 +1,6 @@
 <Alloy>
 	<TableViewRow id="newRow" class="container">
 		<Label id="label"></Label>
+		<!-- <ImageView right="5">  -->
 	</TableViewRow>
 </Alloy>

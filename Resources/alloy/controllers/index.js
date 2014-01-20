@@ -1,7 +1,7 @@
 function Controller() {
     function sectionsWindow(event) {
         var addWindow = Alloy.createController("sectionsList", {
-            title: event.row.title
+            title: event.row.name
         }).getView();
         Alloy.Globals.tabChapters.open(addWindow);
     }
@@ -17,12 +17,13 @@ function Controller() {
         id: "index"
     });
     $.__views.win = Ti.UI.createWindow({
-        backgroundImage: "http://www.fashiongonerogue.com/wp-content/uploads/2013/04/dream-angels-2013-candice-swaanepoel-push-up-bra-victorias-secret-hi-res.jpg",
+        backgroundColor: "gray",
         title: "Home",
         id: "win"
     });
     $.__views.table = Ti.UI.createTableView({
         backgroundColor: "transparent",
+        minRowHeight: "44dp",
         id: "table"
     });
     $.__views.win.add($.__views.table);

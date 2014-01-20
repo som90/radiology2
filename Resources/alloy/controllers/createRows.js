@@ -12,17 +12,22 @@ function Controller() {
         font: "red",
         textAlign: "center",
         backgroundColor: "transparent",
+        hasChild: true,
         id: "newRow"
     });
     $.__views.newRow && $.addTopLevelView($.__views.newRow);
     $.__views.label = Ti.UI.createLabel({
+        textAlign: "left",
+        width: "95%",
+        height: Ti.UI.SIZE,
         id: "label"
     });
     $.__views.newRow.add($.__views.label);
     exports.destroy = function() {};
     _.extend($, $.__views);
     var args = arguments[0] || {};
-    $.newRow.title = args.title;
+    $.newRow.name = args.title;
+    $.label.text = args.title;
     _.extend($, exports);
 }
 

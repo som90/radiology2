@@ -7,6 +7,7 @@ function Controller() {
     var $ = this;
     var exports = {};
     $.__views.win = Ti.UI.createWindow({
+        backgroundColor: "gray",
         id: "win"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
@@ -31,26 +32,20 @@ function Controller() {
     $.win.title = args.title;
     var viewsArray = [];
     for (var i in items) {
-        var view = Ti.UI.createScrollView();
-        if (-1 != items[i].indexOf("http://")) {
+        var view = Ti.UI.createScrollView({
+            layout: "vertical"
+        });
+        if (-1 != items[i].indexOf("http://")) viewsArray.push(Alloy.createController("viewWithImage").getView()); else {
+            view.add(Ti.UI.createLabel({
+                text: "Heading goes here",
+                color: "white"
+            }));
             view.add(Ti.UI.createLabel({
                 text: items[i],
                 id: "text",
                 color: "white"
             }));
-            var labSize1 = $.text.size;
-            Ti.API.info(labSize1);
-            view.add(Ti.UI.createImageView({
-                left: 20,
-                width: 40,
-                height: 60,
-                image: items[i]
-            }));
-        } else view.add(Ti.UI.createLabel({
-            text: items[i],
-            id: "text",
-            color: "white"
-        }));
+        }
         viewsArray.push(view);
     }
     $.scrollableView.setViews(viewsArray);

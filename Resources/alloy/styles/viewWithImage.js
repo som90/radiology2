@@ -1,0 +1,1 @@
+module.exports = [{"isApi":true,"priority":1000.0001,"key":"Window","style":{backgroundColor:"gray",}},{"isApi":true,"priority":1000.0002,"key":"TableView","style":{backgroundColor:"transparent",minRowHeight:"44dp",}},{"isClass":true,"priority":10000.001,"key":"container","style":{layout:"vertical",}}];

@@ -1,7 +1,7 @@
 function Controller() {
     function subsectionsWindow(event) {
         var addWindow = Alloy.createController("subsectionsList", {
-            title: event.row.title
+            title: event.row.name
         }).getView();
         Alloy.Globals.tabChapters.open(addWindow);
     }
@@ -13,31 +13,22 @@ function Controller() {
     var $ = this;
     var exports = {};
     var __defers = {};
-    $.__views.sectionsList = Ti.UI.createTabGroup({
-        id: "sectionsList"
-    });
     $.__views.win = Ti.UI.createWindow({
-        backgroundImage: "http://www.fashiongonerogue.com/wp-content/uploads/2013/04/dream-angels-2013-candice-swaanepoel-push-up-bra-victorias-secret-hi-res.jpg",
+        backgroundColor: "gray",
         id: "win"
     });
+    $.__views.win && $.addTopLevelView($.__views.win);
     $.__views.table = Ti.UI.createTableView({
         backgroundColor: "transparent",
+        minRowHeight: "44dp",
         id: "table"
     });
     $.__views.win.add($.__views.table);
     subsectionsWindow ? $.__views.table.addEventListener("click", subsectionsWindow) : __defers["$.__views.table!click!subsectionsWindow"] = true;
-    $.__views.tabSections = Ti.UI.createTab({
-        window: $.__views.win,
-        id: "tabSections",
-        title: "Sections",
-        icon: "KS_nav_ui.png"
-    });
-    $.__views.sectionsList.addTab($.__views.tabSections);
-    $.__views.sectionsList && $.addTopLevelView($.__views.sectionsList);
     exports.destroy = function() {};
     _.extend($, $.__views);
     var args = arguments[0] || {};
-    Ti.API.info(args.title);
+    Ti.API.info("Page Title " + args.title);
     var sections = Alloy.Globals.radiologyDB.sections(args.title);
     $.win.title = args.title;
     for (var i in sections) $.table.appendRow(sections[i]);
