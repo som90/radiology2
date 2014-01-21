@@ -1,4 +1,8 @@
 function Controller() {
+    function checkForImages(items) {
+        for (var i in items) if (-1 != items[i].indexOf("http://")) return true;
+        return false;
+    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "itemViewer";
     arguments[0] ? arguments[0]["__parentSymbol"] : null;
@@ -7,18 +11,19 @@ function Controller() {
     var $ = this;
     var exports = {};
     $.__views.win = Ti.UI.createWindow({
-        backgroundColor: "gray",
+        backgroundImage: "/images/radiologyBackground.jpg",
+        color: "white",
         id: "win"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
-    var __alloyId1 = [];
+    var __alloyId7 = [];
     $.__views.scrollView = Ti.UI.createScrollView({
         id: "scrollView"
     });
-    __alloyId1.push($.__views.scrollView);
+    __alloyId7.push($.__views.scrollView);
     $.__views.scrollableView = Ti.UI.createScrollableView({
         color: "black",
-        views: __alloyId1,
+        views: __alloyId7,
         id: "scrollableView",
         width: "100%",
         height: "100%",
@@ -29,23 +34,20 @@ function Controller() {
     _.extend($, $.__views);
     var args = arguments[0] || {};
     var items = Alloy.Globals.radiologyDB.items(args.title);
+    Ti.API.info(JSON.stringify(items));
     $.win.title = args.title;
     var viewsArray = [];
-    for (var i in items) {
+    if (true == checkForImages(items)) for (var i in items) viewsArray.push(Alloy.createController("viewWithImage", {
+        item: items[i]
+    }).getView()); else for (var i in items) {
         var view = Ti.UI.createScrollView({
             layout: "vertical"
         });
-        if (-1 != items[i].indexOf("http://")) viewsArray.push(Alloy.createController("viewWithImage").getView()); else {
-            view.add(Ti.UI.createLabel({
-                text: "Heading goes here",
-                color: "white"
-            }));
-            view.add(Ti.UI.createLabel({
-                text: items[i],
-                id: "text",
-                color: "white"
-            }));
-        }
+        view.add(Ti.UI.createLabel({
+            text: items[i],
+            top: 5,
+            color: "black"
+        }));
         viewsArray.push(view);
     }
     $.scrollableView.setViews(viewsArray);

@@ -9,7 +9,10 @@ function Controller() {
     $.__views.newRow = Ti.UI.createTableViewRow({
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
-        font: "red",
+        font: {
+            fontSize: 1,
+            fontFamily: "Helvetica Neue"
+        },
         textAlign: "center",
         backgroundColor: "transparent",
         hasChild: true,

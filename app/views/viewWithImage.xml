@@ -1,7 +1,7 @@
 <Alloy>
-	<View class="container">
+	<ScrollView class="container">
 		<Label>Heading Here</Label>
-		<Label>Text Here</Label>
-		<ImageView image="/images/barca.jpg"></ImageView>
-	</View>
+		<Label id="label"></Label>
+		<ImageView id="imageView" onClick="testfunction"></ImageView>
+	</ScrollView>
 </Alloy>

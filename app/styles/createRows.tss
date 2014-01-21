@@ -4,9 +4,7 @@
 	font: {
 		fontSize: 1,
 		fontFamily: 'Helvetica Neue',
-		color : "blue"
 	},
-	font : "red",
 	textAlign: 'center',
 	backgroundColor:'transparent',
 	hasChild: true

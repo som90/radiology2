@@ -5,12 +5,18 @@
 				<TableView id="table" onClick="sectionsWindow"></TableView>
 			</Window>
 		</Tab>
-<!--		
-		<Tab title="Tab 2" icon="KS_nav_views.png">
-			<Window title="Tab 2">
-				<Label>I am Window 2</Label>
+		
+		<Tab title="CT Dosage Calculator" icon="KS_nav_views.png">
+			<Window title="CT Dosage Calculator">
+				<Label>This is where we will have calculators. E.G., the CT Dosage</Label>
 			</Window>
 		</Tab>
--->
+		
+		<Tab title="About" icon="KS_nav_views.png">
+			<Window title="About">
+				<Label>This is where we will have some information about the app and about CUH Radiology Department.</Label>
+			</Window>
+		</Tab>
+
 	</TabGroup>
 </Alloy>

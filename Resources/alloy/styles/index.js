@@ -1,1 +1,1 @@
-module.exports = [{"isApi":true,"priority":1000.0001,"key":"Window","style":{backgroundColor:"gray",}},{"isApi":true,"priority":1000.0002,"key":"TableView","style":{backgroundColor:"transparent",minRowHeight:"44dp",}}];
+module.exports = [{"isApi":true,"priority":1000.0001,"key":"Window","style":{backgroundImage:"/images/radiologyBackground.jpg",color:"white",}},{"isApi":true,"priority":1000.0002,"key":"TableView","style":{top:"5px",backgroundColor:"transparent",minRowHeight:"44dp",color:"white",}}];

@@ -1,9 +1,12 @@
 "Window" : {
-	//backgroundImage: "/images/barca1.jpg"
-	backgroundColor: "gray"
+	backgroundImage: "/images/radiologyBackground.jpg",
+	color : "white"
+	//backgroundColor: "gray"
 }
 
 "TableView" : {
+	top : "5px",
 	backgroundColor:'transparent',
-	minRowHeight: "44dp"
+	minRowHeight: "44dp",
+	color : "white"
 }

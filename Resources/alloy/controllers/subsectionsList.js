@@ -14,13 +14,16 @@ function Controller() {
     var exports = {};
     var __defers = {};
     $.__views.win = Ti.UI.createWindow({
-        backgroundColor: "gray",
+        backgroundImage: "/images/radiologyBackground.jpg",
+        color: "white",
         id: "win"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
     $.__views.table = Ti.UI.createTableView({
+        top: "5px",
         backgroundColor: "transparent",
         minRowHeight: "44dp",
+        color: "white",
         id: "table"
     });
     $.__views.win.add($.__views.table);
