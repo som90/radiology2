@@ -5,6 +5,9 @@ function Controller() {
         }).getView();
         Alloy.Globals.tabChapters.open(addWindow);
     }
+    function selectBodyPart() {
+        $.bodyPart.show();
+    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "index";
     arguments[0] ? arguments[0]["__parentSymbol"] : null;
@@ -42,13 +45,65 @@ function Controller() {
         backgroundImage: "/images/radiologyBackground.jpg",
         color: "white",
         title: "CT Dosage Calculator",
+        layout: "vertical",
         id: "__alloyId2"
     });
     $.__views.__alloyId3 = Ti.UI.createLabel({
-        text: "This is where we will have calculators. E.G., the CT Dosage",
+        text: "Dose length product value (DLP):",
         id: "__alloyId3"
     });
     $.__views.__alloyId2.add($.__views.__alloyId3);
+    $.__views.__alloyId4 = Ti.UI.createTextField({
+        height: "44dp",
+        width: "95%",
+        backgroundColor: "white",
+        bottom: 5,
+        id: "__alloyId4"
+    });
+    $.__views.__alloyId2.add($.__views.__alloyId4);
+    $.__views.__alloyId5 = Ti.UI.createLabel({
+        text: "Scanned body part:",
+        id: "__alloyId5"
+    });
+    $.__views.__alloyId2.add($.__views.__alloyId5);
+    $.__views.__alloyId6 = Ti.UI.createTextField({
+        height: "44dp",
+        width: "95%",
+        backgroundColor: "white",
+        bottom: 5,
+        editable: "false",
+        id: "__alloyId6"
+    });
+    $.__views.__alloyId2.add($.__views.__alloyId6);
+    selectBodyPart ? $.__views.__alloyId6.addEventListener("click", selectBodyPart) : __defers["$.__views.__alloyId6!click!selectBodyPart"] = true;
+    var __alloyId8 = [];
+    __alloyId8.push("Head");
+    __alloyId8.push("Arm");
+    __alloyId8.push("Cancel");
+    $.__views.bodyPart = Ti.UI.createOptionDialog({
+        options: __alloyId8,
+        id: "bodyPart",
+        title: "Select Body Part:"
+    });
+    $.__views.__alloyId12 = Ti.UI.createLabel({
+        text: "Patient age range:",
+        id: "__alloyId12"
+    });
+    $.__views.__alloyId2.add($.__views.__alloyId12);
+    $.__views.__alloyId13 = Ti.UI.createTextField({
+        height: "44dp",
+        width: "95%",
+        backgroundColor: "white",
+        bottom: 5,
+        editable: "false",
+        id: "__alloyId13"
+    });
+    $.__views.__alloyId2.add($.__views.__alloyId13);
+    $.__views.__alloyId14 = Ti.UI.createButton({
+        title: "Submit",
+        id: "__alloyId14"
+    });
+    $.__views.__alloyId2.add($.__views.__alloyId14);
     $.__views.__alloyId1 = Ti.UI.createTab({
         window: $.__views.__alloyId2,
         title: "CT Dosage Calculator",
@@ -56,24 +111,24 @@ function Controller() {
         id: "__alloyId1"
     });
     $.__views.index.addTab($.__views.__alloyId1);
-    $.__views.__alloyId5 = Ti.UI.createWindow({
+    $.__views.__alloyId16 = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
         color: "white",
         title: "About",
-        id: "__alloyId5"
+        id: "__alloyId16"
     });
-    $.__views.__alloyId6 = Ti.UI.createLabel({
+    $.__views.__alloyId17 = Ti.UI.createLabel({
         text: "This is where we will have some information about the app and about CUH Radiology Department.",
-        id: "__alloyId6"
+        id: "__alloyId17"
     });
-    $.__views.__alloyId5.add($.__views.__alloyId6);
-    $.__views.__alloyId4 = Ti.UI.createTab({
-        window: $.__views.__alloyId5,
+    $.__views.__alloyId16.add($.__views.__alloyId17);
+    $.__views.__alloyId15 = Ti.UI.createTab({
+        window: $.__views.__alloyId16,
         title: "About",
         icon: "KS_nav_views.png",
-        id: "__alloyId4"
+        id: "__alloyId15"
     });
-    $.__views.index.addTab($.__views.__alloyId4);
+    $.__views.index.addTab($.__views.__alloyId15);
     $.__views.index && $.addTopLevelView($.__views.index);
     exports.destroy = function() {};
     _.extend($, $.__views);
@@ -82,6 +137,7 @@ function Controller() {
     var chapters = Alloy.Globals.radiologyDB.chapters();
     for (var i in chapters) $.table.appendRow(chapters[i]);
     __defers["$.__views.table!click!sectionsWindow"] && $.__views.table.addEventListener("click", sectionsWindow);
+    __defers["$.__views.__alloyId6!click!selectBodyPart"] && $.__views.__alloyId6.addEventListener("click", selectBodyPart);
     _.extend($, exports);
 }
 

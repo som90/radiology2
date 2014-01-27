@@ -1,6 +1,6 @@
 <Alloy>
 	<ScrollView class="container">
-		<Label>Heading Here</Label>
+		<Label id="heading"></Label>
 		<Label id="label"></Label>
 		<ImageView id="imageView" onClick="testfunction"></ImageView>
 	</ScrollView>

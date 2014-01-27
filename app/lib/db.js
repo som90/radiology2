@@ -63,7 +63,7 @@ database.prototype.sections = function(chapter){
 	return sections;
 };
 
-database.prototype.subsections = function(section){
+/*database.prototype.subsections = function(section){
 	var db = Ti.Database.open( this.name );
 	
 	var results = db.execute("SELECT DISTINCT subsectionTitle FROM radiology WHERE sectionTitle='"+section+"';");
@@ -71,7 +71,7 @@ database.prototype.subsections = function(section){
 	var subsections = [];
 	while( results.isValidRow() ){
 		
-		subsections.push( Alloy.createController("createRows",{title: results.fieldByName("subsectionTitle")}).getView() );
+		subsections.push(results.fieldByName("subsectionTitle") );
 		
 		results.next();
 	}
@@ -79,18 +79,18 @@ database.prototype.subsections = function(section){
 	db.close();
 	db = null;
 	return subsections;
-};
+};*/
 
-database.prototype.items = function(subsection){
+database.prototype.items = function(section){
 	var db = Ti.Database.open( this.name );
 	
-	var results = db.execute("SELECT DISTINCT item FROM radiology WHERE subsectionTitle='"+subsection+"';");
+	var results = db.execute("SELECT item, subsectionTitle FROM radiology WHERE sectionTitle='"+section+"';");
 	
 
 	var itemsArray = [];
 	while(results.isValidRow()){
 
-    	itemsArray.push(results.fieldByName("item"));
+    	itemsArray.push({heading: results.fieldByName("subsectionTitle"), item: results.fieldByName("item")});
 
 	    results.next();
 	}

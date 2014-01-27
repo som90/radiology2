@@ -15,25 +15,31 @@ function Controller() {
         id: "viewWithImage"
     });
     $.__views.viewWithImage && $.addTopLevelView($.__views.viewWithImage);
-    $.__views.__alloyId8 = Ti.UI.createLabel({
-        text: "Heading Here",
-        id: "__alloyId8"
+    $.__views.heading = Ti.UI.createLabel({
+        left: 8,
+        right: 8,
+        top: 8,
+        id: "heading"
     });
-    $.__views.viewWithImage.add($.__views.__alloyId8);
+    $.__views.viewWithImage.add($.__views.heading);
     $.__views.label = Ti.UI.createLabel({
+        left: 8,
+        right: 8,
+        top: 8,
         id: "label"
     });
     $.__views.viewWithImage.add($.__views.label);
     $.__views.imageView = Ti.UI.createImageView({
+        width: "300dp",
         id: "imageView"
     });
-    $.__views.imageView && $.addTopLevelView($.__views.imageView);
+    $.__views.viewWithImage.add($.__views.imageView);
     testfunction ? $.__views.imageView.addEventListener("click", testfunction) : __defers["$.__views.imageView!click!testfunction"] = true;
     exports.destroy = function() {};
     _.extend($, $.__views);
     var args = arguments[0] || {};
-    $.label.text = args.item;
-    -1 != args.item.indexOf("http://") && ($.imageView.image = args.item);
+    $.heading.text = args.object.heading;
+    -1 != args.object.item.indexOf("/images/") ? $.imageView.image = args.object.item : $.label.text = args.object.item;
     __defers["$.__views.imageView!click!testfunction"] && $.__views.imageView.addEventListener("click", testfunction);
     _.extend($, exports);
 }

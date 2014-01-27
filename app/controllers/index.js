@@ -25,5 +25,17 @@ for (var i in chapters)
 			//addWindow.open();
 	};
 	
+	function selectBodyPart(){
+		$.bodyPart.show();
+	};
+	
+	function doSomething(option){
+		if (option.index=0) {
+			//add ID to textfield and set to "head, etc."
+			//when writing to textfield use '.value'
+			//likewise when reading from textField.
+		}
+	};
+	
 
 

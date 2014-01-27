@@ -5,6 +5,7 @@
  */
 
 var args = arguments[0] || {}; //Put arguments into args, or empty object (if errors)
+//var subsections = Alloy.Globals.radiologyDB.subsections(args.title);
 var items = Alloy.Globals.radiologyDB.items(args.title);
 
 Ti.API.info(JSON.stringify(items));
@@ -13,7 +14,8 @@ $.win.title=args.title;
 
 function checkForImages(items){
 	for( var i in items ){    
-		if(items[i].indexOf("http://") != -1) {
+		//going through items[], checking the 'key' item....
+		if(items[i].item.indexOf("/images/") != -1) {
 			return true;
 		}
 	}
@@ -26,13 +28,14 @@ var viewsArray = [];
 
 if(checkForImages(items) == true) {
 	for( var i in items ){
-		viewsArray.push(Alloy.createController("viewWithImage", {item:items[i]}).getView());
+		viewsArray.push(Alloy.createController("viewWithImage", {object:items[i]}).getView());
 	}
 }
 else { //There are no images in this subheading
 	for( var i in items ){
 		var view = Ti.UI.createScrollView({layout:"vertical"}); //makes sure that the first thing add is on top, then under, etc.
-   		view.add(Ti.UI.createLabel({text: items[i], top:5, color:"black"}));
+   		view.add(Ti.UI.createLabel({text: items[i].heading, top:8, left:8, right:8, color:"black"}));
+   		view.add(Ti.UI.createLabel({text: items[i].item, top:8, left:8, right:8, color:"black"}));
    		
    		viewsArray.push(view);
 	}

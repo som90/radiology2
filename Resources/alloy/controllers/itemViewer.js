@@ -1,6 +1,6 @@
 function Controller() {
     function checkForImages(items) {
-        for (var i in items) if (-1 != items[i].indexOf("http://")) return true;
+        for (var i in items) if (-1 != items[i].item.indexOf("/images/")) return true;
         return false;
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
@@ -16,14 +16,14 @@ function Controller() {
         id: "win"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
-    var __alloyId7 = [];
+    var __alloyId18 = [];
     $.__views.scrollView = Ti.UI.createScrollView({
         id: "scrollView"
     });
-    __alloyId7.push($.__views.scrollView);
+    __alloyId18.push($.__views.scrollView);
     $.__views.scrollableView = Ti.UI.createScrollableView({
         color: "black",
-        views: __alloyId7,
+        views: __alloyId18,
         id: "scrollableView",
         width: "100%",
         height: "100%",
@@ -38,14 +38,23 @@ function Controller() {
     $.win.title = args.title;
     var viewsArray = [];
     if (true == checkForImages(items)) for (var i in items) viewsArray.push(Alloy.createController("viewWithImage", {
-        item: items[i]
+        object: items[i]
     }).getView()); else for (var i in items) {
         var view = Ti.UI.createScrollView({
             layout: "vertical"
         });
         view.add(Ti.UI.createLabel({
-            text: items[i],
-            top: 5,
+            text: items[i].heading,
+            top: 8,
+            left: 8,
+            right: 8,
+            color: "black"
+        }));
+        view.add(Ti.UI.createLabel({
+            text: items[i].item,
+            top: 8,
+            left: 8,
+            right: 8,
             color: "black"
         }));
         viewsArray.push(view);

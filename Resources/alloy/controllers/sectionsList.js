@@ -1,6 +1,6 @@
 function Controller() {
     function subsectionsWindow(event) {
-        var addWindow = Alloy.createController("subsectionsList", {
+        var addWindow = Alloy.createController("itemViewer", {
             title: event.row.name
         }).getView();
         Alloy.Globals.tabChapters.open(addWindow);

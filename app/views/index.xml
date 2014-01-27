@@ -7,8 +7,30 @@
 		</Tab>
 		
 		<Tab title="CT Dosage Calculator" icon="KS_nav_views.png">
-			<Window title="CT Dosage Calculator">
-				<Label>This is where we will have calculators. E.G., the CT Dosage</Label>
+			<Window title="CT Dosage Calculator" layout="vertical">
+				
+				<Label>Dose length product value (DLP):</Label>
+				<TextField></TextField>
+				
+				<!--assuming only 7 body parts.. Picker would be better for more choices but this is platform specific --> 
+				<Label>Scanned body part:</Label>
+				<TextField editable="false" onClick="selectBodyPart"></TextField>
+				
+				<OptionDialog id="bodyPart" title="Select Body Part:">
+
+         	   <!-- The Options tag sets the options property. -->
+	    	        <Options>
+	       	        	 <Option>Head</Option>
+	       	        	 <Option>Arm</Option>
+	       	    	     <Option>Cancel</Option>
+	       		     </Options>
+		
+	       		 </OptionDialog>
+				
+				<Label>Patient age range:</Label>
+				<TextField editable="false"></TextField>
+				
+				<Button>Submit</Button>
 			</Window>
 		</Tab>
 		

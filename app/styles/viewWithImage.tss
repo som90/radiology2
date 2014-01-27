@@ -1,4 +1,13 @@
 
 ".container" : {
-  layout: "vertical"
+  layout: "vertical",
+}
+
+"ImageView" : {
+  width: "300dp"
+}
+"Label" : {
+	left : 8,
+	right : 8,
+	top : 8
 }
