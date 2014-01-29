@@ -8,6 +8,9 @@ function Controller() {
     function selectBodyPart() {
         $.bodyPart.show();
     }
+    function doSomething(option) {
+        option.index = 0;
+    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "index";
     arguments[0] ? arguments[0]["__parentSymbol"] : null;
@@ -85,6 +88,7 @@ function Controller() {
         id: "bodyPart",
         title: "Select Body Part:"
     });
+    doSomething ? $.__views.bodyPart.addEventListener("click", doSomething) : __defers["$.__views.bodyPart!click!doSomething"] = true;
     $.__views.__alloyId12 = Ti.UI.createLabel({
         text: "Patient age range:",
         id: "__alloyId12"
@@ -138,6 +142,7 @@ function Controller() {
     for (var i in chapters) $.table.appendRow(chapters[i]);
     __defers["$.__views.table!click!sectionsWindow"] && $.__views.table.addEventListener("click", sectionsWindow);
     __defers["$.__views.__alloyId6!click!selectBodyPart"] && $.__views.__alloyId6.addEventListener("click", selectBodyPart);
+    __defers["$.__views.bodyPart!click!doSomething"] && $.__views.bodyPart.addEventListener("click", doSomething);
     _.extend($, exports);
 }
 

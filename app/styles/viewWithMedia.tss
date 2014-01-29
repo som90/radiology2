@@ -1,0 +1,24 @@
+
+".container" : {
+  layout: "vertical",
+}
+
+"ImageView" : {
+  width: "300dp"
+}
+"Label" : {
+	left : 8,
+	right : 8,
+	top : 8
+}
+
+"#heading" : {
+	color : "black",
+	font : {
+		fontWeight : "bold",
+		fontSize : "18dp",
+		fontFamily : "Lucida Blackletter"	
+	}, 
+	textAlign : "center",
+	height : "40dp"
+}

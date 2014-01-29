@@ -37,28 +37,11 @@ function Controller() {
     Ti.API.info(JSON.stringify(items));
     $.win.title = args.title;
     var viewsArray = [];
-    if (true == checkForImages(items)) for (var i in items) viewsArray.push(Alloy.createController("viewWithImage", {
+    if (true == checkForImages(items)) for (var i in items) viewsArray.push(Alloy.createController("viewWithMedia", {
         object: items[i]
-    }).getView()); else for (var i in items) {
-        var view = Ti.UI.createScrollView({
-            layout: "vertical"
-        });
-        view.add(Ti.UI.createLabel({
-            text: items[i].heading,
-            top: 8,
-            left: 8,
-            right: 8,
-            color: "black"
-        }));
-        view.add(Ti.UI.createLabel({
-            text: items[i].item,
-            top: 8,
-            left: 8,
-            right: 8,
-            color: "black"
-        }));
-        viewsArray.push(view);
-    }
+    }).getView()); else for (var i in items) viewsArray.push(Alloy.createController("viewWithNoMedia", {
+        object: items[i]
+    }).getView());
     $.scrollableView.setViews(viewsArray);
     _.extend($, exports);
 }

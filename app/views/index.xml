@@ -16,7 +16,7 @@
 				<Label>Scanned body part:</Label>
 				<TextField editable="false" onClick="selectBodyPart"></TextField>
 				
-				<OptionDialog id="bodyPart" title="Select Body Part:">
+				<OptionDialog id="bodyPart" title="Select Body Part:" onClick="doSomething">
 
          	   <!-- The Options tag sets the options property. -->
 	    	        <Options>

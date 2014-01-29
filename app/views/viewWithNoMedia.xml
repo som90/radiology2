@@ -1,0 +1,6 @@
+<Alloy>
+	<ScrollView class="container">
+		<Label id="heading"></Label>
+		<Label id="label"></Label>
+	</ScrollView>
+</Alloy>

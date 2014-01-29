@@ -28,16 +28,18 @@ var viewsArray = [];
 
 if(checkForImages(items) == true) {
 	for( var i in items ){
-		viewsArray.push(Alloy.createController("viewWithImage", {object:items[i]}).getView());
+		viewsArray.push(Alloy.createController("viewWithMedia", {object:items[i]}).getView());
 	}
 }
 else { //There are no images in this subheading
 	for( var i in items ){
-		var view = Ti.UI.createScrollView({layout:"vertical"}); //makes sure that the first thing add is on top, then under, etc.
-   		view.add(Ti.UI.createLabel({text: items[i].heading, top:8, left:8, right:8, color:"black"}));
-   		view.add(Ti.UI.createLabel({text: items[i].item, top:8, left:8, right:8, color:"black"}));
+		viewsArray.push(Alloy.createController("viewWithNoMedia", {object:items[i]}).getView());
+		
+		// var view = Ti.UI.createScrollView({layout:"vertical"}); //makes sure that the first thing add is on top, then under, etc.
+   		// view.add(Ti.UI.createLabel({text: items[i].heading, top:8, left:8, right:8, color:"black"}));
+   		// view.add(Ti.UI.createLabel({text: items[i].item, top:8, left:8, right:8, color:"black"}));
    		
-   		viewsArray.push(view);
+   		// viewsArray.push(view);
 	}
 }
 
