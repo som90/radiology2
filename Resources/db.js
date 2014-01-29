@@ -8,14 +8,16 @@ database.prototype.init = function(name) {
     var sql = "CREATE TABLE IF NOT EXISTS 'radiology' ( 'itemID' VARCHAR PRIMARY KEY, 'chapterTitle' VARCHAR, 'sectionTitle' VARCHAR, 'subsectionTitle' VARCHAR, 'item' TEXT, 'reference' VARCHAR);";
     Ti.API.info(sql);
     db.execute(sql);
-    db.close();
-    db = null;
     var url = "http://cs1.ucc.ie/~som6/bin/FYP/prototype/test.php";
     var client = Ti.Network.createHTTPClient({
         onload: function() {
             alert("success");
             var JSONdata = JSON.parse(this.responseText);
-            for (var i in JSONdata.allRowsInDB) Ti.API.info(JSONdata.allRowsInDB[i].chapterTitle);
+            for (var i in JSONdata.allRowsInDB) {
+                var sql = "INSERT INTO `2013_som6`.`radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`) VALUES ('" + JSONdata.allRowsInDB[i].itemID + "', '" + JSONdata.allRowsInDB[i].chapterTitle + "', '" + JSONdata.allRowsInDB[i].sectionTitle + "', '" + JSONdata.allRowsInDB[i].subsectionTitle + "', '" + JSONdata.allRowsInDB[i].item + "');";
+                Ti.API.info(sql);
+                db.execute(sql);
+            }
         },
         onerror: function(e) {
             Ti.API.debug(e.error);
@@ -25,6 +27,8 @@ database.prototype.init = function(name) {
     });
     client.open("POST", url);
     client.send();
+    db.close();
+    db = null;
 };
 
 database.prototype.chapters = function() {

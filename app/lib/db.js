@@ -16,9 +16,7 @@ database.prototype.init = function( name ){
 	Ti.API.info(sql);
 	db.execute(sql);
 	
-	db.close();
-	db = null;
-	
+
 	
 	//SO FAR THIS ONLY SPITS OUT THE DATA ON THE CONSOLE... NEED TO GET THIS TO BE INSERTED INTO LOCAL DB.
 	var url = "http://cs1.ucc.ie/~som6/bin/FYP/prototype/test.php";
@@ -30,9 +28,14 @@ database.prototype.init = function( name ){
  	        alert('success');
  	        
  	        var JSONdata = JSON.parse(this.responseText);
-
-			for(var i in JSONdata.allRowsInDB){		//WITHIN THIS FOR LOOP WE CAN ACCESS ALL THE VALUES IN THE JSON
-				Ti.API.info(JSONdata.allRowsInDB[i].chapterTitle);	
+			
+			//WITHIN THIS FOR LOOP WE CAN ACCESS ALL THE VALUES IN THE JSON. THIS IS WHERE THE INSERT HAPPENS!!!
+			for(var i in JSONdata.allRowsInDB){	
+				//Ti.API.info(JSONdata.allRowsInDB[i]);
+				var sql = "INSERT INTO `2013_som6`.`radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `reference`) VALUES ('"+JSONdata.allRowsInDB[i].itemID+"', '"+JSONdata.allRowsInDB[i].chapterTitle+"', '"+JSONdata.allRowsInDB[i].sectionTitle+"', '"+JSONdata.allRowsInDB[i].subsectionTitle+"', '"+JSONdata.allRowsInDB[i].item+"', '"+JSONdata.allRowsInDB[i].reference+"');";
+				Ti.API.info(sql);
+				db.execute(sql);
+					
 			}
  	    },
  	    // function called when an error occurs, including a timeout
@@ -47,6 +50,10 @@ database.prototype.init = function( name ){
  	// Send the request.
  	client.send();
 	
+
+
+	db.close();
+	db = null;
 };
 
 
