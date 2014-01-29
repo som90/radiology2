@@ -18,6 +18,35 @@ database.prototype.init = function( name ){
 	
 	db.close();
 	db = null;
+	
+	
+	//SO FAR THIS ONLY SPITS OUT THE DATA ON THE CONSOLE... NEED TO GET THIS TO BE INSERTED INTO LOCAL DB.
+	var url = "http://cs1.ucc.ie/~som6/bin/FYP/prototype/test.php";
+ 	var client = Ti.Network.createHTTPClient({
+ 	    // function called when the response data is available
+ 	    onload : function(e) {
+ 	        //Ti.API.info("Received text: " + this.responseText);
+ 	        
+ 	        alert('success');
+ 	        
+ 	        var JSONdata = JSON.parse(this.responseText);
+
+			for(var i in JSONdata.allRowsInDB){		//WITHIN THIS FOR LOOP WE CAN ACCESS ALL THE VALUES IN THE JSON
+				Ti.API.info(JSONdata.allRowsInDB[i].chapterTitle);	
+			}
+ 	    },
+ 	    // function called when an error occurs, including a timeout
+ 	    onerror : function(e) {
+ 	        Ti.API.debug(e.error);
+ 	        alert('error');
+ 	    },
+ 	    timeout : 5000  // in milliseconds
+ 	});
+ 	// Prepare the connection.
+ 	client.open("POST", url);
+ 	// Send the request.
+ 	client.send();
+	
 };
 
 

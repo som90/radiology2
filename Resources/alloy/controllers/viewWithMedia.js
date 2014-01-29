@@ -1,7 +1,4 @@
 function Controller() {
-    function testfunction() {
-        alert("test");
-    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "viewWithMedia";
     arguments[0] ? arguments[0]["__parentSymbol"] : null;

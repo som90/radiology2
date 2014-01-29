@@ -10,6 +10,21 @@ database.prototype.init = function(name) {
     db.execute(sql);
     db.close();
     db = null;
+    var url = "http://cs1.ucc.ie/~som6/bin/FYP/prototype/test.php";
+    var client = Ti.Network.createHTTPClient({
+        onload: function() {
+            alert("success");
+            var JSONdata = JSON.parse(this.responseText);
+            for (var i in JSONdata.allRowsInDB) Ti.API.info(JSONdata.allRowsInDB[i].chapterTitle);
+        },
+        onerror: function(e) {
+            Ti.API.debug(e.error);
+            alert("error");
+        },
+        timeout: 5e3
+    });
+    client.open("POST", url);
+    client.send();
 };
 
 database.prototype.chapters = function() {
