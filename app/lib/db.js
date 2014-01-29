@@ -25,7 +25,7 @@ database.prototype.init = function( name ){
  	    onload : function(e) {
  	        //Ti.API.info("Received text: " + this.responseText);
  	        
- 	        alert('success');
+ 	        //alert('success');
  	        
  	        var JSONdata = JSON.parse(this.responseText);
 			
