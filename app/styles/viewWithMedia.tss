@@ -13,11 +13,11 @@
 }
 
 "#heading" : {
-	color : "black",
+	color : "white",
 	font : {
 		fontWeight : "bold",
-		fontSize : "18dp",
-		fontFamily : "Lucida Blackletter"	
+		fontSize : "16dp",
+		fontFamily : "Constantia"	
 	}, 
 	textAlign : "center",
 	height : "40dp"

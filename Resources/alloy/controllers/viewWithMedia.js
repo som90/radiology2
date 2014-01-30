@@ -1,4 +1,7 @@
 function Controller() {
+    function testfunction() {
+        alert("test");
+    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "viewWithMedia";
     arguments[0] ? arguments[0]["__parentSymbol"] : null;
@@ -13,14 +16,14 @@ function Controller() {
     });
     $.__views.viewWithMedia && $.addTopLevelView($.__views.viewWithMedia);
     $.__views.heading = Ti.UI.createLabel({
+        top: 8,
         left: 8,
         right: 8,
-        top: 8,
-        color: "black",
+        color: "white",
         font: {
             fontWeight: "bold",
-            fontSize: "18dp",
-            fontFamily: "Lucida Blackletter"
+            fontSize: "16dp",
+            fontFamily: "Constantia"
         },
         textAlign: "center",
         height: "40dp",
@@ -28,9 +31,9 @@ function Controller() {
     });
     $.__views.viewWithMedia.add($.__views.heading);
     $.__views.label = Ti.UI.createLabel({
+        top: 8,
         left: 8,
         right: 8,
-        top: 8,
         id: "label"
     });
     $.__views.viewWithMedia.add($.__views.label);

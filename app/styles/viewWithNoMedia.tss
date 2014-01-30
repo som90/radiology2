@@ -9,7 +9,7 @@
 }
 
 "#heading" : {
-	color : "black",
+	color : "white",
 	font : {
 		fontWeight : "bold",
 		fontSize : "16dp",

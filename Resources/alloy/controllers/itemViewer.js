@@ -16,14 +16,15 @@ function Controller() {
         id: "win"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
-    var __alloyId18 = [];
+    var __alloyId29 = [];
     $.__views.scrollView = Ti.UI.createScrollView({
         id: "scrollView"
     });
-    __alloyId18.push($.__views.scrollView);
+    __alloyId29.push($.__views.scrollView);
     $.__views.scrollableView = Ti.UI.createScrollableView({
         color: "black",
-        views: __alloyId18,
+        backgroundImage: "/images/itemViewerBackground.jpg",
+        views: __alloyId29,
         id: "scrollableView",
         width: "100%",
         height: "100%",

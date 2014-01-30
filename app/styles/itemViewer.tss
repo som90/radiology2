@@ -12,6 +12,7 @@
 */
 
 "#scrollableView":{
-	color: "black"
+	color: "black",
+	backgroundImage: "/images/itemViewerBackground.jpg",
 }
 

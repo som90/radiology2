@@ -11,13 +11,19 @@ database.prototype.init = function(name) {
     var url = "http://cs1.ucc.ie/~som6/bin/FYP/prototype/test.php";
     var client = Ti.Network.createHTTPClient({
         onload: function() {
-            alert("success");
             var JSONdata = JSON.parse(this.responseText);
             for (var i in JSONdata.allRowsInDB) {
-                var sql = "INSERT INTO `2013_som6`.`radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`) VALUES ('" + JSONdata.allRowsInDB[i].itemID + "', '" + JSONdata.allRowsInDB[i].chapterTitle + "', '" + JSONdata.allRowsInDB[i].sectionTitle + "', '" + JSONdata.allRowsInDB[i].subsectionTitle + "', '" + JSONdata.allRowsInDB[i].item + "');";
+                JSONdata.allRowsInDB[i].chapterTitle = JSONdata.allRowsInDB[i].chapterTitle.replace(/'/g, "''");
+                JSONdata.allRowsInDB[i].sectionTitle = JSONdata.allRowsInDB[i].sectionTitle.replace(/'/g, "''");
+                JSONdata.allRowsInDB[i].subsectionTitle = JSONdata.allRowsInDB[i].subsectionTitle.replace(/'/g, "''");
+                JSONdata.allRowsInDB[i].item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
+                JSONdata.allRowsInDB[i].reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''");
+                Ti.API.info(JSONdata.allRowsInDB[i].itemID + ", " + JSONdata.allRowsInDB[i].chapterTitle + ", " + JSONdata.allRowsInDB[i].sectionTitle + ", " + JSONdata.allRowsInDB[i].subsectionTitle + ", " + JSONdata.allRowsInDB[i].item);
+                var sql = "INSERT INTO `radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `reference`) VALUES ('" + JSONdata.allRowsInDB[i].itemID + "', '" + JSONdata.allRowsInDB[i].chapterTitle + "', '" + JSONdata.allRowsInDB[i].sectionTitle + "', '" + JSONdata.allRowsInDB[i].subsectionTitle + "', '" + JSONdata.allRowsInDB[i].item + "', '" + JSONdata.allRowsInDB[i].reference + "');";
                 Ti.API.info(sql);
-                db.execute(sql);
             }
+            db.close();
+            db = null;
         },
         onerror: function(e) {
             Ti.API.debug(e.error);
@@ -27,8 +33,6 @@ database.prototype.init = function(name) {
     });
     client.open("POST", url);
     client.send();
-    db.close();
-    db = null;
 };
 
 database.prototype.chapters = function() {

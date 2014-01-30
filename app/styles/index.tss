@@ -1,0 +1,34 @@
+
+"TextField" : {
+	height : "34dp",
+	width : "95%",
+	//backgroundColor : "white",
+	tintColor : "red",
+	opacity : ".4",
+	top : 2,
+	bottom : 5,
+	textAlign : "center",
+	borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+	borderRadius : '10px'
+}
+
+"Button" : {
+	top : 5,
+	width : "60dp",
+	/*borderColor : "black",
+	borderRadius : "6px",
+	borderWidth : "1px",
+	backgroundColor: "black",
+	color: "white",
+	textAlign : "center"*/
+}
+
+"#resultLabel" : {
+	top : 20,
+	font : {
+		fontWeight : "bold",
+		fontSize : "16dp",
+		fontFamily : "Constantia"	
+	}, 
+	textAlign : "center"
+}

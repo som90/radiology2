@@ -10,3 +10,7 @@ else {
 	//$.label.text=args.item;
 	$.label.text=args.object.item;
 }
+
+function testfunction() {
+	alert("test");
+}

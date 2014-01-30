@@ -20,6 +20,7 @@ function Controller() {
     });
     $.__views.newRow && $.addTopLevelView($.__views.newRow);
     $.__views.label = Ti.UI.createLabel({
+        top: 5,
         textAlign: "left",
         width: "95%",
         height: Ti.UI.SIZE,

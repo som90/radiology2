@@ -10,27 +10,49 @@
 			<Window title="CT Dosage Calculator" layout="vertical">
 				
 				<Label>Dose length product value (DLP):</Label>
-				<TextField></TextField>
+				<TextField id="dlpValue"></TextField>
 				
 				<!--assuming only 7 body parts.. Picker would be better for more choices but this is platform specific --> 
 				<Label>Scanned body part:</Label>
-				<TextField editable="false" onClick="selectBodyPart"></TextField>
+				<TextField id="bodyPartTextfield" editable="false" onClick="selectBodyPart"></TextField>
 				
-				<OptionDialog id="bodyPart" title="Select Body Part:" onClick="doSomething">
+				<OptionDialog id="bodyPart" title="Select Body Part:" onClick="addBodypart">
 
          	   <!-- The Options tag sets the options property. -->
 	    	        <Options>
 	       	        	 <Option>Head</Option>
-	       	        	 <Option>Arm</Option>
+	       	        	 <Option>Neck</Option>
+	       	        	 <Option>Chest</Option>
+	       	        	 <Option>Abdomen</Option>
+	       	        	 <Option>Pelvis</Option>
 	       	    	     <Option>Cancel</Option>
 	       		     </Options>
 		
 	       		 </OptionDialog>
 				
 				<Label>Patient age range:</Label>
-				<TextField editable="false"></TextField>
+				<TextField id="ageRangeTextfield" editable="false" onClick="selectAgeRange"></TextField>
 				
-				<Button>Submit</Button>
+				<OptionDialog id="ageRange" title="Select Patient Age Range:" onClick="addAgeRange">
+	    	        <Options>
+	       	        	 <Option>Less than 1 year</Option>
+	       	        	 <Option>1-5 years</Option>
+	       	        	 <Option>5-10 years</Option>
+	       	        	 <Option>10-18 years</Option>
+	       	        	 <Option>18+ years</Option>	
+	       	        	 <Option>Cancel</Option>
+	       	        </Options>	
+	       		 </OptionDialog>
+				
+				<Button onClick="calculateDosage">Submit</Button>
+				
+				<Label id="resultLabel"></Label>
+			</Window>
+		</Tab>
+		
+		<Tab title="Info" icon="KS_nav_views.png">
+			<Window title="Info">
+				<Label>Information about how to use the app.</Label>
 			</Window>
 		</Tab>
 		

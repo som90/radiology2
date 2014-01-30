@@ -12,10 +12,10 @@ function Controller() {
     });
     $.__views.viewWithNoMedia && $.addTopLevelView($.__views.viewWithNoMedia);
     $.__views.heading = Ti.UI.createLabel({
+        top: 8,
         left: 8,
         right: 8,
-        top: 8,
-        color: "black",
+        color: "white",
         font: {
             fontWeight: "bold",
             fontSize: "16dp",
@@ -27,9 +27,9 @@ function Controller() {
     });
     $.__views.viewWithNoMedia.add($.__views.heading);
     $.__views.label = Ti.UI.createLabel({
+        top: 8,
         left: 8,
         right: 8,
-        top: 8,
         id: "label"
     });
     $.__views.viewWithNoMedia.add($.__views.label);

@@ -10,9 +10,7 @@
 	minRowHeight: "44dp",
 	color : "white"
 }
-"TextField" : {
-	height : "44dp",
-	width : "95%",
-	backgroundColor : "white",
-	bottom : 5
+
+"Label" : {
+	top : 5
 }
