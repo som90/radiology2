@@ -12,5 +12,4 @@
 
 var db = require("db");
 var radiologyDB = new db();
-radiologyDB.init("radiology");
 Alloy.Globals.radiologyDB = radiologyDB;

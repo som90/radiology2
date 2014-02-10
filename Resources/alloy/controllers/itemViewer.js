@@ -12,19 +12,18 @@ function Controller() {
     var exports = {};
     $.__views.win = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
-        color: "white",
         id: "win"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
-    var __alloyId29 = [];
+    var __alloyId30 = [];
     $.__views.scrollView = Ti.UI.createScrollView({
         id: "scrollView"
     });
-    __alloyId29.push($.__views.scrollView);
+    __alloyId30.push($.__views.scrollView);
     $.__views.scrollableView = Ti.UI.createScrollableView({
         color: "black",
         backgroundImage: "/images/itemViewerBackground.jpg",
-        views: __alloyId29,
+        views: __alloyId30,
         id: "scrollableView",
         width: "100%",
         height: "100%",

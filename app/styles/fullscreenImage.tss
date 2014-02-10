@@ -1,0 +1,15 @@
+
+"Window" : {
+  navBarHidden : true,
+  backgroundColor : "#8000"  
+}
+
+"Button" : {
+	bottom : 5,
+	height : "50dp",
+}
+
+"ImageView" : {
+	top : 5,
+	bottom : "60dp"
+}

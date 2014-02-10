@@ -1,16 +1,3 @@
-/*
-"#win": {
-	color:"white"
-},
-
-"#scrollableView":{
-	bottom:20,
-	width: Ti.UI.SIZE,
-	height: Ti.UI.SIZE,
-	color:"white"
-}
-*/
-
 "#scrollableView":{
 	color: "black",
 	backgroundImage: "/images/itemViewerBackground.jpg",

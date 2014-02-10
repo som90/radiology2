@@ -10,17 +10,16 @@ function Controller() {
         width: Ti.UI.SIZE,
         height: Ti.UI.SIZE,
         font: {
-            fontSize: 1,
             fontFamily: "Helvetica Neue"
         },
         textAlign: "center",
-        backgroundColor: "transparent",
         hasChild: true,
         id: "newRow"
     });
     $.__views.newRow && $.addTopLevelView($.__views.newRow);
     $.__views.label = Ti.UI.createLabel({
         top: 5,
+        color: "black",
         textAlign: "left",
         width: "95%",
         height: Ti.UI.SIZE,

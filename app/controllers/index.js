@@ -3,16 +3,51 @@
  * Init
  */
 
-$.index.open();
-//This creates a global reference to the tab
-Alloy.Globals.tabChapters = $.tabChapters;
+	//This creates a global reference to the tab
+	Alloy.Globals.tabChapters = $.tabChapters;
+		
+	// Check for first time
+	if( !Ti.App.Properties.hasProperty("firstTime") )
+	{
+		alert("firstTime");
+		$.index.open();
 
-var chapters = Alloy.Globals.radiologyDB.chapters();
+		// Passing the loadChapters function in so we can access on the next page. The reason is so that the chapters will not be loaded before the Local DB has a chance to be populated by the call to the Server DB.
+		Alloy.Globals.radiologyDB.init("radiology", loadChapters);
+		
+		Ti.App.Properties.setBool("firstTime", false);	
+	}
+	
+	else	// every other time the app is opened it should just use whatever is in the localDB.
+	{
+		$.index.open();
+		$.table.setData(Alloy.Globals.radiologyDB.chapters());
+	}
+	
 
-for (var i in chapters) 
- {
+function checkForUpdates(){		
+	//passing the function in so we can access on the next page
+	Alloy.Globals.radiologyDB.update("radiology", updateChapters);
+}
+	
+function loadChapters() {
+	var chapters = Alloy.Globals.radiologyDB.chapters();
 
-		 $.table.appendRow(chapters[i]);
+	for (var i in chapters) 
+ 	{
+
+		$.table.appendRow(chapters[i]);
+ 	}
+ }
+ 
+ function updateChapters() {
+	var chapters = Alloy.Globals.radiologyDB.chapters();
+
+	for (var i in chapters) 
+ 	{
+
+		$.table.updateRow(i, chapters[i]);
+ 	}
  }   
 
 
@@ -103,6 +138,8 @@ for (var i in chapters)
 		
 		$.resultLabel.text="Estimated Dosage \n (DLP x Conversion Factor for body part): \n "+dlp*conversionFactor;
 	}
+	
+
 	
 
 

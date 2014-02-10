@@ -12,5 +12,6 @@ else {
 }
 
 function testfunction() {
-	alert("test");
+	var fullImage = Alloy.createController("fullScreenImage", {image : args.object.item }).getView();
+	fullImage.open();
 }

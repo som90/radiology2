@@ -15,7 +15,6 @@ function Controller() {
     var __defers = {};
     $.__views.win = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
-        color: "white",
         id: "win"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
@@ -23,7 +22,6 @@ function Controller() {
         top: "5px",
         backgroundColor: "transparent",
         minRowHeight: "44dp",
-        color: "white",
         id: "table"
     });
     $.__views.win.add($.__views.table);

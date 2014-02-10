@@ -1,6 +1,9 @@
 function Controller() {
     function testfunction() {
-        alert("test");
+        var fullImage = Alloy.createController("fullScreenImage", {
+            image: args.object.item
+        }).getView();
+        fullImage.open();
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "viewWithMedia";
@@ -17,13 +20,11 @@ function Controller() {
     $.__views.viewWithMedia && $.addTopLevelView($.__views.viewWithMedia);
     $.__views.heading = Ti.UI.createLabel({
         top: 8,
+        color: "white",
         left: 8,
         right: 8,
-        color: "white",
         font: {
-            fontWeight: "bold",
-            fontSize: "16dp",
-            fontFamily: "Constantia"
+            fontWeight: "bold"
         },
         textAlign: "center",
         height: "40dp",
@@ -32,6 +33,7 @@ function Controller() {
     $.__views.viewWithMedia.add($.__views.heading);
     $.__views.label = Ti.UI.createLabel({
         top: 8,
+        color: "black",
         left: 8,
         right: 8,
         id: "label"

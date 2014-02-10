@@ -1,4 +1,15 @@
 function Controller() {
+    function checkForUpdates() {
+        Alloy.Globals.radiologyDB.update("radiology", updateChapters);
+    }
+    function loadChapters() {
+        var chapters = Alloy.Globals.radiologyDB.chapters();
+        for (var i in chapters) $.table.appendRow(chapters[i]);
+    }
+    function updateChapters() {
+        var chapters = Alloy.Globals.radiologyDB.chapters();
+        for (var i in chapters) $.table.updateRow(i, chapters[i]);
+    }
     function sectionsWindow(event) {
         var addWindow = Alloy.createController("sectionsList", {
             title: event.row.name
@@ -40,7 +51,6 @@ function Controller() {
     });
     $.__views.win = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
-        color: "white",
         title: "Home",
         id: "win"
     });
@@ -48,7 +58,6 @@ function Controller() {
         top: "5px",
         backgroundColor: "transparent",
         minRowHeight: "44dp",
-        color: "white",
         id: "table"
     });
     $.__views.win.add($.__views.table);
@@ -60,19 +69,19 @@ function Controller() {
         icon: "KS_nav_ui.png"
     });
     $.__views.index.addTab($.__views.tabChapters);
-    $.__views.__alloyId2 = Ti.UI.createWindow({
+    $.__views.__alloyId3 = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
-        color: "white",
         title: "CT Dosage Calculator",
         layout: "vertical",
-        id: "__alloyId2"
-    });
-    $.__views.__alloyId3 = Ti.UI.createLabel({
-        top: 5,
-        text: "Dose length product value (DLP):",
         id: "__alloyId3"
     });
-    $.__views.__alloyId2.add($.__views.__alloyId3);
+    $.__views.__alloyId4 = Ti.UI.createLabel({
+        top: 5,
+        color: "black",
+        text: "Dose length product value (DLP):",
+        id: "__alloyId4"
+    });
+    $.__views.__alloyId3.add($.__views.__alloyId4);
     $.__views.dlpValue = Ti.UI.createTextField({
         height: "34dp",
         width: "95%",
@@ -85,13 +94,14 @@ function Controller() {
         borderRadius: "10px",
         id: "dlpValue"
     });
-    $.__views.__alloyId2.add($.__views.dlpValue);
-    $.__views.__alloyId4 = Ti.UI.createLabel({
+    $.__views.__alloyId3.add($.__views.dlpValue);
+    $.__views.__alloyId5 = Ti.UI.createLabel({
         top: 5,
+        color: "black",
         text: "Scanned body part:",
-        id: "__alloyId4"
+        id: "__alloyId5"
     });
-    $.__views.__alloyId2.add($.__views.__alloyId4);
+    $.__views.__alloyId3.add($.__views.__alloyId5);
     $.__views.bodyPartTextfield = Ti.UI.createTextField({
         height: "34dp",
         width: "95%",
@@ -105,27 +115,28 @@ function Controller() {
         id: "bodyPartTextfield",
         editable: "false"
     });
-    $.__views.__alloyId2.add($.__views.bodyPartTextfield);
+    $.__views.__alloyId3.add($.__views.bodyPartTextfield);
     selectBodyPart ? $.__views.bodyPartTextfield.addEventListener("click", selectBodyPart) : __defers["$.__views.bodyPartTextfield!click!selectBodyPart"] = true;
-    var __alloyId6 = [];
-    __alloyId6.push("Head");
-    __alloyId6.push("Neck");
-    __alloyId6.push("Chest");
-    __alloyId6.push("Abdomen");
-    __alloyId6.push("Pelvis");
-    __alloyId6.push("Cancel");
+    var __alloyId7 = [];
+    __alloyId7.push("Head");
+    __alloyId7.push("Neck");
+    __alloyId7.push("Chest");
+    __alloyId7.push("Abdomen");
+    __alloyId7.push("Pelvis");
+    __alloyId7.push("Cancel");
     $.__views.bodyPart = Ti.UI.createOptionDialog({
-        options: __alloyId6,
+        options: __alloyId7,
         id: "bodyPart",
         title: "Select Body Part:"
     });
     addBodypart ? $.__views.bodyPart.addEventListener("click", addBodypart) : __defers["$.__views.bodyPart!click!addBodypart"] = true;
-    $.__views.__alloyId13 = Ti.UI.createLabel({
+    $.__views.__alloyId14 = Ti.UI.createLabel({
         top: 5,
+        color: "black",
         text: "Patient age range:",
-        id: "__alloyId13"
+        id: "__alloyId14"
     });
-    $.__views.__alloyId2.add($.__views.__alloyId13);
+    $.__views.__alloyId3.add($.__views.__alloyId14);
     $.__views.ageRangeTextfield = Ti.UI.createTextField({
         height: "34dp",
         width: "95%",
@@ -139,31 +150,32 @@ function Controller() {
         id: "ageRangeTextfield",
         editable: "false"
     });
-    $.__views.__alloyId2.add($.__views.ageRangeTextfield);
+    $.__views.__alloyId3.add($.__views.ageRangeTextfield);
     selectAgeRange ? $.__views.ageRangeTextfield.addEventListener("click", selectAgeRange) : __defers["$.__views.ageRangeTextfield!click!selectAgeRange"] = true;
-    var __alloyId15 = [];
-    __alloyId15.push("Less than 1 year");
-    __alloyId15.push("1-5 years");
-    __alloyId15.push("5-10 years");
-    __alloyId15.push("10-18 years");
-    __alloyId15.push("18+ years");
-    __alloyId15.push("Cancel");
+    var __alloyId16 = [];
+    __alloyId16.push("Less than 1 year");
+    __alloyId16.push("1-5 years");
+    __alloyId16.push("5-10 years");
+    __alloyId16.push("10-18 years");
+    __alloyId16.push("18+ years");
+    __alloyId16.push("Cancel");
     $.__views.ageRange = Ti.UI.createOptionDialog({
-        options: __alloyId15,
+        options: __alloyId16,
         id: "ageRange",
         title: "Select Patient Age Range:"
     });
     addAgeRange ? $.__views.ageRange.addEventListener("click", addAgeRange) : __defers["$.__views.ageRange!click!addAgeRange"] = true;
-    $.__views.__alloyId22 = Ti.UI.createButton({
+    $.__views.__alloyId23 = Ti.UI.createButton({
         top: 5,
         width: "60dp",
         title: "Submit",
-        id: "__alloyId22"
+        id: "__alloyId23"
     });
-    $.__views.__alloyId2.add($.__views.__alloyId22);
-    calculateDosage ? $.__views.__alloyId22.addEventListener("click", calculateDosage) : __defers["$.__views.__alloyId22!click!calculateDosage"] = true;
+    $.__views.__alloyId3.add($.__views.__alloyId23);
+    calculateDosage ? $.__views.__alloyId23.addEventListener("click", calculateDosage) : __defers["$.__views.__alloyId23!click!calculateDosage"] = true;
     $.__views.resultLabel = Ti.UI.createLabel({
         top: 20,
+        color: "black",
         font: {
             fontWeight: "bold",
             fontSize: "16dp",
@@ -172,65 +184,73 @@ function Controller() {
         textAlign: "center",
         id: "resultLabel"
     });
-    $.__views.__alloyId2.add($.__views.resultLabel);
-    $.__views.__alloyId1 = Ti.UI.createTab({
-        window: $.__views.__alloyId2,
+    $.__views.__alloyId3.add($.__views.resultLabel);
+    $.__views.__alloyId2 = Ti.UI.createTab({
+        window: $.__views.__alloyId3,
         title: "CT Dosage Calculator",
         icon: "KS_nav_views.png",
-        id: "__alloyId1"
+        id: "__alloyId2"
     });
-    $.__views.index.addTab($.__views.__alloyId1);
-    $.__views.__alloyId24 = Ti.UI.createWindow({
+    $.__views.index.addTab($.__views.__alloyId2);
+    $.__views.__alloyId25 = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
-        color: "white",
         title: "Info",
-        id: "__alloyId24"
-    });
-    $.__views.__alloyId25 = Ti.UI.createLabel({
-        top: 5,
-        text: "Information about how to use the app.",
         id: "__alloyId25"
     });
-    $.__views.__alloyId24.add($.__views.__alloyId25);
-    $.__views.__alloyId23 = Ti.UI.createTab({
-        window: $.__views.__alloyId24,
-        title: "Info",
-        icon: "KS_nav_views.png",
-        id: "__alloyId23"
-    });
-    $.__views.index.addTab($.__views.__alloyId23);
-    $.__views.__alloyId27 = Ti.UI.createWindow({
-        backgroundImage: "/images/radiologyBackground.jpg",
-        color: "white",
-        title: "About",
-        id: "__alloyId27"
-    });
-    $.__views.__alloyId28 = Ti.UI.createLabel({
+    $.__views.__alloyId26 = Ti.UI.createLabel({
         top: 5,
-        text: "This is where we will have some information about the app and about CUH Radiology Department.",
-        id: "__alloyId28"
-    });
-    $.__views.__alloyId27.add($.__views.__alloyId28);
-    $.__views.__alloyId26 = Ti.UI.createTab({
-        window: $.__views.__alloyId27,
-        title: "About",
-        icon: "KS_nav_views.png",
+        color: "black",
+        text: "Information about how to use the app.",
         id: "__alloyId26"
     });
-    $.__views.index.addTab($.__views.__alloyId26);
+    $.__views.__alloyId25.add($.__views.__alloyId26);
+    $.__views.__alloyId24 = Ti.UI.createTab({
+        window: $.__views.__alloyId25,
+        title: "Info",
+        icon: "KS_nav_views.png",
+        id: "__alloyId24"
+    });
+    $.__views.index.addTab($.__views.__alloyId24);
+    $.__views.__alloyId28 = Ti.UI.createWindow({
+        backgroundImage: "/images/radiologyBackground.jpg",
+        title: "Updates",
+        id: "__alloyId28"
+    });
+    $.__views.__alloyId29 = Ti.UI.createButton({
+        top: 5,
+        width: "60dp",
+        title: "Check for updates",
+        id: "__alloyId29"
+    });
+    $.__views.__alloyId28.add($.__views.__alloyId29);
+    checkForUpdates ? $.__views.__alloyId29.addEventListener("click", checkForUpdates) : __defers["$.__views.__alloyId29!click!checkForUpdates"] = true;
+    $.__views.__alloyId27 = Ti.UI.createTab({
+        window: $.__views.__alloyId28,
+        title: "Updates",
+        icon: "KS_nav_views.png",
+        id: "__alloyId27"
+    });
+    $.__views.index.addTab($.__views.__alloyId27);
     $.__views.index && $.addTopLevelView($.__views.index);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    $.index.open();
     Alloy.Globals.tabChapters = $.tabChapters;
-    var chapters = Alloy.Globals.radiologyDB.chapters();
-    for (var i in chapters) $.table.appendRow(chapters[i]);
+    if (Ti.App.Properties.hasProperty("firstTime")) {
+        $.index.open();
+        $.table.setData(Alloy.Globals.radiologyDB.chapters());
+    } else {
+        alert("firstTime");
+        $.index.open();
+        Alloy.Globals.radiologyDB.init("radiology", loadChapters);
+        Ti.App.Properties.setBool("firstTime", false);
+    }
     __defers["$.__views.table!click!sectionsWindow"] && $.__views.table.addEventListener("click", sectionsWindow);
     __defers["$.__views.bodyPartTextfield!click!selectBodyPart"] && $.__views.bodyPartTextfield.addEventListener("click", selectBodyPart);
     __defers["$.__views.bodyPart!click!addBodypart"] && $.__views.bodyPart.addEventListener("click", addBodypart);
     __defers["$.__views.ageRangeTextfield!click!selectAgeRange"] && $.__views.ageRangeTextfield.addEventListener("click", selectAgeRange);
     __defers["$.__views.ageRange!click!addAgeRange"] && $.__views.ageRange.addEventListener("click", addAgeRange);
-    __defers["$.__views.__alloyId22!click!calculateDosage"] && $.__views.__alloyId22.addEventListener("click", calculateDosage);
+    __defers["$.__views.__alloyId23!click!calculateDosage"] && $.__views.__alloyId23.addEventListener("click", calculateDosage);
+    __defers["$.__views.__alloyId29!click!checkForUpdates"] && $.__views.__alloyId29.addEventListener("click", checkForUpdates);
     _.extend($, exports);
 }
 

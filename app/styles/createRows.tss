@@ -2,16 +2,17 @@
  	width: Ti.UI.SIZE,
 	height: Ti.UI.SIZE,
 	font: {
-		fontSize: 1,
+		//fontSize: 1,
 		fontFamily: 'Helvetica Neue',
 	},
 	textAlign: 'center',
-	backgroundColor:'transparent',
+	//backgroundColor:'transparent',
 	hasChild: true
 }
 
 "Label" : {
 	textAlign : "left",
 	width: "95%",
-	height: Ti.UI.SIZE
+	height: Ti.UI.SIZE,
+	color : "black"
 }

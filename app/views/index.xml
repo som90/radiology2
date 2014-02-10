@@ -56,9 +56,9 @@
 			</Window>
 		</Tab>
 		
-		<Tab title="About" icon="KS_nav_views.png">
-			<Window title="About">
-				<Label>This is where we will have some information about the app and about CUH Radiology Department.</Label>
+		<Tab title="Updates" icon="KS_nav_views.png">
+			<Window title="Updates">
+				<Button onClick="checkForUpdates">Check for updates</Button>
 			</Window>
 		</Tab>
 
