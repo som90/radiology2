@@ -1,4 +1,9 @@
 
+//This creates a global reference to the Label so we can change the font
+	Alloy.Globals.label = $.label;
+	Alloy.Globals.heading = $.heading;
+	
+	
 var args = arguments[0] || {};
 
 $.heading.text = args.object.heading; 
@@ -11,7 +16,8 @@ else {
 	$.label.text=args.object.item;
 }
 
-function testfunction() {
+function fullScreen() {
 	var fullImage = Alloy.createController("fullScreenImage", {image : args.object.item }).getView();
 	fullImage.open();
+
 }

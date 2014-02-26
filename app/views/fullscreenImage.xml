@@ -1,6 +1,6 @@
 <Alloy>
 	<Window id="win" >
-		<ImageView id="fullSizeImageView"></ImageView>
-		<Button onClick="closeWindow">Close</Button>
+		<ImageView onClick="closeWindow" id="fullSizeImageView"></ImageView>
+		<!--<Button onClick="closeWindow">Close</Button> -->
 	</Window>
 </Alloy>

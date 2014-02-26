@@ -21,7 +21,7 @@ function Controller() {
     $.__views.table = Ti.UI.createTableView({
         top: "5px",
         backgroundColor: "transparent",
-        minRowHeight: "44dp",
+        minRowHeight: "50dp",
         id: "table"
     });
     $.__views.win.add($.__views.table);

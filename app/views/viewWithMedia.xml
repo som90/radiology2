@@ -1,7 +1,7 @@
 <Alloy>
-	<ScrollView class="container">
+	<ScrollView id="scroll" class="container">
 		<Label id="heading"></Label>
 		<Label id="label"></Label>
-		<ImageView id="imageView" onClick="testfunction"></ImageView>
+		<ImageView id="imageView" onClick="fullScreen"></ImageView>
 	</ScrollView>
 </Alloy>

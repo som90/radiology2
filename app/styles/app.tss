@@ -7,7 +7,7 @@
 "TableView" : {
 	top : "5px",
 	backgroundColor:'transparent',
-	minRowHeight: "44dp"
+	minRowHeight: "50dp"
 }
 
 "Label" : {
@@ -21,3 +21,4 @@
 		fontSize : "20dp",
 	}
 }
+

@@ -31,38 +31,12 @@ if(checkForImages(items) == true) {
 		viewsArray.push(Alloy.createController("viewWithMedia", {object:items[i]}).getView());
 	}
 }
-else { //There are no images in this subheading
+else { //There are no images in this section
 	for( var i in items ){
 		viewsArray.push(Alloy.createController("viewWithNoMedia", {object:items[i]}).getView());
-		
-		// var view = Ti.UI.createScrollView({layout:"vertical"}); //makes sure that the first thing add is on top, then under, etc.
-   		// view.add(Ti.UI.createLabel({text: items[i].heading, top:8, left:8, right:8, color:"black"}));
-   		// view.add(Ti.UI.createLabel({text: items[i].item, top:8, left:8, right:8, color:"black"}));
-   		
-   		// viewsArray.push(view);
 	}
 }
 
 $.scrollableView.setViews(viewsArray);
 
-//THIS WAS THE OLD CODE... MAY COME IN HANDY...
-/*for( var i in items ){
-
-    var view = Ti.UI.createScrollView({layout:"vertical"}); //makes sure that the first thing add is on top, then under, etc.
-    
-     if(items[i].indexOf("http://") != -1) { //Checking if the item is a url
-    	//viewsArray.push(Alloy.createController("viewWithImage").getView());
-    	//view.add(Ti.UI.createLabel({text: "Heading goes here", color:"white"})); 
-    	view.add(Ti.UI.createLabel({text: items[i], top:5, color:"black"})); 	   	
-		view.add((Ti.UI.createImageView({top:5, left:20, width: 40, height: 60, image: items[i]})));
-	}
-	else {	
-		//view.add(Ti.UI.createLabel({text: "Heading goes here", color:"white"}));
-		view.add(Ti.UI.createLabel({text: items[i], top:5, color:"black"}));
-	}
-	//view.setBackgroundImage( String backgroundImage )
-
-    viewsArray.push(view);
-
-}*/
 

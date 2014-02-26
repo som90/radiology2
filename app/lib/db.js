@@ -8,20 +8,14 @@ module.exports = database;
 /*
  * Init Function to setup Database
  */
-database.prototype.init = function( name, callback){
+database.prototype.initEbookData = function( name, callback){
 	this.name = name;
 	var db = Ti.Database.open( this.name );
 	
 	var sql = "CREATE TABLE IF NOT EXISTS 'radiology' ( 'itemID' VARCHAR PRIMARY KEY, 'chapterTitle' VARCHAR, 'sectionTitle' VARCHAR, 'subsectionTitle' VARCHAR, 'item' TEXT, 'reference' VARCHAR, 'lastUpdated' TEXT);";
-	Ti.API.info(sql);
 	db.execute(sql);
 	
-	if(Ti.Network.online==false) {
-		alert("This app can only be run for the first time while connected to the Internet. Please install again and reopen with an Internet Connection.");
-		return
-	}
-	
-	// Accessing the Server file which hosts a printout of all the Data in the Server in JSON format.
+	// Accessing the Server file which hosts a printout of all the eBook data in the Server in JSON format.
 	var url = "http://cs1.ucc.ie/~som6/bin/FYP/prototype/jsonData.php";
  	var client = Ti.Network.createHTTPClient({
  	    
@@ -44,6 +38,9 @@ database.prototype.init = function( name, callback){
 				var item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
 				if (JSONdata.allRowsInDB[i].item.indexOf("images/") != -1) {
 					item = "/" + JSONdata.allRowsInDB[i].item;
+					
+					//THIS IS WHERE THE CODE TO GET THE IMAGE FROM SERVER SHOULD GO... DOING IT IN UpdateData METHOD AS A TESTER. THIS IS WHERE I LEFT OFF!!!
+					
 				}
 				var reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''");
 				var lastUpdated = JSONdata.allRowsInDB[i].lastUpdated;
@@ -74,7 +71,78 @@ database.prototype.init = function( name, callback){
  	client.open("POST", url);
  	// Send the request.
  	client.send();
+ };
+
+
+database.prototype.initExamTables = function( name){
+	this.name = name;
+	var db = Ti.Database.open( this.name );
+	
+	var sql = "CREATE TABLE IF NOT EXISTS 'examinations' ( 'area' VARCHAR, 'bodypart' VARCHAR, 'meanEffectiveDose' DECIMAL(5,3), 'rangesReported' VARCHAR, 'meanAdministeredActivity' VARCHAR, 'effectiveDosePerAdministeredActivity' VARCHAR);";
+	db.execute(sql);
+
+ 	// Need to do the same to initialize the 'examinations' table in the local DB.
+	var url = "http://cs1.ucc.ie/~som6/bin/FYP/prototype/examJsonData.php";
+ 	var client = Ti.Network.createHTTPClient({
+ 	    
+ 	    // Once the response text becomes available, the below will run. 
+ 	    onload : function(e) {
+ 	        
+ 	        var JSONdata = JSON.parse(this.responseText);
+		
+			//keeps the SQL statement in memory, and commits to the DB afterwards, to speed things up a bit 
+			db.execute("BEGIN;");
+			
+			for(var i in JSONdata.allRowsInDB){		// Loop through the JSON data to access each row in the ServerDB
+				
+				//The following 5 regular expression replacements just ensure that any apostrophes in the ServerDB get escaped before
+				// they are entered into the localDB
+				var area = JSONdata.allRowsInDB[i].area;
+				var bodypart = JSONdata.allRowsInDB[i].bodypart;
+				var meanEffectiveDose = JSONdata.allRowsInDB[i].meanEffectiveDose;
+				var rangesReported = JSONdata.allRowsInDB[i].rangesReported;
+				var meanAdministeredActivity = JSONdata.allRowsInDB[i].meanAdministeredActivity;
+				var effectiveDosePerAdministeredActivity = JSONdata.allRowsInDB[i].effectiveDosePerAdministeredActivity;
+
+				var sql = "INSERT INTO `examinations` (`area`, `bodypart`, `meanEffectiveDose`, `rangesReported`, `meanAdministeredActivity`, `effectiveDosePerAdministeredActivity`) VALUES ('"+area+"', '"+bodypart+"', '"+meanEffectiveDose+"', '"+rangesReported+"', '"+meanAdministeredActivity+"', '"+effectiveDosePerAdministeredActivity+"');";
+
+				Ti.API.info(sql);
+				db.execute(sql);
+			}
+			
+			//Commits the sql to the db.
+			db.execute("COMMIT;");
+			
+			db.close();
+			db = null;
+ 	    },
+ 	    // function called when an error occurs, including a timeout
+ 	    onerror : function(e) {
+ 	        Ti.API.debug(e.error);
+ 	        alert('error in loading content from Server');
+ 	    },
+ 	    timeout : 5000  // in milliseconds
+ 	});
+ 	// Prepare the connection.
+ 	client.open("POST", url);
+ 	// Send the request.
+ 	client.send();
 };
+
+database.prototype.getCachedData = function( name){
+	this.name = name;
+	var db = Ti.Database.open( this.name );
+	var data = [];
+	
+	var chapters = Alloy.Globals.radiologyDB.chapters();
+
+	for (var i in chapters) 
+ 	{
+		data.push(chapters[i])
+ 	}
+ 	
+ 	return data;
+}
 
 
 database.prototype.update = function( name, callback){
@@ -82,7 +150,7 @@ database.prototype.update = function( name, callback){
 	var db = Ti.Database.open( this.name );
 	
 	if(Ti.Network.online==false) {
-		alert("No internet connection! Click close to keep working with cached data.");
+		alert("No internet connection! Close this window to keep working with cached data.");
 		return;
 	}
 	
@@ -93,35 +161,44 @@ database.prototype.update = function( name, callback){
  	    onload : function(e) {
  	        
  	        var JSONdata = JSON.parse(this.responseText);
-		
+			var tempArray = [];			//this array is for saving the URL to all the images on the Server so that after the link to the image is stored in the localDB, we can store the images themselves locally
+			var tempItem = [];			//for saving each item name, i.e., slide10.jpg, etc.
+
 			//keeps the SQL statement in memory, and commits to the DB afterwards, to speed up thigs
 			db.execute("BEGIN;");
-			
 			for(var i in JSONdata.allRowsInDB){		// Loop through the JSON data to access each row in the ServerDB
 				
-				//The following 5 regular expression replacements just ensure that any apostrophes in the ServerDB get escaped before
-				// they are entered into the localDB
+				//The following 7 regular expression replacements just ensure that any apostrophes in the ServerDB get escaped before
+				// they are entered into the localDB.
 				var itemID = JSONdata.allRowsInDB[i].itemID;
 				var chapterTitle = JSONdata.allRowsInDB[i].chapterTitle.replace(/'/g, "''");
 				var sectionTitle = JSONdata.allRowsInDB[i].sectionTitle.replace(/'/g, "''");
 				var subsectionTitle = JSONdata.allRowsInDB[i].subsectionTitle.replace(/'/g, "''");
-				var item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
-				if (JSONdata.allRowsInDB[i].item.indexOf("images/") != -1) {
-					item = "/" + JSONdata.allRowsInDB[i].item;
-				}
 				var reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''");
 				var lastUpdated = JSONdata.allRowsInDB[i].lastUpdated;
-
-				//var sql = "INSERT INTO `radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `reference`) VALUES ('"+JSONdata.allRowsInDB[i].itemID+"', '"+JSONdata.allRowsInDB[i].chapterTitle+"', '"+JSONdata.allRowsInDB[i].sectionTitle+"', '"+JSONdata.allRowsInDB[i].subsectionTitle+"', '"+JSONdata.allRowsInDB[i].item+"', '"+JSONdata.allRowsInDB[i].reference+"');";
-				var sql = "UPDATE `radiology` SET `chapterTitle` = '" + chapterTitle + "', 
+				
+				var item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
+								
+				if (JSONdata.allRowsInDB[i].item.indexOf("images/") != -1) {
+					//item = "/" + JSONdata.allRowsInDB[i].item;
+					item=item.replace(/images\//g, "");
+					tempItem.push(item);
+					tempArray.push("http://cs1.ucc.ie/~som6/bin/FYP/prototype/images/"+item);
+					//Storing the link to the file stored locally (happening below) in the local DB.
+					//This will store "file:///Users/som90/Library/Application%20Support/iPhone%20Simulator/7.0/Applications/6D767690-3FE3-4A3E-BFDA-68ECC51432B9/Documents/slideX.jpg" in the DB
+					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, item);
+					item = f.nativePath;
+					Ti.API.info("Link stored in DB: " + item);								
+				}
+				
+					var sql = "UPDATE `radiology` SET `chapterTitle` = '" + chapterTitle + "', 
 												`sectionTitle` = '" + sectionTitle + "',
 												`subsectionTitle` = '" + sectionTitle + "',
 												`item` = '" + item + "',
 												`reference` = '" + reference + "',
 												`lastUpdated` = '" + lastUpdated + "'
 											WHERE `itemID` = '" + itemID + "';"; 
-				Ti.API.info(sql);
-				db.execute(sql);
+					db.execute(sql);
 			}
 			
 			//Commits the sql to the db.
@@ -129,6 +206,30 @@ database.prototype.update = function( name, callback){
 			
 			db.close();
 			db = null;
+			
+			// Loop through all the image URLs, pulling down each into local fileStore
+			for(var i in tempArray){		
+				var xhr2 = Titanium.Network.createHTTPClient({
+					onload: function() {
+						// first, grab a "handle" to the file where you'll store the downloaded data
+							var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, tempItem[i]);
+							f.write(this.responseData); // write to the file
+							Ti.App.fireEvent('image_downloaded', {filepath:f.nativePath});
+							
+							Ti.API.info("not sure: " + f.nativePath);
+						
+					},
+					timeout: 10000
+				});
+				xhr2.open('GET',tempArray[i]);
+				xhr2.send();
+			
+					Ti.App.addEventListener('image_downloaded', function(e) {
+						// you don't have to fire an event like this, but perhaps multiple components will
+						// want to know when the image has been downloaded and saved
+						Ti.API.info("WORKED!!! " + e.filepath);				
+					});
+			}
 			
 			//this will load the table AFTER the db has been populated.
 			callback.call(this);
@@ -224,4 +325,40 @@ database.prototype.items = function(section){
 	db.close();
 	db = null;
 	return itemsArray;
+};
+
+database.prototype.getExams = function(area){
+	var db = Ti.Database.open( this.name );
+	var sql = "SELECT * FROM examinations WHERE area='"+area+"' ORDER BY `bodypart`;";
+	Ti.API.info(sql);
+	var results = db.execute(sql);
+	
+	var rowsArray = [];
+	while(results.isValidRow()){
+
+    	rowsArray.push({bodypart: results.fieldByName("bodypart")});
+		Ti.API.info(results.fieldByName("bodypart"));
+		
+	    results.next();
+	}
+	
+	db.close();
+	db = null;
+	return rowsArray;
+};
+
+database.prototype.getExamData = function(area, examination){
+	var db = Ti.Database.open( this.name );
+	var sql = "SELECT * FROM examinations WHERE `area`='"+area+"' AND `bodypart` = '"+examination+"';";
+	var results = db.execute(sql);
+	
+	var dataArray = [];
+	while(results.isValidRow()){
+		dataArray.push({meanEffectiveDose: results.fieldByName("meanEffectiveDose"), rangesReported: results.fieldByName("rangesReported"), meanAdministeredActivity: results.fieldByName("meanAdministeredActivity"), effectiveDosePerAdministeredActivity: results.fieldByName("effectiveDosePerAdministeredActivity")});		
+	    results.next();
+	}
+	
+	db.close();
+	db = null;
+	return dataArray;
 };

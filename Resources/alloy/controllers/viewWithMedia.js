@@ -1,5 +1,5 @@
 function Controller() {
-    function testfunction() {
+    function fullScreen() {
         var fullImage = Alloy.createController("fullScreenImage", {
             image: args.object.item
         }).getView();
@@ -13,11 +13,11 @@ function Controller() {
     var $ = this;
     var exports = {};
     var __defers = {};
-    $.__views.viewWithMedia = Ti.UI.createScrollView({
+    $.__views.scroll = Ti.UI.createScrollView({
         layout: "vertical",
-        id: "viewWithMedia"
+        id: "scroll"
     });
-    $.__views.viewWithMedia && $.addTopLevelView($.__views.viewWithMedia);
+    $.__views.scroll && $.addTopLevelView($.__views.scroll);
     $.__views.heading = Ti.UI.createLabel({
         top: 8,
         color: "white",
@@ -30,7 +30,7 @@ function Controller() {
         height: "40dp",
         id: "heading"
     });
-    $.__views.viewWithMedia.add($.__views.heading);
+    $.__views.scroll.add($.__views.heading);
     $.__views.label = Ti.UI.createLabel({
         top: 8,
         color: "black",
@@ -38,19 +38,21 @@ function Controller() {
         right: 8,
         id: "label"
     });
-    $.__views.viewWithMedia.add($.__views.label);
+    $.__views.scroll.add($.__views.label);
     $.__views.imageView = Ti.UI.createImageView({
         width: "300dp",
         id: "imageView"
     });
-    $.__views.viewWithMedia.add($.__views.imageView);
-    testfunction ? $.__views.imageView.addEventListener("click", testfunction) : __defers["$.__views.imageView!click!testfunction"] = true;
+    $.__views.scroll.add($.__views.imageView);
+    fullScreen ? $.__views.imageView.addEventListener("click", fullScreen) : __defers["$.__views.imageView!click!fullScreen"] = true;
     exports.destroy = function() {};
     _.extend($, $.__views);
+    Alloy.Globals.label = $.label;
+    Alloy.Globals.heading = $.heading;
     var args = arguments[0] || {};
     $.heading.text = args.object.heading;
     -1 != args.object.item.indexOf("/images/") ? $.imageView.image = args.object.item : $.label.text = args.object.item;
-    __defers["$.__views.imageView!click!testfunction"] && $.__views.imageView.addEventListener("click", testfunction);
+    __defers["$.__views.imageView!click!fullScreen"] && $.__views.imageView.addEventListener("click", fullScreen);
     _.extend($, exports);
 }
 

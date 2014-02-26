@@ -23,19 +23,12 @@ function Controller() {
         id: "fullSizeImageView"
     });
     $.__views.win.add($.__views.fullSizeImageView);
-    $.__views.__alloyId0 = Ti.UI.createButton({
-        bottom: 5,
-        height: "50dp",
-        title: "Close",
-        id: "__alloyId0"
-    });
-    $.__views.win.add($.__views.__alloyId0);
-    closeWindow ? $.__views.__alloyId0.addEventListener("click", closeWindow) : __defers["$.__views.__alloyId0!click!closeWindow"] = true;
+    closeWindow ? $.__views.fullSizeImageView.addEventListener("click", closeWindow) : __defers["$.__views.fullSizeImageView!click!closeWindow"] = true;
     exports.destroy = function() {};
     _.extend($, $.__views);
     var args = arguments[0] || {};
     $.fullSizeImageView.image = args.image;
-    __defers["$.__views.__alloyId0!click!closeWindow"] && $.__views.__alloyId0.addEventListener("click", closeWindow);
+    __defers["$.__views.fullSizeImageView!click!closeWindow"] && $.__views.fullSizeImageView.addEventListener("click", closeWindow);
     _.extend($, exports);
 }
 

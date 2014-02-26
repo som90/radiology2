@@ -14,13 +14,15 @@
 
 "Button" : {
 	top : 5,
-	width : "60dp",
-	/*borderColor : "black",
-	borderRadius : "6px",
-	borderWidth : "1px",
-	backgroundColor: "black",
-	color: "white",
-	textAlign : "center"*/
+	width : "50%",
+}
+"#procedureTable" : {
+    height: Ti.UI.FILL,
+    minRowHeight: 40,
+    width: Ti.UI.FILL
+}
+"#largeFont" : {
+	top : 60,
 }
 
 "#resultLabel" : {
