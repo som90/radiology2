@@ -17,14 +17,32 @@ function Controller() {
         id: "newRow"
     });
     $.__views.newRow && $.addTopLevelView($.__views.newRow);
-    $.__views.label = Ti.UI.createLabel({
-        top: 5,
-        color: "black",
-        textAlign: "left",
-        width: "95%",
-        height: Ti.UI.SIZE,
-        id: "label"
-    });
+    $.__views.label = Ti.UI.createLabel(function() {
+        var o = {};
+        _.extend(o, {
+            textAlign: "left",
+            width: "95%",
+            height: Ti.UI.SIZE,
+            color: "black"
+        });
+        Alloy.isHandheld && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "25dp"
+            }
+        });
+        _.extend(o, {
+            id: "label"
+        });
+        return o;
+    }());
     $.__views.newRow.add($.__views.label);
     exports.destroy = function() {};
     _.extend($, $.__views);

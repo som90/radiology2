@@ -36,16 +36,20 @@ database.prototype.initEbookData = function( name, callback){
 				var sectionTitle = JSONdata.allRowsInDB[i].sectionTitle.replace(/'/g, "''");
 				var subsectionTitle = JSONdata.allRowsInDB[i].subsectionTitle.replace(/'/g, "''");
 				var item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
-				if (JSONdata.allRowsInDB[i].item.indexOf("images/") != -1) {
-					item = "/" + JSONdata.allRowsInDB[i].item;
-					
-					//THIS IS WHERE THE CODE TO GET THE IMAGE FROM SERVER SHOULD GO... DOING IT IN UpdateData METHOD AS A TESTER. THIS IS WHERE I LEFT OFF!!!
-					
-				}
-				var reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''");
+				//var reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''"); //REMOVED DUE TO SOME NULL POINTER ISSUES. REDUNDANT IN ANY CASE, MAY BE USEFUL LATER
 				var lastUpdated = JSONdata.allRowsInDB[i].lastUpdated;
+				
+				if (JSONdata.allRowsInDB[i].item.indexOf("images/") != -1) {
+					//item = "/" + JSONdata.allRowsInDB[i].item;
+					item=item.replace(/images\//g, "");
+					//Storing the link to the file stored locally (happening below) in the local DB.
+					//This will store "file:///Users/som90/Library/Application%20Support/iPhone%20Simulator/7.0/Applications/6D767690-3FE3-4A3E-BFDA-68ECC51432B9/Documents/slideX.jpg" in the DB
+					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, item);
+					item = f.nativePath;
+				}
+				
 
-				var sql = "INSERT INTO `radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `reference`, `lastUpdated`) VALUES ('"+itemID+"', '"+chapterTitle+"', '"+sectionTitle+"', '"+subsectionTitle+"', '"+item+"', '"+reference+"', '"+lastUpdated+"');";
+				var sql = "INSERT INTO `radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `reference`, `lastUpdated`) VALUES ('"+itemID+"', '"+chapterTitle+"', '"+sectionTitle+"', '"+subsectionTitle+"', '"+item+"', '', '"+lastUpdated+"');";
 
 				Ti.API.info(sql);
 				db.execute(sql);
@@ -174,7 +178,7 @@ database.prototype.update = function( name, callback){
 				var chapterTitle = JSONdata.allRowsInDB[i].chapterTitle.replace(/'/g, "''");
 				var sectionTitle = JSONdata.allRowsInDB[i].sectionTitle.replace(/'/g, "''");
 				var subsectionTitle = JSONdata.allRowsInDB[i].subsectionTitle.replace(/'/g, "''");
-				var reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''");
+				//var reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''"); //REMOVED DUE TO SOME NULL POINTER ISSUES. REDUNDANT IN ANY CASE, MAY BE USEFUL LATER
 				var lastUpdated = JSONdata.allRowsInDB[i].lastUpdated;
 				
 				var item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
@@ -188,14 +192,12 @@ database.prototype.update = function( name, callback){
 					//This will store "file:///Users/som90/Library/Application%20Support/iPhone%20Simulator/7.0/Applications/6D767690-3FE3-4A3E-BFDA-68ECC51432B9/Documents/slideX.jpg" in the DB
 					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, item);
 					item = f.nativePath;
-					Ti.API.info("Link stored in DB: " + item);								
 				}
 				
 					var sql = "UPDATE `radiology` SET `chapterTitle` = '" + chapterTitle + "', 
 												`sectionTitle` = '" + sectionTitle + "',
-												`subsectionTitle` = '" + sectionTitle + "',
+												`subsectionTitle` = '" + subsectionTitle + "',
 												`item` = '" + item + "',
-												`reference` = '" + reference + "',
 												`lastUpdated` = '" + lastUpdated + "'
 											WHERE `itemID` = '" + itemID + "';"; 
 					db.execute(sql);
@@ -207,30 +209,7 @@ database.prototype.update = function( name, callback){
 			db.close();
 			db = null;
 			
-			// Loop through all the image URLs, pulling down each into local fileStore
-			for(var i in tempArray){		
-				var xhr2 = Titanium.Network.createHTTPClient({
-					onload: function() {
-						// first, grab a "handle" to the file where you'll store the downloaded data
-							var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, tempItem[i]);
-							f.write(this.responseData); // write to the file
-							Ti.App.fireEvent('image_downloaded', {filepath:f.nativePath});
-							
-							Ti.API.info("not sure: " + f.nativePath);
-						
-					},
-					timeout: 10000
-				});
-				xhr2.open('GET',tempArray[i]);
-				xhr2.send();
-			
-					Ti.App.addEventListener('image_downloaded', function(e) {
-						// you don't have to fire an event like this, but perhaps multiple components will
-						// want to know when the image has been downloaded and saved
-						Ti.API.info("WORKED!!! " + e.filepath);				
-					});
-			}
-			
+
 			//this will load the table AFTER the db has been populated.
 			callback.call(this);
  	    },

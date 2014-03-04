@@ -1,6 +1,6 @@
 function Controller() {
     function fullScreen() {
-        var fullImage = Alloy.createController("fullScreenImage", {
+        var fullImage = Alloy.createController("fullscreenImage", {
             image: args.object.item
         }).getView();
         fullImage.open();
@@ -18,29 +18,101 @@ function Controller() {
         id: "scroll"
     });
     $.__views.scroll && $.addTopLevelView($.__views.scroll);
-    $.__views.heading = Ti.UI.createLabel({
-        top: 8,
-        color: "white",
-        left: 8,
-        right: 8,
-        font: {
-            fontWeight: "bold"
-        },
-        textAlign: "center",
-        height: "40dp",
-        id: "heading"
-    });
+    $.__views.heading = Ti.UI.createLabel(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "25dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            left: "10dp",
+            right: "10dp",
+            top: "15dp"
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            left: "30dp",
+            right: "30dp",
+            top: "25dp",
+            font: {
+                fontSize: "30dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            color: "white",
+            font: {
+                fontWeight: "bold",
+                fontSize: "15dp"
+            },
+            textAlign: "center"
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "white",
+            font: {
+                fontWeight: "bold",
+                fontSize: "30dp"
+            },
+            textAlign: "center"
+        });
+        _.extend(o, {
+            id: "heading"
+        });
+        return o;
+    }());
     $.__views.scroll.add($.__views.heading);
-    $.__views.label = Ti.UI.createLabel({
-        top: 8,
-        color: "black",
-        left: 8,
-        right: 8,
-        id: "label"
-    });
+    $.__views.label = Ti.UI.createLabel(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "25dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            left: "10dp",
+            right: "10dp",
+            top: "15dp"
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            left: "30dp",
+            right: "30dp",
+            top: "25dp",
+            font: {
+                fontSize: "30dp"
+            }
+        });
+        _.extend(o, {
+            id: "label"
+        });
+        return o;
+    }());
     $.__views.scroll.add($.__views.label);
     $.__views.imageView = Ti.UI.createImageView({
-        width: "300dp",
+        width: "95%",
+        top: "10dp",
         id: "imageView"
     });
     $.__views.scroll.add($.__views.imageView);
@@ -50,8 +122,25 @@ function Controller() {
     Alloy.Globals.label = $.label;
     Alloy.Globals.heading = $.heading;
     var args = arguments[0] || {};
+    var imageName = args.object.item.replace(/file:\/(.*)Documents\//g, "");
     $.heading.text = args.object.heading;
-    -1 != args.object.item.indexOf("/images/") ? $.imageView.image = args.object.item : $.label.text = args.object.item;
+    Ti.API.info(args.object.heading);
+    if (-1 != args.object.item.indexOf("file:/")) if (false == Ti.Network.online) $.imageView.image = args.object.item; else {
+        var xhr2 = Titanium.Network.createHTTPClient({
+            onload: function() {
+                var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, imageName);
+                f.write(this.responseData);
+                Ti.App.fireEvent("image_downloaded", {
+                    filepath: f.nativePath
+                });
+            }
+        });
+        xhr2.open("GET", "http://cs1.ucc.ie/~som6/bin/FYP/prototype/images/" + imageName);
+        xhr2.send();
+        Ti.App.addEventListener("image_downloaded", function() {
+            $.imageView.image = args.object.item;
+        });
+    } else $.label.text = args.object.item;
     __defers["$.__views.imageView!click!fullScreen"] && $.__views.imageView.addEventListener("click", fullScreen);
     _.extend($, exports);
 }

@@ -2,23 +2,24 @@
 	backgroundImage: "/images/radiologyBackground.jpg",
 	//color : "white"
 	//backgroundColor: "gray"
-}
+},
 
 "TableView" : {
 	top : "5px",
 	backgroundColor:'transparent',
 	minRowHeight: "50dp"
-}
+},
 
-"Label" : {
-	top : 5,
-	color : "black"
-
-}
-
-"Label[platform=android]" : {
+"Label[formFactor=handheld]": {
+	color : "black",
 	font : {
-		fontSize : "20dp",
-	}
-}
+		fontSize : "15dp",
+	},
+},
 
+"Label[formFactor=tablet]": { 
+	color : "black",
+	font : {
+		fontSize : "25dp",
+	},
+}

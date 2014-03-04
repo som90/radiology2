@@ -8,14 +8,14 @@ var args = arguments[0] || {}; //Put arguments into args, or empty object (if er
 //var subsections = Alloy.Globals.radiologyDB.subsections(args.title);
 var items = Alloy.Globals.radiologyDB.items(args.title);
 
-Ti.API.info(JSON.stringify(items));
+Ti.API.info("THE ITEMS::::: " + JSON.stringify(items));
 
 $.win.title=args.title;
 
 function checkForImages(items){
 	for( var i in items ){    
 		//going through items[], checking the 'key' item....
-		if(items[i].item.indexOf("/images/") != -1) {
+		if(items[i].item.indexOf("file:/") != -1) {
 			return true;
 		}
 	}

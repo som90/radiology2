@@ -1,0 +1,25 @@
+<Alloy>
+	<Window title="Procedure Tables" layout="vertical">
+		
+		<Label id="procedureChoiceLabel">Choose a procedure:</Label>
+		<TextField id="procedureChoiceTextfield" onClick = "selectProcedure" editable="false"></TextField>
+		
+		<OptionDialog id="procedureOptions" title="Select Investigation/Procedure:" onClick="addProcedure">
+	    	<Options>
+	       		<Option>Radiography</Option>
+	       		<Option>CT</Option>
+	       	    <Option>Interventional Radiology</Option>
+	       	    <Option>Dental Radiography</Option>
+	       	    <Option>Nuclear Medicine</Option>
+	       	    <Option>Cancel</Option>
+	       	</Options>		
+		</OptionDialog>
+		
+		<Label id="bodypartChoiceLabel" >Choose a bodypart(/exam):</Label>
+		<TextField id="bodypartChoiceTextfield" onClick = "selectBodypart" editable="false"></TextField>
+	       		 
+	    <Label id="label1"></Label>
+	    <Label id="label2"></Label>
+	    <Label id="label3"></Label>
+	</Window>
+</Alloy>

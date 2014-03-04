@@ -18,10 +18,13 @@ database.prototype.initEbookData = function(name, callback) {
                 var sectionTitle = JSONdata.allRowsInDB[i].sectionTitle.replace(/'/g, "''");
                 var subsectionTitle = JSONdata.allRowsInDB[i].subsectionTitle.replace(/'/g, "''");
                 var item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
-                -1 != JSONdata.allRowsInDB[i].item.indexOf("images/") && (item = "/" + JSONdata.allRowsInDB[i].item);
-                var reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''");
                 var lastUpdated = JSONdata.allRowsInDB[i].lastUpdated;
-                var sql = "INSERT INTO `radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `reference`, `lastUpdated`) VALUES ('" + itemID + "', '" + chapterTitle + "', '" + sectionTitle + "', '" + subsectionTitle + "', '" + item + "', '" + reference + "', '" + lastUpdated + "');";
+                if (-1 != JSONdata.allRowsInDB[i].item.indexOf("images/")) {
+                    item = item.replace(/images\//g, "");
+                    var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, item);
+                    item = f.nativePath;
+                }
+                var sql = "INSERT INTO `radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `reference`, `lastUpdated`) VALUES ('" + itemID + "', '" + chapterTitle + "', '" + sectionTitle + "', '" + subsectionTitle + "', '" + item + "', '', '" + lastUpdated + "');";
                 Ti.API.info(sql);
                 db.execute(sql);
             }
@@ -102,8 +105,7 @@ database.prototype.update = function(name, callback) {
                 var itemID = JSONdata.allRowsInDB[i].itemID;
                 var chapterTitle = JSONdata.allRowsInDB[i].chapterTitle.replace(/'/g, "''");
                 var sectionTitle = JSONdata.allRowsInDB[i].sectionTitle.replace(/'/g, "''");
-                JSONdata.allRowsInDB[i].subsectionTitle.replace(/'/g, "''");
-                var reference = JSONdata.allRowsInDB[i].reference.replace(/'/g, "''");
+                var subsectionTitle = JSONdata.allRowsInDB[i].subsectionTitle.replace(/'/g, "''");
                 var lastUpdated = JSONdata.allRowsInDB[i].lastUpdated;
                 var item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
                 if (-1 != JSONdata.allRowsInDB[i].item.indexOf("images/")) {
@@ -112,32 +114,13 @@ database.prototype.update = function(name, callback) {
                     tempArray.push("http://cs1.ucc.ie/~som6/bin/FYP/prototype/images/" + item);
                     var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, item);
                     item = f.nativePath;
-                    Ti.API.info("Link stored in DB: " + item);
                 }
-                var sql = "UPDATE `radiology` SET `chapterTitle` = '" + chapterTitle + "', \n												`sectionTitle` = '" + sectionTitle + "',\n												`subsectionTitle` = '" + sectionTitle + "',\n												`item` = '" + item + "',\n												`reference` = '" + reference + "',\n												`lastUpdated` = '" + lastUpdated + "'\n											WHERE `itemID` = '" + itemID + "';";
+                var sql = "UPDATE `radiology` SET `chapterTitle` = '" + chapterTitle + "', \n												`sectionTitle` = '" + sectionTitle + "',\n												`subsectionTitle` = '" + subsectionTitle + "',\n												`item` = '" + item + "',\n												`lastUpdated` = '" + lastUpdated + "'\n											WHERE `itemID` = '" + itemID + "';";
                 db.execute(sql);
             }
             db.execute("COMMIT;");
             db.close();
             db = null;
-            for (var i in tempArray) {
-                var xhr2 = Titanium.Network.createHTTPClient({
-                    onload: function() {
-                        var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, tempItem[i]);
-                        f.write(this.responseData);
-                        Ti.App.fireEvent("image_downloaded", {
-                            filepath: f.nativePath
-                        });
-                        Ti.API.info("not sure: " + f.nativePath);
-                    },
-                    timeout: 1e4
-                });
-                xhr2.open("GET", tempArray[i]);
-                xhr2.send();
-                Ti.App.addEventListener("image_downloaded", function(e) {
-                    Ti.API.info("WORKED!!! " + e.filepath);
-                });
-            }
             callback.call(this);
         },
         onerror: function(e) {

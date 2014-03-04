@@ -5,50 +5,7 @@
 				<TableView id="table" onClick="sectionsWindow"></TableView>
 			</Window>
 		</Tab>
-		
-		<Tab title="CT Dosage Calculator" icon="KS_nav_views.png">
-			<Window title="CT Dosage Calculator" layout="vertical">
-				
-				<Label>Dose length product value (DLP):</Label>
-				<TextField id="dlpValue"></TextField>
-				
-				<!--assuming only 7 body parts.. Picker would be better for more choices but this is platform specific --> 
-				<Label>Scanned body part:</Label>
-				<TextField id="bodyPartTextfield" editable="false" onClick="selectBodyPart"></TextField>
-				
-				<OptionDialog id="bodyPart" title="Select Body Part:" onClick="addBodypart">
 
-         	   <!-- The Options tag sets the options property. -->
-	    	        <Options>
-	       	        	 <Option>Head</Option>
-	       	        	 <Option>Neck</Option>
-	       	        	 <Option>Chest</Option>
-	       	        	 <Option>Abdomen</Option>
-	       	        	 <Option>Pelvis</Option>
-	       	    	     <Option>Cancel</Option>
-	       		     </Options>
-		
-	       		 </OptionDialog>
-				
-				<Label>Patient age range:</Label>
-				<TextField id="ageRangeTextfield" editable="false" onClick="selectAgeRange"></TextField>
-				
-				<OptionDialog id="ageRange" title="Select Patient Age Range:" onClick="addAgeRange">
-	    	        <Options>
-	       	        	 <Option>Less than 1 year</Option>
-	       	        	 <Option>1-5 years</Option>
-	       	        	 <Option>5-10 years</Option>
-	       	        	 <Option>10-18 years</Option>
-	       	        	 <Option>18+ years</Option>	
-	       	        	 <Option>Cancel</Option>
-	       	        </Options>	
-	       		 </OptionDialog>
-				
-				<Button onClick="calculateDosage">Submit</Button>
-				
-				<Label id="resultLabel"></Label>
-			</Window>
-		</Tab>
 		
 		<Tab title="Info" icon="KS_nav_views.png">
 			<Window title="Info">
@@ -57,37 +14,22 @@
 		</Tab>
 		
 		<Tab title="Preferences" icon="KS_nav_views.png">
-			<Window title="Preferences">
-				<Button id="largeFont" onClick = "changeFontLarge">Large Font</Button>
+			<Window id="win" title="Preferences" layout="vertical">
+				<Button id="largeFont" onClick = "changeFontLarge">Change Font</Button>
 				<Button onClick="checkForUpdates">Check for updates</Button>
-				<ImageView id="testImage"></ImageView>
 			</Window>
 		</Tab>
 		
 		
-		<Tab title="Average Radiation Doses" id="AvgRadDoses" icon="KS_nav_views.png">
-			<Window title="Average Radiation Doses" layout="vertical">
+		<Tab title="Tools" id="tools" icon="KS_nav_views.png">
+			<Window title="Average Radiation Doses">
 				
-				<OptionDialog id="procedureOptions" title="Select Investigation/Procedure:" onClick="addProcedure">
-         	   <!-- The Options tag sets the options property. -->
-	    	        <Options>
-	       	        	 <Option>Radiography</Option>
-	       	        	 <Option>CT</Option>
-	       	        	 <Option>Interventional Radiology</Option>
-	       	        	 <Option>Dental Radiography</Option>
-	       	        	 <Option>Nuclear Medicine</Option>
-	       	        	 <Option>Cancel</Option>
-	       		     </Options>		
-	       		 </OptionDialog>
-	       		 
-	       		 <Label onClick="selectProcedure" id="procedureChoice">Click here to select your procedure</Label>
-	       		 
-	       		 <!--<TableView id="procedureTable"></TableView> -->
-	       		 <Label id="label1"></Label>
-	       		 <Label id="label2"></Label>
-	       		 <TextField id="aaTextfield" visible="false"></TextField>
-	       		 <Label id="label3"></Label>
-	       		 
+				<ImageView id="proceduresImage" onClick="procedures" image="/images/procedures.jpg" />
+				<ImageView id="ctImage" onClick="ctCalculator" image="images/ctCalculator.jpg" />
+				<ImageView id="nuclearImage" onClick="nucCalculator" image="/images/nuclearCalculator.jpg" />
+				
+				 <!--<TableView id="procedureTable"></TableView> -->
+
 			</Window>
 		</Tab>
 		

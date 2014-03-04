@@ -20,6 +20,7 @@ function Controller() {
     $.__views.fullSizeImageView = Ti.UI.createImageView({
         top: 5,
         bottom: "60dp",
+        width: "100%",
         id: "fullSizeImageView"
     });
     $.__views.win.add($.__views.fullSizeImageView);

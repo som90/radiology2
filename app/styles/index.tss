@@ -16,21 +16,54 @@
 	top : 5,
 	width : "50%",
 }
-"#procedureTable" : {
+/*"#procedureTable" : {
     height: Ti.UI.FILL,
     minRowHeight: 40,
     width: Ti.UI.FILL
 }
 "#largeFont" : {
 	top : 60,
+}*/
+
+"#proceduresImage" : {
+	top : "0%",
+	width : "100%",
+	height : "40%",
+	opacity : ".8"
 }
+"#ctImage" : {
+	width : "50%",
+	height : "60%",
+	top : "40%",
+	left : "0%",
+	opacity : ".8"
+}
+
+"#nuclearImage" : {
+	width : "50%",
+	height : "60%",
+	top : "40%",
+	right : "0%",
+	opacity : ".8"
+}
+
+
 
 "#resultLabel" : {
 	top : 20,
 	font : {
 		fontWeight : "bold",
 		fontSize : "16dp",
-		fontFamily : "Constantia"	
 	}, 
 	textAlign : "center"
 }
+/*
+"#calculatorChoice" : {
+	top : "20dp",
+	left : "20dp"
+}
+"#procedureChoice" : {
+	top : "20dp",
+	right : "20dp"
+}
+*/

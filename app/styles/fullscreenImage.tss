@@ -11,5 +11,6 @@
 
 "ImageView" : {
 	top : 5,
-	bottom : "60dp"
+	bottom : "60dp",
+	width : "100%"
 }
