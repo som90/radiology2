@@ -1,8 +1,21 @@
 function Controller() {
-    function checkForUpdates() {
+    function checkIfUpdateIsNeeded() {
+        Ti.API.info("hit it");
+        Alloy.Globals.radiologyDB.updateLastUpdated("radiology");
+        var isNeeded = Alloy.Globals.radiologyDB.checkUpdates("radiology", Ti.App.Properties.getString("lastUpdatedTimestamp"));
+        if (isNeeded) {
+            alert("eLEARNING MADEEASY NOTIFICATION: \nThere has been updates made to the content. Please go to the updates page to download.");
+            $.tabUpdates.setIcon("KS_nav_views_notification.png");
+        }
+    }
+    function makeUpdates() {
         Alloy.Globals.radiologyDB.update("radiology", updateChapters);
+        var curTimestamp = getTimestamp();
+        Ti.App.Properties.setString("lastUpdatedTimestamp", curTimestamp);
         var index = Alloy.createController("index");
         index.getView().open();
+        alert("Content has been updated");
+        $.tabUpdates.setIcon("KS_nav_views.png");
     }
     function loadChapters() {
         var chapters = Alloy.Globals.radiologyDB.chapters();
@@ -12,6 +25,22 @@ function Controller() {
         var chapters = Alloy.Globals.radiologyDB.chapters();
         for (var i in chapters) $.table.updateRow(i, chapters[i]);
     }
+    function getTimestamp() {
+        var d = new Date();
+        var year = d.getFullYear();
+        var month = d.getMonth() + 1;
+        10 > month && (month = "0" + month);
+        var date = d.getDate();
+        10 > date && (date = "0" + date);
+        var hours = d.getHours();
+        10 > hours && (hours = "0" + hours);
+        var minutes = d.getMinutes();
+        10 > minutes && (minutes = "0" + minutes);
+        var seconds = d.getSeconds();
+        10 > seconds && (seconds = "0" + seconds);
+        var curTimestamp = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+        return curTimestamp;
+    }
     function sectionsWindow(event) {
         var addWindow = Alloy.createController("sectionsList", {
             title: event.row.name
@@ -19,23 +48,22 @@ function Controller() {
         Alloy.Globals.tabChapters.open(addWindow);
     }
     function ctCalculator() {
-        var calc = Alloy.createController("calculator", {
-            calculator: "ct"
-        }).getView();
-        $.tools.open(calc);
+        var ctCalc = Alloy.createController("ctCalculator").getView();
+        $.tools.open(ctCalc);
     }
     function nucCalculator() {
-        var calc = Alloy.createController("calculator", {
-            calculator: "nuclear"
-        }).getView();
-        $.tools.open(calc);
+        var nucCalc = Alloy.createController("nucCalculator").getView();
+        $.tools.open(nucCalc);
     }
     function procedures() {
         var procedures = Alloy.createController("procedureTables").getView();
         $.tools.open(procedures);
     }
-    function changeFontLarge() {
-        alert("Feature not yet supported.");
+    function switchFonts() {
+        $.fontSwitch.value ? Ti.App.Properties.setString("fontClass", "largeFont") : Ti.App.Properties.setString("fontClass", "medFont");
+    }
+    function donate() {
+        alert("Please hand the smiling gentleman beside you €10 immediately.");
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "index";
@@ -46,34 +74,56 @@ function Controller() {
     var exports = {};
     var __defers = {};
     $.__views.index = Ti.UI.createTabGroup({
-        id: "index"
+        apiName: "Ti.UI.TabGroup",
+        id: "index",
+        classes: []
     });
     $.__views.win = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
-        title: "Home",
-        id: "win"
+        apiName: "Ti.UI.Window",
+        title: "eLearning Home",
+        id: "win",
+        classes: []
     });
     $.__views.table = Ti.UI.createTableView({
         top: "5px",
         backgroundColor: "transparent",
         minRowHeight: "50dp",
-        id: "table"
+        apiName: "Ti.UI.TableView",
+        id: "table",
+        classes: []
     });
     $.__views.win.add($.__views.table);
     sectionsWindow ? $.__views.table.addEventListener("click", sectionsWindow) : __defers["$.__views.table!click!sectionsWindow"] = true;
     $.__views.tabChapters = Ti.UI.createTab({
         window: $.__views.win,
+        apiName: "Ti.UI.Tab",
         id: "tabChapters",
         title: "Home",
-        icon: "KS_nav_ui.png"
+        icon: "KS_nav_ui.png",
+        classes: []
     });
     $.__views.index.addTab($.__views.tabChapters);
-    $.__views.__alloyId18 = Ti.UI.createWindow({
+    checkIfUpdateIsNeeded ? $.__views.tabChapters.addEventListener("click", checkIfUpdateIsNeeded) : __defers["$.__views.tabChapters!click!checkIfUpdateIsNeeded"] = true;
+    $.__views.win = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
-        title: "Info",
-        id: "__alloyId18"
+        apiName: "Ti.UI.Window",
+        id: "win",
+        title: "Preferences",
+        layout: "vertical",
+        classes: []
     });
-    $.__views.__alloyId19 = Ti.UI.createLabel(function() {
+    $.__views.updateButton = Ti.UI.createButton({
+        top: "30%",
+        width: "50%",
+        title: "Check for updates",
+        apiName: "Ti.UI.Button",
+        id: "updateButton",
+        classes: []
+    });
+    $.__views.win.add($.__views.updateButton);
+    makeUpdates ? $.__views.updateButton.addEventListener("click", makeUpdates) : __defers["$.__views.updateButton!click!makeUpdates"] = true;
+    $.__views.switchLabel = Ti.UI.createLabel(function() {
         var o = {};
         _.extend(o, {});
         Alloy.isHandheld && _.extend(o, {
@@ -90,92 +140,354 @@ function Controller() {
             }
         });
         _.extend(o, {
-            text: "Information about how to use the app.",
-            id: "__alloyId19"
+            top: "5%",
+            text: '"Switch On" for large font reader:',
+            apiName: "Ti.UI.Label",
+            id: "switchLabel",
+            classes: []
         });
         return o;
     }());
-    $.__views.__alloyId18.add($.__views.__alloyId19);
-    $.__views.__alloyId17 = Ti.UI.createTab({
-        window: $.__views.__alloyId18,
-        title: "Info",
-        icon: "KS_nav_views.png",
-        id: "__alloyId17"
+    $.__views.win.add($.__views.switchLabel);
+    $.__views.fontSwitch = Ti.UI.createSwitch({
+        top: 10,
+        width: "20%",
+        apiName: "Ti.UI.Switch",
+        id: "fontSwitch",
+        value: "false",
+        classes: []
     });
-    $.__views.index.addTab($.__views.__alloyId17);
-    $.__views.win = Ti.UI.createWindow({
-        backgroundImage: "/images/radiologyBackground.jpg",
-        id: "win",
-        title: "Preferences",
-        layout: "vertical"
-    });
-    $.__views.largeFont = Ti.UI.createButton({
-        top: 5,
-        width: "50%",
-        title: "Change Font",
-        id: "largeFont"
-    });
-    $.__views.win.add($.__views.largeFont);
-    changeFontLarge ? $.__views.largeFont.addEventListener("click", changeFontLarge) : __defers["$.__views.largeFont!click!changeFontLarge"] = true;
-    $.__views.__alloyId21 = Ti.UI.createButton({
-        top: 5,
-        width: "50%",
-        title: "Check for updates",
-        id: "__alloyId21"
-    });
-    $.__views.win.add($.__views.__alloyId21);
-    checkForUpdates ? $.__views.__alloyId21.addEventListener("click", checkForUpdates) : __defers["$.__views.__alloyId21!click!checkForUpdates"] = true;
-    $.__views.__alloyId20 = Ti.UI.createTab({
+    $.__views.win.add($.__views.fontSwitch);
+    switchFonts ? $.__views.fontSwitch.addEventListener("change", switchFonts) : __defers["$.__views.fontSwitch!change!switchFonts"] = true;
+    $.__views.tabUpdates = Ti.UI.createTab({
         window: $.__views.win,
+        apiName: "Ti.UI.Tab",
+        id: "tabUpdates",
         title: "Preferences",
-        icon: "KS_nav_views.png",
-        id: "__alloyId20"
+        icon: "KS_nav_views_preferences.png",
+        classes: []
     });
-    $.__views.index.addTab($.__views.__alloyId20);
-    $.__views.__alloyId22 = Ti.UI.createWindow({
+    $.__views.index.addTab($.__views.tabUpdates);
+    $.__views.__alloyId17 = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
+        apiName: "Ti.UI.Window",
         title: "Average Radiation Doses",
-        id: "__alloyId22"
+        id: "__alloyId17",
+        classes: []
     });
     $.__views.proceduresImage = Ti.UI.createImageView({
         top: "0%",
-        width: "100%",
-        height: "40%",
-        opacity: ".8",
+        width: "90%",
+        height: "35%",
+        apiName: "Ti.UI.ImageView",
         id: "proceduresImage",
-        image: "/images/procedures.jpg"
+        image: "/images/procedures.png",
+        classes: []
     });
-    $.__views.__alloyId22.add($.__views.proceduresImage);
+    $.__views.__alloyId17.add($.__views.proceduresImage);
     procedures ? $.__views.proceduresImage.addEventListener("click", procedures) : __defers["$.__views.proceduresImage!click!procedures"] = true;
     $.__views.ctImage = Ti.UI.createImageView({
         width: "50%",
-        height: "60%",
+        height: "40%",
         top: "40%",
         left: "0%",
-        opacity: ".8",
+        apiName: "Ti.UI.ImageView",
         id: "ctImage",
-        image: "images/ctCalculator.jpg"
+        image: "images/ctCalculator.png",
+        classes: []
     });
-    $.__views.__alloyId22.add($.__views.ctImage);
+    $.__views.__alloyId17.add($.__views.ctImage);
     ctCalculator ? $.__views.ctImage.addEventListener("click", ctCalculator) : __defers["$.__views.ctImage!click!ctCalculator"] = true;
     $.__views.nuclearImage = Ti.UI.createImageView({
         width: "50%",
-        height: "60%",
+        height: "40%",
         top: "40%",
         right: "0%",
-        opacity: ".8",
+        apiName: "Ti.UI.ImageView",
         id: "nuclearImage",
-        image: "/images/nuclearCalculator.jpg"
+        image: "/images/nuclearCalculator.png",
+        classes: []
     });
-    $.__views.__alloyId22.add($.__views.nuclearImage);
+    $.__views.__alloyId17.add($.__views.nuclearImage);
     nucCalculator ? $.__views.nuclearImage.addEventListener("click", nucCalculator) : __defers["$.__views.nuclearImage!click!nucCalculator"] = true;
     $.__views.tools = Ti.UI.createTab({
-        window: $.__views.__alloyId22,
+        window: $.__views.__alloyId17,
+        apiName: "Ti.UI.Tab",
         title: "Tools",
         id: "tools",
-        icon: "KS_nav_views.png"
+        icon: "KS_nav_views_tools.png",
+        classes: []
     });
     $.__views.index.addTab($.__views.tools);
+    $.__views.__alloyId19 = Ti.UI.createWindow({
+        backgroundImage: "/images/radiologyBackground.jpg",
+        apiName: "Ti.UI.Window",
+        title: "Info",
+        layout: "vertical",
+        id: "__alloyId19",
+        classes: []
+    });
+    $.__views.appTitle = Ti.UI.createLabel(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "25dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: "2%",
+            font: {
+                fontWeight: "bold",
+                fontSize: "32dp",
+                color: "blue"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 7,
+            font: {
+                fontWeight: "bold"
+            }
+        });
+        _.extend(o, {
+            text: "eLearning MadeEasy - Radiology",
+            apiName: "Ti.UI.Label",
+            id: "appTitle",
+            classes: []
+        });
+        return o;
+    }());
+    $.__views.__alloyId19.add($.__views.appTitle);
+    $.__views.version = Ti.UI.createLabel(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "25dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: 5,
+            font: {
+                fontWeight: "bold",
+                fontSize: "16dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 5,
+            font: {
+                fontWeight: "bold",
+                fontSize: "8dp"
+            }
+        });
+        _.extend(o, {
+            text: "Version 1.0.0",
+            apiName: "Ti.UI.Label",
+            id: "version",
+            classes: []
+        });
+        return o;
+    }());
+    $.__views.__alloyId19.add($.__views.version);
+    $.__views.eLearningLogo = Ti.UI.createImageView(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: 20,
+            width: "40%"
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 7,
+            width: "27%"
+        });
+        _.extend(o, {
+            apiName: "Ti.UI.ImageView",
+            id: "eLearningLogo",
+            image: "/images/eLearningLogo.png",
+            classes: []
+        });
+        return o;
+    }());
+    $.__views.__alloyId19.add($.__views.eLearningLogo);
+    $.__views.aboutHeading = Ti.UI.createLabel(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "25dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: 15,
+            font: {
+                fontWeight: "bold",
+                fontSize: "30dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 5,
+            font: {
+                fontWeight: "bold",
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {
+            text: "Welcome!",
+            apiName: "Ti.UI.Label",
+            id: "aboutHeading",
+            classes: []
+        });
+        return o;
+    }());
+    $.__views.__alloyId19.add($.__views.aboutHeading);
+    $.__views.aboutInfo = Ti.UI.createLabel(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "25dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 5,
+            left: "5%",
+            right: "5%",
+            font: {
+                fontSize: "13dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: 10,
+            left: "5%",
+            right: "5%",
+            font: {
+                fontSize: "24dp"
+            }
+        });
+        _.extend(o, {
+            text: "eLearning MadeEasy was developed as part of the Univerity College Cork 4th Year Computer Science Project. The aim of the work is to facilitate simple and convenient eLearning experiences. The flagship of the eLearning offerings was provided by Cork University Hospital Radiology Department, and is aimed at Radiology practitioners and students to provide a more interactive and dynamic learning experience. The app also contains some tools which can be used by practitioners to calculate various different metrics used within Radiology. \nThank you for taking the time to use the app and please feel free to offer feedback, areas for improvement and donate.",
+            apiName: "Ti.UI.Label",
+            id: "aboutInfo",
+            classes: []
+        });
+        return o;
+    }());
+    $.__views.__alloyId19.add($.__views.aboutInfo);
+    $.__views.donateImage = Ti.UI.createImageView(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: 15,
+            height: "70dp",
+            width: "25%"
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 5,
+            height: "40dp",
+            width: "25%"
+        });
+        _.extend(o, {
+            apiName: "Ti.UI.ImageView",
+            id: "donateImage",
+            image: "/images/donateButton.png",
+            classes: []
+        });
+        return o;
+    }());
+    $.__views.__alloyId19.add($.__views.donateImage);
+    donate ? $.__views.donateImage.addEventListener("click", donate) : __defers["$.__views.donateImage!click!donate"] = true;
+    $.__views.copyright = Ti.UI.createLabel(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "15dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            color: "black",
+            font: {
+                fontSize: "25dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: 50,
+            font: {
+                fontWeight: "bold",
+                fontSize: "14dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 5,
+            font: {
+                fontWeight: "bold",
+                fontSize: "9dp"
+            }
+        });
+        _.extend(o, {
+            text: "Copyright © 2014 Stephen O'Mahony, University College Cork.",
+            apiName: "Ti.UI.Label",
+            id: "copyright",
+            classes: []
+        });
+        return o;
+    }());
+    $.__views.__alloyId19.add($.__views.copyright);
+    $.__views.__alloyId18 = Ti.UI.createTab({
+        window: $.__views.__alloyId19,
+        apiName: "Ti.UI.Tab",
+        title: "Info",
+        icon: "KS_nav_views_info.png",
+        id: "__alloyId18",
+        classes: []
+    });
+    $.__views.index.addTab($.__views.__alloyId18);
     $.__views.index && $.addTopLevelView($.__views.index);
     exports.destroy = function() {};
     _.extend($, $.__views);
@@ -184,20 +496,34 @@ function Controller() {
         $.index.open();
         var tableData = Alloy.Globals.radiologyDB.getCachedData("radiology");
         $.table.setData(tableData);
+        checkIfUpdateIsNeeded();
+        Ti.App.Properties.setString("fontClass", "medFont");
+        var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+        Ti.Platform.displayCaps.platformWidth;
+        deviceHeight > 899 || deviceHeight > 899 ? Ti.App.Properties.setBool("isTablet", true) : Ti.App.Properties.setBool("isTablet", false);
     } else {
         $.index.open();
         if (false == Ti.Network.online) alert("Please connect to the internet to initialize the app."); else {
             Alloy.Globals.radiologyDB.initEbookData("radiology", loadChapters);
             Alloy.Globals.radiologyDB.initExamTables("radiology");
             Ti.App.Properties.setBool("firstTime", false);
+            var curTimestamp = getTimestamp();
+            Ti.App.Properties.setString("lastUpdatedTimestamp", curTimestamp);
+            Ti.App.Properties.setString("fontClass", "medFont");
+            var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+            Ti.Platform.displayCaps.platformWidth;
+            deviceHeight > 899 || deviceHeight > 899 ? Ti.App.Properties.setBool("isTablet", true) : Ti.App.Properties.setBool("isTablet", false);
         }
     }
+    $.tabChapters.addEventListener("focus", checkIfUpdateIsNeeded);
     __defers["$.__views.table!click!sectionsWindow"] && $.__views.table.addEventListener("click", sectionsWindow);
-    __defers["$.__views.largeFont!click!changeFontLarge"] && $.__views.largeFont.addEventListener("click", changeFontLarge);
-    __defers["$.__views.__alloyId21!click!checkForUpdates"] && $.__views.__alloyId21.addEventListener("click", checkForUpdates);
+    __defers["$.__views.tabChapters!click!checkIfUpdateIsNeeded"] && $.__views.tabChapters.addEventListener("click", checkIfUpdateIsNeeded);
+    __defers["$.__views.updateButton!click!makeUpdates"] && $.__views.updateButton.addEventListener("click", makeUpdates);
+    __defers["$.__views.fontSwitch!change!switchFonts"] && $.__views.fontSwitch.addEventListener("change", switchFonts);
     __defers["$.__views.proceduresImage!click!procedures"] && $.__views.proceduresImage.addEventListener("click", procedures);
     __defers["$.__views.ctImage!click!ctCalculator"] && $.__views.ctImage.addEventListener("click", ctCalculator);
     __defers["$.__views.nuclearImage!click!nucCalculator"] && $.__views.nuclearImage.addEventListener("click", nucCalculator);
+    __defers["$.__views.donateImage!click!donate"] && $.__views.donateImage.addEventListener("click", donate);
     _.extend($, exports);
 }
 

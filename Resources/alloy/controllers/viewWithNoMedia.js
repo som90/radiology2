@@ -8,6 +8,7 @@ function Controller() {
     var exports = {};
     $.__views.viewWithNoMedia = Ti.UI.createScrollView({
         layout: "vertical",
+        display: "vertical",
         id: "viewWithNoMedia"
     });
     $.__views.viewWithNoMedia && $.addTopLevelView($.__views.viewWithNoMedia);
@@ -31,19 +32,7 @@ function Controller() {
         Alloy.isHandheld && _.extend(o, {
             left: "10dp",
             right: "10dp",
-            top: "15dp"
-        });
-        _.extend(o, {});
-        Alloy.isTablet && _.extend(o, {
-            left: "30dp",
-            right: "30dp",
-            top: "25dp",
-            font: {
-                fontSize: "30dp"
-            }
-        });
-        _.extend(o, {});
-        Alloy.isHandheld && _.extend(o, {
+            top: "15dp",
             color: "white",
             font: {
                 fontWeight: "bold",
@@ -53,6 +42,9 @@ function Controller() {
         });
         _.extend(o, {});
         Alloy.isTablet && _.extend(o, {
+            left: "30dp",
+            right: "30dp",
+            top: "25dp",
             color: "white",
             font: {
                 fontWeight: "bold",
@@ -105,6 +97,35 @@ function Controller() {
     $.__views.viewWithNoMedia.add($.__views.label);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    if ("largeFont" == Ti.App.Properties.getString("fontClass")) if (Ti.App.Properties.getBool("isTablet")) {
+        $.label.setFont({
+            fontSize: "45dp"
+        });
+        $.heading.setFont({
+            fontSize: "45dp"
+        });
+    } else {
+        $.label.setFont({
+            fontSize: "22dp"
+        });
+        $.heading.setFont({
+            fontSize: "22dp"
+        });
+    } else if (Ti.App.Properties.getBool("isTablet")) {
+        $.label.setFont({
+            fontSize: "30dp"
+        });
+        $.heading.setFont({
+            fontSize: "30dp"
+        });
+    } else {
+        $.label.setFont({
+            fontSize: "15dp"
+        });
+        $.heading.setFont({
+            fontSize: "15dp"
+        });
+    }
     var args = arguments[0] || {};
     $.heading.text = args.object.heading;
     $.label.text = args.object.item;

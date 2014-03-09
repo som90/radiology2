@@ -1,4 +1,32 @@
 <Alloy>
+	<Window title="Procedure Tables">
+
+		<Label id="procedureLabel" ></Label>
+  		<Button id="procedureButton" onClick="chooseProcedure">Procedures</Button>
+  		
+  		<OptionDialog id="procedureOptions" title="Select Investigation/Procedure:" onClick="addProcedure">
+         	   <!-- The Options tag sets the options property. -->
+	    	<Options>
+	       	    <Option>Radiography</Option>
+	       	    <Option>CT</Option>
+	       	    <Option>Interventional Radiology</Option>
+	       	    <Option>Dental Radiography</Option>
+	       	    <Option>Nuclear Medicine</Option>
+	     		<Option>Cancel</Option>
+	    	</Options>		
+	    </OptionDialog>
+  		
+  		
+		<Label id="instructionLabel" >Choose a procedure</Label>
+		<TableView id="procedureTable" visible="false"></TableView>
+
+	</Window>
+</Alloy>
+
+
+
+
+<!-- <Alloy>
 	<Window title="Procedure Tables" layout="vertical">
 		
 		<Label id="procedureChoiceLabel">Choose a procedure:</Label>
@@ -22,4 +50,4 @@
 	    <Label id="label2"></Label>
 	    <Label id="label3"></Label>
 	</Window>
-</Alloy>
+</Alloy> -->

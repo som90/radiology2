@@ -38,6 +38,21 @@ function Controller() {
                 fontSize: "25dp"
             }
         });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            left: "10dp",
+            right: "10dp",
+            top: "15dp"
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            left: "30dp",
+            right: "30dp",
+            top: "25dp",
+            font: {
+                fontSize: "30dp"
+            }
+        });
         _.extend(o, {
             id: "label"
         });

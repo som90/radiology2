@@ -1,5 +1,5 @@
 <Alloy>
-	<Window id="win" class="itemView">
+	<Window id="win" class="itemView" display="vertical">
 		<ScrollableView id="scrollableView" width="100%" height="100%" showPagingControl="true">
 			<ScrollView id="scrollView"></ScrollView>
 		</ScrollableView>		

@@ -1,0 +1,42 @@
+<Alloy>
+	<Window title="CT Dosage Calculator" layout="vertical">
+			       		 
+		<Label id="dlpValueLabel">Dose length product value (DLP):</Label>
+		<TextField id="dlpValueTextfield"></TextField>
+				
+		<!--assuming only 7 body parts.. Picker would be better for more choices but this is platform specific --> 
+		<Label id="bodypartLabel">Scanned body part:</Label>
+		<TextField id="bodyPartTextfield" editable="false" onClick="selectBodyPart"></TextField>
+				
+		<OptionDialog id="bodyPart" title="Select Body Part:" onClick="addBodypart">
+			<!-- The Options tag sets the options property. -->
+		    <Options>
+			    <Option>Head</Option>
+			    <Option>Neck</Option>
+			    <Option>Chest</Option>	
+			    <Option>Abdomen</Option>
+			    <Option>Pelvis</Option>
+			    <Option>Cancel</Option>
+			    </Options>
+		</OptionDialog>
+				
+		<Label id="ageRangeLabel">Patient age range:</Label>
+		<TextField id="ageRangeTextfield" editable="false" onClick="selectAgeRange"></TextField>
+				
+		<OptionDialog id="ageRange" title="Select Patient Age Range:" onClick="addAgeRange">
+	        <Options>
+	          	 <Option>Less than 1 year</Option>
+	          	 <Option>1-5 years</Option>
+	          	 <Option>5-10 years</Option>
+	          	 <Option>10-18 years</Option>
+	          	 <Option>18+ years</Option>	
+	           	 <Option>Cancel</Option>
+	        </Options>	
+	    </OptionDialog>
+				
+		<Button id="ctCalcButton" onClick="calculateDosage">Submit</Button>
+				
+		<Label id="resultLabel"></Label>
+		
+	</Window>
+</Alloy>

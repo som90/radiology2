@@ -2,7 +2,7 @@
 /*
  * Init
  */
-
+			
 //This creates a global reference to the tab
 Alloy.Globals.tabChapters = $.tabChapters;
 		
@@ -19,7 +19,25 @@ if( !Ti.App.Properties.hasProperty("firstTime") )
 		// Passing the loadChapters function in so we can access on the next page. The reason is so that the chapters will not be loaded before the Local DB has a chance to be populated by the call to the Server DB.
 		Alloy.Globals.radiologyDB.initEbookData("radiology", loadChapters);
 		Alloy.Globals.radiologyDB.initExamTables("radiology");
-		Ti.App.Properties.setBool("firstTime", false);	
+		Ti.App.Properties.setBool("firstTime", false);
+		
+		var curTimestamp = getTimestamp();
+		//Need to set an app property to the current date, that is, the date that the content was last updated. Each time the content gets updated this will be updated.
+		Ti.App.Properties.setString("lastUpdatedTimestamp", curTimestamp);
+		//Also need to set an app property for the fontSize to be initialized at Medium.
+		Ti.App.Properties.setString("fontClass", "medFont");
+		
+		//The following is a check to see if the device is handheld or tablet
+		var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+        var deviceWidth = Ti.Platform.displayCaps.platformWidth;
+        if(deviceHeight > 899 || deviceHeight > 899)
+        {
+        	Ti.App.Properties.setBool("isTablet", true);
+        }
+        else
+        {
+        	Ti.App.Properties.setBool("isTablet", false);
+        }
 	}
 }
 	
@@ -28,13 +46,64 @@ else	// every other time the app is opened it should just use whatever is in the
 	$.index.open();
 	var tableData = Alloy.Globals.radiologyDB.getCachedData("radiology");
 	$.table.setData(tableData);
+	
+	// Check to see if any updates are needed.
+	checkIfUpdateIsNeeded();
+	
+	//Also need to reset the app property for the fontSize back to Medium as per default.
+	Ti.App.Properties.setString("fontClass", "medFont");
+	
+	//The following is a check to see if the device is handheld or tablet
+	var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+    var deviceWidth = Ti.Platform.displayCaps.platformWidth;
+    if(deviceHeight > 899 || deviceHeight > 899)
+    {
+    	Ti.App.Properties.setBool("isTablet", true);
+    }
+    else
+    {
+    	Ti.App.Properties.setBool("isTablet", false);
+    }
+}
+
+/*
+ * Android seems to fire 'focus' every time you press a button within the tab, which is slowing it down
+ * So quicker to only fire once you are not in the tab, which happens less often.
+ */
+if(Ti.Platform.name == "android") {
+	$.tabChapters.addEventListener('blur', checkIfUpdateIsNeeded);
+}
+else {
+	$.tabChapters.addEventListener('focus', checkIfUpdateIsNeeded);
 }
 	
-function checkForUpdates(){		
+function checkIfUpdateIsNeeded() {
+	Ti.API.info("hit it");
+	//Before we check if the update is needed we need to update all the lastUpdated fields from the Server
+	Alloy.Globals.radiologyDB.updateLastUpdated("radiology");
+	//Now we can check the localDB for stale information
+	var isNeeded = Alloy.Globals.radiologyDB.checkUpdates("radiology",Ti.App.Properties.getString("lastUpdatedTimestamp"));
+	
+	if (isNeeded) {
+		alert("eLEARNING MADEEASY NOTIFICATION: \nThere has been updates made to the content. Please go to the updates page to download.");
+		
+		$.tabUpdates.setIcon("KS_nav_views_notification.png");
+	}
+}
+	
+function makeUpdates(){		
 	//passing the function in so we can access on the next page
 	Alloy.Globals.radiologyDB.update("radiology", updateChapters);
+	
+	var curTimestamp = getTimestamp();
+	//Need to update the timestamp property so we know when we last updated content
+	Ti.App.Properties.setString("lastUpdatedTimestamp", curTimestamp);	
+	
+	//Open the home page again
 	var index = Alloy.createController('index');
 	index.getView().open();
+	alert("Content has been updated");
+	$.tabUpdates.setIcon("KS_nav_views.png");
 }
 	
 function loadChapters() {
@@ -56,6 +125,41 @@ function updateChapters() {
  	}
 }   
 
+/*
+ * The following block of code just enables us to get the time in the correct format throughout the app.
+ */
+function getTimestamp() {
+	var d=new Date();
+	var year = d.getFullYear();
+	var month = d.getMonth()+1;	
+		if (month < 10) 
+		{
+			month = "0" + month;
+		}
+	var date = d.getDate();
+		if (date < 10) 
+		{
+			date = "0" + date;
+		}
+	var hours = d.getHours();
+		if (hours < 10) 
+		{
+			hours = "0" + hours;
+		}
+	var minutes = d.getMinutes();
+		if (minutes < 10) 
+		{
+			minutes = "0" + minutes;
+		}
+	var seconds = d.getSeconds();
+		if (seconds < 10) 
+		{
+			seconds = "0" + seconds;
+		}
+	var curTimestamp = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+	return curTimestamp;
+}
+
 
 // Open new window with list of sections
 function sectionsWindow(event){
@@ -64,12 +168,12 @@ function sectionsWindow(event){
 };
 	
 function ctCalculator(){
-	var calc = Alloy.createController("calculator", {calculator : "ct" }).getView();
-	$.tools.open(calc);
+	var ctCalc = Alloy.createController("ctCalculator").getView();
+	$.tools.open(ctCalc);
 };
 function nucCalculator(){
-	var calc = Alloy.createController("calculator", {calculator : "nuclear" }).getView();
-	$.tools.open(calc);
+	var nucCalc = Alloy.createController("nucCalculator").getView();
+	$.tools.open(nucCalc);
 };
 
 function procedures(){
@@ -77,50 +181,22 @@ function procedures(){
 	$.tools.open(procedures);
 }
 
-function changeFontLarge(){
-	// var itemViewer = Alloy.createController('itemViewer');
-	// itemViewer.resetClass(itemViewer.label, '', {color:"green"});
-	//itemViewer.getView().open();
-	alert("Feature not yet supported.");		
+function switchFonts(){
+	
+	if ($.fontSwitch.value)
+	{
+		Ti.App.Properties.setString("fontClass", "largeFont");
+	}
+	else 
+	{
+		Ti.App.Properties.setString("fontClass", "medFont");
+	}
 }
 
-
-
-	
-	// // Function To Generate Table Row
-// function createRow(exam, aed, vrl, Header)
-// {
-    // // Create Table Row
-    // var tableRow = Ti.UI.createTableViewRow({ height: '100dp' });
-//  
-    // // Create Table Row Columns
-    // var examView   = Ti.UI.createView({ left : 0, width : "40%"});
-    // var aedView   = Ti.UI.createView({ left : "40%", width : "25%"});
-    // var vrlView  = Ti.UI.createView({ right : 0, width : "25%"});
-//  
-    // // Create Table Row Column Labels
-    // if(Header) {
-	    // examView.add(Ti.UI.createLabel({   color : "red", textAlign: "left", fontWeight : "bold", text: exam   }));
-	    // aedView.add(Ti.UI.createLabel({   color : "red", textAlign: "center", fontWeight : "bold", text: aed   }));
-	    // vrlView.add(Ti.UI.createLabel({  color : "red", textAlign: "center", fontWeight : "bold", text: vrl   }));
-	// }
-	// else {
-		// examView.add(Ti.UI.createLabel({ textAlign: "left", text: exam   }));
-		// aedView.add(Ti.UI.createLabel({ textAlign: "center", text: aed   }));
-	    // vrlView.add(Ti.UI.createLabel({ textAlign: "center", text: vrl   }));
-	// }
-    // // Add Columns To Table Row
-    // tableRow.add(examView);
-    // tableRow.add(aedView);
-    // tableRow.add(vrlView);
-//  
-    // // Resource Clean-Up
-    // examView = aedView = vrlView = null;
-//  
-    // // Finished
-    // return tableRow;
-// }
-
+function donate(){
+	alert("Please hand the smiling gentleman beside you €10 immediately.");
+}
 	
 
 
+	

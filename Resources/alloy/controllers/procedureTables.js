@@ -1,31 +1,135 @@
 function Controller() {
-    function selectProcedure() {
+    function chooseProcedure() {
         $.procedureOptions.show();
     }
     function addProcedure(option) {
-        0 == option.index ? $.procedureChoiceTextfield.value = "Radiography" : 1 == option.index ? $.procedureChoiceTextfield.value = "CT" : 2 == option.index ? $.procedureChoiceTextfield.value = "Interventional Radiology" : 3 == option.index ? $.procedureChoiceTextfield.value = "Dental Radiography" : 4 == option.index && ($.procedureChoiceTextfield.value = "Nuclear Medicine");
+        if (0 == option.index) radiography(); else if (1 == option.index) ct(); else if (2 == option.index) interventional(); else if (3 == option.index) dental(); else {
+            if (4 != option.index) return;
+            nuclear();
+        }
     }
-    function selectBodypart() {
-        var areaChosen = $.procedureChoiceTextfield.getValue();
-        var optionsArray = [];
-        var bodyparts = Alloy.Globals.radiologyDB.getExams(areaChosen);
-        for (var i in bodyparts) optionsArray.push(bodyparts[i].bodypart);
-        optionsArray.push("Cancel");
-        var dialog = Ti.UI.createOptionDialog({
-            options: optionsArray,
-            title: "Choose a bodypart(/exam)"
+    function radiography() {
+        $.instructionLabel.hide();
+        var tableDataArray = [];
+        $.procedureTable.setData(tableDataArray);
+        $.procedureLabel.setText("Radiography");
+        var exams = Alloy.Globals.radiologyDB.getExams("Radiography");
+        Ti.API.info(JSON.stringify(exams));
+        tableDataArray.push(createRow("Examination", "Mean Effective Dose\n(mSv)", "Ranges Reported\n(mSv)", true));
+        for (var i in exams) tableDataArray.push(createRow(exams[i].bodypart, exams[i].meanEffectiveDose, exams[i].rangesReported, false));
+        $.procedureTable.setData(tableDataArray);
+        $.procedureTable.show();
+        tableDataArray = null;
+    }
+    function ct() {
+        $.instructionLabel.hide();
+        var tableDataArray = [];
+        $.procedureTable.setData(tableDataArray);
+        $.procedureLabel.setText("CT - Computed Tomography");
+        var exams = Alloy.Globals.radiologyDB.getExams("CT");
+        Ti.API.info(JSON.stringify(exams));
+        tableDataArray.push(createRow("Examination", "Mean Effective Dose\n(mSv)", "Ranges Reported\n(mSv)", true));
+        for (var i in exams) tableDataArray.push(createRow(exams[i].bodypart, exams[i].meanEffectiveDose, exams[i].rangesReported, false));
+        $.procedureTable.setData(tableDataArray);
+        $.procedureTable.show();
+        tableDataArray = null;
+    }
+    function interventional() {
+        $.instructionLabel.hide();
+        var tableDataArray = [];
+        $.procedureTable.setData(tableDataArray);
+        $.procedureLabel.setText("Interventional Radiology");
+        var exams = Alloy.Globals.radiologyDB.getExams("Interventional Radiology");
+        Ti.API.info(JSON.stringify(exams));
+        tableDataArray.push(createRow("Examination", "Mean Effective Dose\n(mSv)", "Ranges Reported\n(mSv)", true));
+        for (var i in exams) tableDataArray.push(createRow(exams[i].bodypart, exams[i].meanEffectiveDose, exams[i].rangesReported, false));
+        $.procedureTable.setData(tableDataArray);
+        $.procedureTable.show();
+        tableDataArray = null;
+    }
+    function dental() {
+        $.instructionLabel.hide();
+        var tableDataArray = [];
+        $.procedureTable.setData(tableDataArray);
+        $.procedureLabel.setText("Dental Radiography");
+        var exams = Alloy.Globals.radiologyDB.getExams("Dental Radiography");
+        Ti.API.info(JSON.stringify(exams));
+        tableDataArray.push(createRow("Examination", "Mean Effective Dose\n(mSv)", "Ranges Reported\n(mSv)", true));
+        for (var i in exams) tableDataArray.push(createRow(exams[i].bodypart, exams[i].meanEffectiveDose, exams[i].rangesReported, false));
+        $.procedureTable.setData(tableDataArray);
+        $.procedureTable.show();
+        tableDataArray = null;
+    }
+    function nuclear() {
+        $.instructionLabel.hide();
+        var tableDataArray = [];
+        $.procedureTable.setData(tableDataArray);
+        $.procedureLabel.setText("Nuclear Medicine");
+        var exams = Alloy.Globals.radiologyDB.getExams("Nuclear Medicine");
+        Ti.API.info(JSON.stringify(exams));
+        tableDataArray.push(createRow("Examination", "Mean Effective Dose\n(mSv)", "Administered Activity\n(MBq)", true));
+        for (var i in exams) tableDataArray.push(createRow(exams[i].bodypart, exams[i].meanEffectiveDose, exams[i].meanAdministeredActivity, false));
+        $.procedureTable.setData(tableDataArray);
+        $.procedureTable.show();
+        tableDataArray = null;
+    }
+    function createRow(exam, aed, vrl, Header) {
+        var tableRow = Ti.UI.createTableViewRow({
+            height: "50dp"
         });
-        dialog.addEventListener("click", function(evt) {
-            var examChosen = optionsArray[evt.index];
-            var examData = Alloy.Globals.radiologyDB.getExamData(areaChosen, examChosen);
-            $.bodypartChoiceTextfield.value = examChosen;
-            if ("Cancel" == examChosen) return;
-            for (var i in examData) {
-                $.label2.text = "\n \nAverage Effective Dose (mSv): \n" + examData[i].meanEffectiveDose;
-                $.label3.text = "\n \nValues Reported in Literature (mSv): \n" + examData[i].rangesReported;
-            }
+        var examView = Ti.UI.createView({
+            left: 0,
+            width: "50%"
         });
-        dialog.show();
+        var aedView = Ti.UI.createView({
+            left: "50%",
+            width: "25%"
+        });
+        var vrlView = Ti.UI.createView({
+            right: 0,
+            width: "25%"
+        });
+        if (Header) {
+            examView.add(Ti.UI.createLabel({
+                color: "red",
+                font: {
+                    fontWeight: "bold"
+                },
+                text: exam
+            }));
+            aedView.add(Ti.UI.createLabel({
+                color: "red",
+                font: {
+                    fontWeight: "bold"
+                },
+                text: aed
+            }));
+            vrlView.add(Ti.UI.createLabel({
+                color: "red",
+                font: {
+                    fontWeight: "bold"
+                },
+                text: vrl
+            }));
+        } else {
+            examView.add(Ti.UI.createLabel({
+                color: "black",
+                text: exam
+            }));
+            aedView.add(Ti.UI.createLabel({
+                color: "black",
+                text: aed
+            }));
+            vrlView.add(Ti.UI.createLabel({
+                color: "black",
+                text: vrl
+            }));
+        }
+        tableRow.add(examView);
+        tableRow.add(aedView);
+        tableRow.add(vrlView);
+        examView = aedView = vrlView = null;
+        return tableRow;
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "procedureTables";
@@ -38,11 +142,10 @@ function Controller() {
     $.__views.procedureTables = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
         title: "Procedure Tables",
-        layout: "vertical",
         id: "procedureTables"
     });
     $.__views.procedureTables && $.addTopLevelView($.__views.procedureTables);
-    $.__views.procedureChoiceLabel = Ti.UI.createLabel(function() {
+    $.__views.procedureLabel = Ti.UI.createLabel(function() {
         var o = {};
         _.extend(o, {});
         Alloy.isHandheld && _.extend(o, {
@@ -58,43 +161,75 @@ function Controller() {
                 fontSize: "25dp"
             }
         });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: 20,
+            font: {
+                fontWeight: "bold",
+                fontSize: "22dp"
+            }
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 10,
+            left: "35%",
+            font: {
+                fontWeight: "bold",
+                fontSize: "15dp"
+            }
+        });
         _.extend(o, {
-            top: "5%",
-            text: "Choose a procedure:",
-            id: "procedureChoiceLabel"
+            id: "procedureLabel"
         });
         return o;
     }());
-    $.__views.procedureTables.add($.__views.procedureChoiceLabel);
-    $.__views.procedureChoiceTextfield = Ti.UI.createTextField({
-        height: "45dp",
-        width: "95%",
-        tintColor: "red",
-        opacity: ".4",
-        top: 2,
-        bottom: 5,
-        textAlign: "center",
-        borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-        borderRadius: "10px",
-        id: "procedureChoiceTextfield",
-        editable: "false"
-    });
-    $.__views.procedureTables.add($.__views.procedureChoiceTextfield);
-    selectProcedure ? $.__views.procedureChoiceTextfield.addEventListener("click", selectProcedure) : __defers["$.__views.procedureChoiceTextfield!click!selectProcedure"] = true;
-    var __alloyId25 = [];
-    __alloyId25.push("Radiography");
-    __alloyId25.push("CT");
-    __alloyId25.push("Interventional Radiology");
-    __alloyId25.push("Dental Radiography");
-    __alloyId25.push("Nuclear Medicine");
-    __alloyId25.push("Cancel");
+    $.__views.procedureTables.add($.__views.procedureLabel);
+    $.__views.procedureButton = Ti.UI.createButton(function() {
+        var o = {};
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: 20,
+            left: 10,
+            height: 50,
+            width: "22%",
+            backgroundColor: "#d3d3d3",
+            borderColor: "black",
+            borderRadius: 15,
+            color: "black"
+        });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: 10,
+            left: 10,
+            height: 25,
+            width: "27%",
+            backgroundColor: "#d3d3d3",
+            borderColor: "black",
+            borderRadius: 15,
+            color: "black"
+        });
+        _.extend(o, {
+            title: "Procedures",
+            id: "procedureButton"
+        });
+        return o;
+    }());
+    $.__views.procedureTables.add($.__views.procedureButton);
+    chooseProcedure ? $.__views.procedureButton.addEventListener("click", chooseProcedure) : __defers["$.__views.procedureButton!click!chooseProcedure"] = true;
+    var __alloyId22 = [];
+    __alloyId22.push("Radiography");
+    __alloyId22.push("CT");
+    __alloyId22.push("Interventional Radiology");
+    __alloyId22.push("Dental Radiography");
+    __alloyId22.push("Nuclear Medicine");
+    __alloyId22.push("Cancel");
     $.__views.procedureOptions = Ti.UI.createOptionDialog({
-        options: __alloyId25,
+        options: __alloyId22,
         id: "procedureOptions",
         title: "Select Investigation/Procedure:"
     });
     addProcedure ? $.__views.procedureOptions.addEventListener("click", addProcedure) : __defers["$.__views.procedureOptions!click!addProcedure"] = true;
-    $.__views.bodypartChoiceLabel = Ti.UI.createLabel(function() {
+    $.__views.instructionLabel = Ti.UI.createLabel(function() {
         var o = {};
         _.extend(o, {});
         Alloy.isHandheld && _.extend(o, {
@@ -111,98 +246,38 @@ function Controller() {
             }
         });
         _.extend(o, {
-            text: "Choose a bodypart(/exam):",
-            id: "bodypartChoiceLabel"
+            top: "40%",
+            text: "Choose a procedure",
+            id: "instructionLabel"
         });
         return o;
     }());
-    $.__views.procedureTables.add($.__views.bodypartChoiceLabel);
-    $.__views.bodypartChoiceTextfield = Ti.UI.createTextField({
-        height: "45dp",
-        width: "95%",
-        tintColor: "red",
-        opacity: ".4",
-        top: 2,
-        bottom: 5,
-        textAlign: "center",
-        borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-        borderRadius: "10px",
-        id: "bodypartChoiceTextfield",
-        editable: "false"
-    });
-    $.__views.procedureTables.add($.__views.bodypartChoiceTextfield);
-    selectBodypart ? $.__views.bodypartChoiceTextfield.addEventListener("click", selectBodypart) : __defers["$.__views.bodypartChoiceTextfield!click!selectBodypart"] = true;
-    $.__views.label1 = Ti.UI.createLabel(function() {
+    $.__views.procedureTables.add($.__views.instructionLabel);
+    $.__views.procedureTable = Ti.UI.createTableView(function() {
         var o = {};
+        _.extend(o, {
+            top: "5px",
+            backgroundColor: "transparent",
+            minRowHeight: "50dp"
+        });
+        Alloy.isTablet && _.extend(o, {
+            top: "7%"
+        });
         _.extend(o, {});
         Alloy.isHandheld && _.extend(o, {
-            color: "black",
-            font: {
-                fontSize: "15dp"
-            }
-        });
-        _.extend(o, {});
-        Alloy.isTablet && _.extend(o, {
-            color: "black",
-            font: {
-                fontSize: "25dp"
-            }
+            top: "10%"
         });
         _.extend(o, {
-            id: "label1"
+            id: "procedureTable",
+            visible: "false"
         });
         return o;
     }());
-    $.__views.procedureTables.add($.__views.label1);
-    $.__views.label2 = Ti.UI.createLabel(function() {
-        var o = {};
-        _.extend(o, {});
-        Alloy.isHandheld && _.extend(o, {
-            color: "black",
-            font: {
-                fontSize: "15dp"
-            }
-        });
-        _.extend(o, {});
-        Alloy.isTablet && _.extend(o, {
-            color: "black",
-            font: {
-                fontSize: "25dp"
-            }
-        });
-        _.extend(o, {
-            id: "label2"
-        });
-        return o;
-    }());
-    $.__views.procedureTables.add($.__views.label2);
-    $.__views.label3 = Ti.UI.createLabel(function() {
-        var o = {};
-        _.extend(o, {});
-        Alloy.isHandheld && _.extend(o, {
-            color: "black",
-            font: {
-                fontSize: "15dp"
-            }
-        });
-        _.extend(o, {});
-        Alloy.isTablet && _.extend(o, {
-            color: "black",
-            font: {
-                fontSize: "25dp"
-            }
-        });
-        _.extend(o, {
-            id: "label3"
-        });
-        return o;
-    }());
-    $.__views.procedureTables.add($.__views.label3);
+    $.__views.procedureTables.add($.__views.procedureTable);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    __defers["$.__views.procedureChoiceTextfield!click!selectProcedure"] && $.__views.procedureChoiceTextfield.addEventListener("click", selectProcedure);
+    __defers["$.__views.procedureButton!click!chooseProcedure"] && $.__views.procedureButton.addEventListener("click", chooseProcedure);
     __defers["$.__views.procedureOptions!click!addProcedure"] && $.__views.procedureOptions.addEventListener("click", addProcedure);
-    __defers["$.__views.bodypartChoiceTextfield!click!selectBodypart"] && $.__views.bodypartChoiceTextfield.addEventListener("click", selectBodypart);
     _.extend($, exports);
 }
 

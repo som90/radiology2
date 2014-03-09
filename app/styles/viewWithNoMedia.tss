@@ -1,38 +1,4 @@
 
 ".container" : {
   layout: "vertical",
-},
-
-"Label[formFactor=handheld]": { 
-	left : "10dp",
-	right : "10dp",
-	top : "15dp",
-	
-},
-
-"Label[formFactor=tablet]": { 
-	left : "30dp",
-	right : "30dp",
-	top : "25dp",
-	font : {
-		fontSize : "30dp"
-	}, 
-},
-
-"#heading[formFactor=handheld]": { 
-	color : "white",
-	font : {
-		fontWeight : "bold",
-		fontSize : "15dp"
-	}, 
-	textAlign : "center",
-},
-
-"#heading[formFactor=tablet]": { 
-	color : "white",
-	font : {
-		fontWeight : "bold",
-		fontSize : "30dp"
-	}, 
-	textAlign : "center",
 }

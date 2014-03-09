@@ -1,16 +1,57 @@
-"TextField" : {
-	height : "45dp",
-	width : "95%",
-	//backgroundColor : "white",
-	tintColor : "red",
-	opacity : ".4",
-	top : 2,
-	bottom : 5,
-	textAlign : "center",
-	borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-	borderRadius : '10px'
+
+"#instructionLabel" : {
+	top : "40%"
 }
 
-"#procedureChoiceLabel" : {
-	top : "5%"
+/*
+ * Tablet Devices
+ */
+"#procedureButton[formFactor=tablet]": {
+	top : 20,
+	left : 10,
+	height : 50,
+	width : "22%",
+	backgroundColor : "#d3d3d3",
+	borderColor : "black",
+	borderRadius : 15,
+	color : "black",
+}
+
+"#procedureLabel[formFactor=tablet]": {
+	top : 20,
+	font : {
+		fontWeight : "bold",
+		fontSize : "22dp"
+	}
+}
+
+"#procedureTable[formFactor=tablet]": {
+	top : "7%",
+}
+
+/*
+ * Handheld Devices
+ */
+"#procedureButton[formFactor=handheld]": {
+	top : 10,
+	left : 10,
+	height : 25,
+	width : "27%",
+	backgroundColor : "#d3d3d3",
+	borderColor : "black",
+	borderRadius : 15,
+	color : "black",
+}
+
+"#procedureLabel[formFactor=handheld]": {
+	top : 10,
+	left : "35%",
+	font : {
+		fontWeight : "bold",
+		fontSize : "15dp"
+	}
+}
+
+"#procedureTable[formFactor=handheld]": {
+	top : "10%",
 }

@@ -1,5 +1,5 @@
 <Alloy>
-	<ScrollView class="container">
+	<ScrollView class="container" display="vertical">
 		<Label id="heading"></Label>
 		<Label id="label"></Label>
 	</ScrollView>

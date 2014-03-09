@@ -1,38 +1,41 @@
-<Alloy>
+<Alloy autoStyle="true">
 	<TabGroup>
-		<Tab id="tabChapters" title="Home" icon="KS_nav_ui.png">
-			<Window title="Home" id="win">
+		<Tab id="tabChapters" title="Home" onClick="checkIfUpdateIsNeeded" icon="KS_nav_ui.png">
+			<Window title="eLearning Home" id="win">
 				<TableView id="table" onClick="sectionsWindow"></TableView>
 			</Window>
 		</Tab>
-
 		
-		<Tab title="Info" icon="KS_nav_views.png">
-			<Window title="Info">
-				<Label>Information about how to use the app.</Label>
-			</Window>
-		</Tab>
 		
-		<Tab title="Preferences" icon="KS_nav_views.png">
+		<Tab id="tabUpdates" title="Preferences" icon="KS_nav_views_preferences.png">
 			<Window id="win" title="Preferences" layout="vertical">
-				<Button id="largeFont" onClick = "changeFontLarge">Change Font</Button>
-				<Button onClick="checkForUpdates">Check for updates</Button>
+				<Button id="updateButton" onClick="makeUpdates">Check for updates</Button>
+				<Label id="switchLabel">"Switch On" for large font reader:</Label>
+				<Switch id="fontSwitch" value="false" onChange="switchFonts"/>
 			</Window>
 		</Tab>
 		
 		
-		<Tab title="Tools" id="tools" icon="KS_nav_views.png">
+		<Tab title="Tools" id="tools" icon="KS_nav_views_tools.png">
 			<Window title="Average Radiation Doses">
-				
-				<ImageView id="proceduresImage" onClick="procedures" image="/images/procedures.jpg" />
-				<ImageView id="ctImage" onClick="ctCalculator" image="images/ctCalculator.jpg" />
-				<ImageView id="nuclearImage" onClick="nucCalculator" image="/images/nuclearCalculator.jpg" />
-				
-				 <!--<TableView id="procedureTable"></TableView> -->
+				<ImageView id="proceduresImage" onClick="procedures" image="/images/procedures.png" />
+				<ImageView id="ctImage" onClick="ctCalculator" image="images/ctCalculator.png" />
+				<ImageView id="nuclearImage" onClick="nucCalculator" image="/images/nuclearCalculator.png" />
+			</Window>
+		</Tab>
 
+		
+		<Tab title="Info" icon="KS_nav_views_info.png">
+			<Window title="Info" layout="vertical">
+					<Label id="appTitle">eLearning MadeEasy - Radiology</Label>
+					<Label id="version">Version 1.0.0</Label>
+					<ImageView id="eLearningLogo" image="/images/eLearningLogo.png" />
+					<Label id="aboutHeading">Welcome!</Label>
+					<Label id="aboutInfo"> eLearning MadeEasy was developed as part of the Univerity College Cork 4th Year Computer Science Project. The aim of the work is to facilitate simple and convenient eLearning experiences. The flagship of the eLearning offerings was provided by Cork University Hospital Radiology Department, and is aimed at Radiology practitioners and students to provide a more interactive and dynamic learning experience. The app also contains some tools which can be used by practitioners to calculate various different metrics used within Radiology. \nThank you for taking the time to use the app and please feel free to offer feedback, areas for improvement and donate.</Label>
+					<ImageView id="donateImage" image="/images/donateButton.png" onClick="donate"></ImageView>
+					<Label id="copyright">Copyright © 2014 Stephen O'Mahony, University College Cork.</Label>
 			</Window>
 		</Tab>
 		
-
 	</TabGroup>
 </Alloy>

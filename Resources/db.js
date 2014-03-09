@@ -5,7 +5,7 @@ module.exports = database;
 database.prototype.initEbookData = function(name, callback) {
     this.name = name;
     var db = Ti.Database.open(this.name);
-    var sql = "CREATE TABLE IF NOT EXISTS 'radiology' ( 'itemID' VARCHAR PRIMARY KEY, 'chapterTitle' VARCHAR, 'sectionTitle' VARCHAR, 'subsectionTitle' VARCHAR, 'item' TEXT, 'reference' VARCHAR, 'lastUpdated' TEXT);";
+    var sql = "CREATE TABLE IF NOT EXISTS 'radiology' ( 'itemID' VARCHAR PRIMARY KEY, 'chapterTitle' VARCHAR, 'sectionTitle' VARCHAR, 'subsectionTitle' VARCHAR, 'item' TEXT, 'lastUpdated' TEXT);";
     db.execute(sql);
     var url = "http://cs1.ucc.ie/~som6/bin/FYP/prototype/jsonData.php";
     var client = Ti.Network.createHTTPClient({
@@ -24,8 +24,7 @@ database.prototype.initEbookData = function(name, callback) {
                     var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, item);
                     item = f.nativePath;
                 }
-                var sql = "INSERT INTO `radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `reference`, `lastUpdated`) VALUES ('" + itemID + "', '" + chapterTitle + "', '" + sectionTitle + "', '" + subsectionTitle + "', '" + item + "', '', '" + lastUpdated + "');";
-                Ti.API.info(sql);
+                var sql = "INSERT INTO `radiology` (`itemID`, `chapterTitle`, `sectionTitle`, `subsectionTitle`, `item`, `lastUpdated`) VALUES ('" + itemID + "', '" + chapterTitle + "', '" + sectionTitle + "', '" + subsectionTitle + "', '" + item + "', '" + lastUpdated + "');";
                 db.execute(sql);
             }
             db.execute("COMMIT;");
@@ -61,7 +60,6 @@ database.prototype.initExamTables = function(name) {
                 var meanAdministeredActivity = JSONdata.allRowsInDB[i].meanAdministeredActivity;
                 var effectiveDosePerAdministeredActivity = JSONdata.allRowsInDB[i].effectiveDosePerAdministeredActivity;
                 var sql = "INSERT INTO `examinations` (`area`, `bodypart`, `meanEffectiveDose`, `rangesReported`, `meanAdministeredActivity`, `effectiveDosePerAdministeredActivity`) VALUES ('" + area + "', '" + bodypart + "', '" + meanEffectiveDose + "', '" + rangesReported + "', '" + meanAdministeredActivity + "', '" + effectiveDosePerAdministeredActivity + "');";
-                Ti.API.info(sql);
                 db.execute(sql);
             }
             db.execute("COMMIT;");
@@ -71,8 +69,7 @@ database.prototype.initExamTables = function(name) {
         onerror: function(e) {
             Ti.API.debug(e.error);
             alert("error in loading content from Server");
-        },
-        timeout: 5e3
+        }
     });
     client.open("POST", url);
     client.send();
@@ -87,6 +84,40 @@ database.prototype.getCachedData = function(name) {
     return data;
 };
 
+database.prototype.updateLastUpdated = function(name) {
+    this.name = name;
+    var db = Ti.Database.open(this.name);
+    var client = Ti.Network.createHTTPClient({
+        onload: function() {
+            var JSONdata = JSON.parse(this.responseText);
+            for (var i in JSONdata.allRowsInDB) {
+                var sql = "UPDATE `radiology` SET `lastUpdated` = '" + JSONdata.allRowsInDB[i].lastUpdated + "' WHERE `itemID` = '" + JSONdata.allRowsInDB[i].itemID + "';";
+                db.execute(sql);
+            }
+            db.close();
+            db = null;
+        }
+    });
+    client.open("POST", "http://cs1.ucc.ie/~som6/bin/FYP/prototype/jsonData.php");
+    client.send();
+};
+
+database.prototype.checkUpdates = function(name, timestamp) {
+    this.name = name;
+    var db = Ti.Database.open(this.name);
+    var sql = "SELECT * FROM  `radiology` WHERE  `lastUpdated` > '" + timestamp + "'";
+    var results = db.execute(sql);
+    if (results.getRowCount() > 0) {
+        db.close();
+        db = null;
+        return true;
+    }
+    Ti.API.info("No Updates Required.");
+    db.close();
+    db = null;
+    return false;
+};
+
 database.prototype.update = function(name, callback) {
     this.name = name;
     var db = Ti.Database.open(this.name);
@@ -98,8 +129,6 @@ database.prototype.update = function(name, callback) {
     var client = Ti.Network.createHTTPClient({
         onload: function() {
             var JSONdata = JSON.parse(this.responseText);
-            var tempArray = [];
-            var tempItem = [];
             db.execute("BEGIN;");
             for (var i in JSONdata.allRowsInDB) {
                 var itemID = JSONdata.allRowsInDB[i].itemID;
@@ -110,12 +139,10 @@ database.prototype.update = function(name, callback) {
                 var item = JSONdata.allRowsInDB[i].item.replace(/'/g, "''");
                 if (-1 != JSONdata.allRowsInDB[i].item.indexOf("images/")) {
                     item = item.replace(/images\//g, "");
-                    tempItem.push(item);
-                    tempArray.push("http://cs1.ucc.ie/~som6/bin/FYP/prototype/images/" + item);
                     var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, item);
                     item = f.nativePath;
                 }
-                var sql = "UPDATE `radiology` SET `chapterTitle` = '" + chapterTitle + "', \n												`sectionTitle` = '" + sectionTitle + "',\n												`subsectionTitle` = '" + subsectionTitle + "',\n												`item` = '" + item + "',\n												`lastUpdated` = '" + lastUpdated + "'\n											WHERE `itemID` = '" + itemID + "';";
+                var sql = "UPDATE `radiology` SET `chapterTitle` = '" + chapterTitle + "', `sectionTitle` = '" + sectionTitle + "', `subsectionTitle` = '" + subsectionTitle + "', `item` = '" + item + "', `lastUpdated` = '" + lastUpdated + "' WHERE `itemID` = '" + itemID + "';";
                 db.execute(sql);
             }
             db.execute("COMMIT;");
@@ -182,14 +209,16 @@ database.prototype.items = function(section) {
 database.prototype.getExams = function(area) {
     var db = Ti.Database.open(this.name);
     var sql = "SELECT * FROM examinations WHERE area='" + area + "' ORDER BY `bodypart`;";
-    Ti.API.info(sql);
     var results = db.execute(sql);
     var rowsArray = [];
     while (results.isValidRow()) {
         rowsArray.push({
-            bodypart: results.fieldByName("bodypart")
+            bodypart: results.fieldByName("bodypart"),
+            meanEffectiveDose: results.fieldByName("meanEffectiveDose"),
+            rangesReported: results.fieldByName("rangesReported"),
+            meanAdministeredActivity: results.fieldByName("meanAdministeredActivity"),
+            effectiveDosePerAdministeredActivity: results.fieldByName("effectiveDosePerAdministeredActivity")
         });
-        Ti.API.info(results.fieldByName("bodypart"));
         results.next();
     }
     db.close();

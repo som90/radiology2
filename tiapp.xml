@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <id>ie.ucc.cs.fyp.RadiologyCUH</id>
+    <id>com.radiology</id>
     <name>radiology</name>
     <version>1.0</version>
     <publisher>som90</publisher>
     <url>http://</url>
     <description>not specified</description>
     <copyright>2013 by som90</copyright>
-    <icon>appicon.png</icon>
+    <icon>eLearningLogo.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>default</statusbar-style>

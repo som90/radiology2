@@ -1,0 +1,13 @@
+<Alloy>
+	<Window title="Nuclear Medicine Calculator" layout="vertical">
+		
+		<Label id="examChosenLabel">Examination/Investigation Chosen:</Label>
+		<TextField id="examChosenTextfield" onClick = "nuclearMedicine" editable="false"></TextField>
+		
+		<Label id="adminActivityLabel">Administered Activity (MBq):</Label>
+		<TextField id="adminActivityTextfield"></TextField>
+		
+		<Label id="effectDoseLabel">Effective Dose (mSv):</Label>
+		<TextField id="effectDoseTextfield" editable="false"></TextField>
+	</Window>
+</Alloy>

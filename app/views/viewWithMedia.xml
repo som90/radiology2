@@ -3,5 +3,6 @@
 		<Label id="heading"></Label>
 		<Label id="label"></Label>
 		<ImageView id="imageView" onClick="fullScreen"></ImageView>
+		<VideoPlayer id="videoPlayer" width="60%" height = "60%" ns="Ti.Media" visible="false" autoplay="true" />
 	</ScrollView>
 </Alloy>

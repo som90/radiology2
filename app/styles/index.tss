@@ -12,58 +12,166 @@
 	borderRadius : '10px'
 }
 
-"Button" : {
-	top : 5,
-	width : "50%",
+"#updateButton" : {
+	top : "30%",
+	width : "50%"
 }
-/*"#procedureTable" : {
-    height: Ti.UI.FILL,
-    minRowHeight: 40,
-    width: Ti.UI.FILL
+
+"Switch" : {
+    top: 10,
+    width: "20%",
 }
-"#largeFont" : {
-	top : 60,
-}*/
+
+"#switchLabel" : {
+	top : "5%"
+}
 
 "#proceduresImage" : {
 	top : "0%",
-	width : "100%",
-	height : "40%",
-	opacity : ".8"
+	width : "90%",
+	height : "35%",
 }
 "#ctImage" : {
 	width : "50%",
-	height : "60%",
+	height : "40%",
 	top : "40%",
 	left : "0%",
-	opacity : ".8"
 }
 
 "#nuclearImage" : {
 	width : "50%",
-	height : "60%",
+	height : "40%",
 	top : "40%",
 	right : "0%",
-	opacity : ".8"
 }
 
 
+/*
+ * Info Tab, Tablet View
+ */
 
-"#resultLabel" : {
-	top : 20,
+"#appTitle[formFactor=tablet]": { 
+	top : "2%",
+	font : {
+		fontWeight : "bold",
+		fontSize : "32dp",
+		color : "blue"
+	}, 
+}
+"#version[formFactor=tablet]": { 
+	top : 5,
 	font : {
 		fontWeight : "bold",
 		fontSize : "16dp",
 	}, 
-	textAlign : "center"
 }
+"#eLearningLogo[formFactor=tablet]": { 
+	top : 20,
+	width : "40%"
+}
+"#aboutHeading[formFactor=tablet]": { 
+	top : 15,
+	font : {
+		fontWeight : "bold",
+		fontSize : "30dp",
+	}, 
+}
+"#aboutInfo[platform=ios formFactor=tablet]": { 
+	top : 10,
+	left : "5%",
+	right : "5%",
+	font : {
+		fontSize : "24dp",
+	}, 
+}
+	"#aboutInfo[platform=android formFactor=tablet]": { 
+		top : 10,
+		left : "5%",
+		right : "5%",
+		font : {
+			fontSize : "21dp",
+		}, 
+	}
+"#donateImage[formFactor=tablet]": { 
+	top : 15,
+	height : "70dp",
+	width : "25%"
+}
+"#copyright[formFactor=tablet]": { 
+	top : 50,
+	font : {
+		fontWeight : "bold",
+		fontSize : "14dp",
+	}, 
+}
+
+
+
 /*
-"#calculatorChoice" : {
-	top : "20dp",
-	left : "20dp"
+ * Info Tab, Handheld View
+ */
+
+"#appTitle[formFactor=handheld]": { 
+	top : 7,
+	font : {
+		fontWeight : "bold"
+	}, 
 }
-"#procedureChoice" : {
-	top : "20dp",
-	right : "20dp"
+"#version[formFactor=handheld]": { 
+	top : 5,
+	font : {
+		fontWeight : "bold",
+		fontSize : "8dp",
+	}, 
 }
-*/
+"#eLearningLogo[formFactor=handheld]": { 
+	top : 7,
+	width : "27%"
+}
+"#aboutHeading[formFactor=handheld]": { 
+	top : 3,
+	font : {
+		fontWeight : "bold",
+		fontSize : "13dp", //See how this compares to not specifiying in aboutINfo
+	}, 
+}
+"#aboutInfo[formFactor=handheld]": { 
+	top : 3,
+	left : "5%",
+	right : "5%",
+	font : {
+		fontSize : "11dp", //See how this compares to not specifiying in aboutINfo
+	}
+}
+"#donateImage[formFactor=handheld]": { 
+	top : 5,
+	height : "40dp",
+	width : "25%"
+}
+"#copyright[formFactor=handheld]": { 
+	top : 5,
+	font : {
+		fontWeight : "bold",
+		fontSize : "9dp",
+	}, 
+}
+
+
+
+
+// "#copyright[platform=android]": { 
+	// top : 10,
+	// font : {
+		// fontWeight : "bold",
+		// fontSize : "14dp",
+	// }, 
+// }
+
+// "#aboutInfo[platform=android]": { 
+	// top : 10,
+	// left : "5%",
+	// right : "5%",
+	// font : {
+		// fontSize : "20dp",
+	// }, 
+// }

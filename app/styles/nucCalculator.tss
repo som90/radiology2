@@ -1,0 +1,16 @@
+"TextField" : {
+	height : "45dp",
+	width : "95%",
+	//backgroundColor : "white",
+	tintColor : "red",
+	opacity : ".4",
+	top : 2,
+	bottom : 5,
+	textAlign : "center",
+	borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+	borderRadius : '10px'
+}
+
+"#examChosenLabel" : {
+	top : "5%"
+}
