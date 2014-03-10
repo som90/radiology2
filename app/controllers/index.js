@@ -26,6 +26,8 @@ if( !Ti.App.Properties.hasProperty("firstTime") )
 		Ti.App.Properties.setString("lastUpdatedTimestamp", curTimestamp);
 		//Also need to set an app property for the fontSize to be initialized at Medium.
 		Ti.App.Properties.setString("fontClass", "medFont");
+		//Also need to set an app property for the fontSize to be initialized at Medium.
+		Ti.App.Properties.setString("theme", "white");
 		
 		//The following is a check to see if the device is handheld or tablet
 		var deviceHeight = Ti.Platform.displayCaps.platformHeight;
@@ -43,6 +45,9 @@ if( !Ti.App.Properties.hasProperty("firstTime") )
 	
 else	// every other time the app is opened it should just use whatever is in the localDB.
 {
+	 //Checking the theme property to set the backGroundImage appropriately
+	checkTheme();
+	
 	$.index.open();
 	var tableData = Alloy.Globals.radiologyDB.getCachedData("radiology");
 	$.table.setData(tableData);
@@ -76,11 +81,44 @@ if(Ti.Platform.name == "android") {
 else {
 	$.tabChapters.addEventListener('focus', checkIfUpdateIsNeeded);
 }
-	
+
+/*
+ * Checking the theme property to set the backGroundImage appropriately 
+ */	
+function checkTheme() {
+	if(Ti.App.Properties.getString("theme") == "black")
+	{
+		$.winHome.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+		$.winPreferences.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+		$.winTools.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+		$.winInfo.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+		
+		$.appTitle.setColor("white");
+		$.version.setColor("white");
+		$.aboutHeading.setColor("white");
+		$.aboutInfo.setColor("white");
+		$.copyright.setColor("white");
+	}
+		
+	else
+	{
+		$.winHome.backgroundImage="/images/radiologyBackground.jpg";
+		$.winPreferences.backgroundImage="/images/radiologyBackground.jpg";
+		$.winTools.backgroundImage="/images/radiologyBackground.jpg";
+		$.winInfo.backgroundImage="/images/radiologyBackground.jpg";
+		
+		$.appTitle.setColor("black");
+		$.version.setColor("black");
+		$.aboutHeading.setColor("black");
+		$.aboutInfo.setColor("black");
+		$.copyright.setColor("black");
+	}
+}	
+
 function checkIfUpdateIsNeeded() {
 	Ti.API.info("hit it");
 	//Before we check if the update is needed we need to update all the lastUpdated fields from the Server
-	Alloy.Globals.radiologyDB.updateLastUpdated("radiology");
+	//Alloy.Globals.radiologyDB.updateLastUpdated("radiology");
 	//Now we can check the localDB for stale information
 	var isNeeded = Alloy.Globals.radiologyDB.checkUpdates("radiology",Ti.App.Properties.getString("lastUpdatedTimestamp"));
 	
@@ -101,7 +139,7 @@ function makeUpdates(){
 	
 	//Open the home page again
 	var index = Alloy.createController('index');
-	index.getView().open();
+	index.getView();
 	alert("Content has been updated");
 	$.tabUpdates.setIcon("KS_nav_views.png");
 }
@@ -191,6 +229,42 @@ function switchFonts(){
 	{
 		Ti.App.Properties.setString("fontClass", "medFont");
 	}
+}
+
+function themeSwitch(){
+	
+	if(Ti.App.Properties.getString("theme") =="white") {
+		//make it black
+		Ti.App.Properties.setString("theme", "black");
+	}
+	else {
+		//make it white
+		Ti.App.Properties.setString("theme", "white");
+	}
+	//Open the home page again
+	var index = Alloy.createController('index');
+	index.getView();
+	
+	// if ($.themeSwitch.value)
+	// {
+		// Ti.App.Properties.setString("theme", "black");
+		// $.winHome.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+		// $.winPreferences.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+		// $.winTools.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+		// $.winInfo.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+// 		
+		// Alloy.Globals.tableRowLabel.setColor("white");
+	// }
+	// else 
+	// {
+		// Ti.App.Properties.setString("theme", "white");
+		// $.winHome.backgroundImage="/images/radiologyBackground.jpg";
+		// $.winPreferences.backgroundImage="/images/radiologyBackground.jpg";
+		// $.winTools.backgroundImage="/images/radiologyBackground.jpg";
+		// $.winInfo.backgroundImage="/images/radiologyBackground.jpg";
+// 		
+		// Alloy.Globals.tableRowLabel.setColor("white");
+	// }
 }
 
 function donate(){

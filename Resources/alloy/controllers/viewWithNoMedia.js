@@ -28,7 +28,11 @@ function Controller() {
                 fontSize: "25dp"
             }
         });
-        _.extend(o, {});
+        _.extend(o, {
+            font: {
+                fontWeight: "bold"
+            }
+        });
         Alloy.isHandheld && _.extend(o, {
             left: "10dp",
             right: "10dp",
@@ -125,6 +129,13 @@ function Controller() {
         $.heading.setFont({
             fontSize: "15dp"
         });
+    }
+    if ("black" == Ti.App.Properties.getString("theme")) {
+        $.heading.setColor("black");
+        $.label.setColor("white");
+    } else {
+        $.heading.setColor("white");
+        $.label.setColor("black");
     }
     var args = arguments[0] || {};
     $.heading.text = args.object.heading;

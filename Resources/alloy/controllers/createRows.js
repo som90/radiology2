@@ -61,6 +61,8 @@ function Controller() {
     $.__views.newRow.add($.__views.label);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    Alloy.Globals.tableRowLabel = $.label;
+    "black" == Ti.App.Properties.getString("theme") ? $.label.setColor("white") : $.label.setColor("black");
     var args = arguments[0] || {};
     $.newRow.name = args.title;
     $.label.text = args.title;

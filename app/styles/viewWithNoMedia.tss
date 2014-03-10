@@ -2,3 +2,8 @@
 ".container" : {
   layout: "vertical",
 }
+"#heading" : {
+	font : {
+		fontWeight : "bold",
+	} 
+}

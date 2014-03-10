@@ -16,15 +16,15 @@ function Controller() {
         display: "vertical"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
-    var __alloyId20 = [];
+    var __alloyId18 = [];
     $.__views.scrollView = Ti.UI.createScrollView({
         id: "scrollView"
     });
-    __alloyId20.push($.__views.scrollView);
+    __alloyId18.push($.__views.scrollView);
     $.__views.scrollableView = Ti.UI.createScrollableView({
         color: "black",
         backgroundImage: "/images/itemViewerBackground.jpg",
-        views: __alloyId20,
+        views: __alloyId18,
         id: "scrollableView",
         width: "100%",
         height: "100%",
@@ -33,6 +33,7 @@ function Controller() {
     $.__views.win.add($.__views.scrollableView);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    $.scrollableView.backgroundImage = "black" == Ti.App.Properties.getString("theme") ? "/images/itemViewerBackgroundInverted.jpg" : "/images/itemViewerBackground.jpg";
     var args = arguments[0] || {};
     var items = Alloy.Globals.radiologyDB.items(args.title);
     Ti.API.info("THE ITEMS::::: " + JSON.stringify(items));

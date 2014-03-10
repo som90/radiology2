@@ -32,7 +32,18 @@ else
 		$.heading.setFont({fontSize:"15dp"});
 	}
 }
-	
+if(Ti.App.Properties.getString("theme") == "black")
+{
+	$.heading.setColor("black");
+	$.label.setColor("white");
+}
+
+else
+{
+	$.heading.setColor("white");
+	$.label.setColor("black");
+}	
+
 var args = arguments[0] || {};
 //The following uses a regular expression to remove all text before the 'imageX.jpg' in the item. (i.e., the 'file:///var/mobile...')
 var imageName = args.object.item.replace(/file:\/(.*)Documents\//g, "");

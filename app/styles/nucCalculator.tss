@@ -13,4 +13,21 @@
 
 "#examChosenLabel" : {
 	top : "5%"
+},
+
+"#resultLabel[formFactor=handheld]": {
+	top : "7%",
+	font : {
+		fontWeight : "bold",
+		fontSize : "15dp",
+	},
+	textAlign : "center"
+},
+"#resultLabel[formFactor=tablet]": {
+	top : "7%",
+	font : {
+		fontWeight : "bold",
+		fontSize : "25dp",
+	},
+	textAlign : "center"
 }

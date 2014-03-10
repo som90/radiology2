@@ -15,12 +15,19 @@
 	top : "5%"
 }
 
-
-"#resultLabel" : {
-	top : 20,
+"#resultLabel[formFactor=handheld]": {
+	top : "7%",
 	font : {
 		fontWeight : "bold",
-		fontSize : "16dp",
-	}, 
+		fontSize : "15dp",
+	},
+	textAlign : "center"
+},
+"#resultLabel[formFactor=tablet]": {
+	top : "7%",
+	font : {
+		fontWeight : "bold",
+		fontSize : "25dp",
+	},
 	textAlign : "center"
 }

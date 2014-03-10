@@ -1,4 +1,28 @@
 
+
+/*
+ * Checking the theme property to set the backGroundImage appropriately 
+ */
+if(Ti.App.Properties.getString("theme") == "black")
+{
+	$.winCtCalc.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+	
+	$.dlpValueLabel.setColor("white");
+	$.bodypartLabel.setColor("white");
+	$.ageRangeLabel.setColor("white");
+	$.resultLabel.setColor("white");
+}	
+else
+{
+	$.winCtCalc.backgroundImage="/images/radiologyBackground.jpg";
+	
+	$.dlpValueLabel.setColor("black");
+	$.bodypartLabel.setColor("black");
+	$.ageRangeLabel.setColor("black");
+	$.resultLabel.setColor("black");
+}
+
+
 function selectBodyPart(){
 	$.bodyPart.show();
 };

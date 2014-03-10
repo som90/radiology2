@@ -1,4 +1,26 @@
 
+/*
+ * Checking the theme property to set the backGroundImage appropriately 
+ */
+if(Ti.App.Properties.getString("theme") == "black")
+{
+	$.winNucCalc.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+	
+	$.examChosenLabel.setColor("white");
+	$.adminActivityLabel.setColor("white");
+	$.resultLabel.setColor("white");
+	// $.effectDoseLabel.setColor("white");
+}	
+else
+{
+	$.winNucCalc.backgroundImage="/images/radiologyBackground.jpg";
+	
+	$.examChosenLabel.setColor("black");
+	$.adminActivityLabel.setColor("black");
+	$.resultLabel.setColor("black");
+	// $.effectDoseLabel.setColor("black");
+}
+
 function nuclearMedicine() {
 	
 	var exams = Alloy.Globals.radiologyDB.getExams("Nuclear Medicine");
@@ -23,7 +45,8 @@ function nuclearMedicine() {
 		for (var i in examData){								
 			$.examChosenTextfield.value=examChosen;
 			$.adminActivityTextfield.value=examData[i].meanAdministeredActivity + " (*Average value - click to edit)";
-			$.effectDoseTextfield.value=examData[i].meanEffectiveDose;
+			// $.effectDoseTextfield.value=examData[i].meanEffectiveDose;
+			$.resultLabel.text="Effective Dose: " + examData[i].meanEffectiveDose + "mSv";
 				
 			$.adminActivityTextfield.addEventListener('click', function(evt) {
 				$.adminActivityTextfield.value=examData[i].meanAdministeredActivity;
@@ -31,7 +54,8 @@ function nuclearMedicine() {
 			$.adminActivityTextfield.addEventListener('change', function(evt) {
 				var newValue = $.adminActivityTextfield.getValue();
 				var newDose = newValue*examData[i].effectiveDosePerAdministeredActivity;
-				$.effectDoseTextfield.value=newDose;
+				$.resultLabel.text="Effective Dose: " + newDose + "mSv";
+				// $.effectDoseTextfield.value=newDose;
 			});
 		}
 	});

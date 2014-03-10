@@ -1,4 +1,3 @@
-
 "TextField" : {
 	height : "34dp",
 	width : "95%",
@@ -10,40 +9,40 @@
 	textAlign : "center",
 	borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 	borderRadius : '10px'
-}
+},
 
 "#updateButton" : {
 	top : "30%",
 	width : "50%"
-}
+},
 
 "Switch" : {
     top: 10,
     width: "20%",
-}
+},
 
 "#switchLabel" : {
 	top : "5%"
-}
+},
 
 "#proceduresImage" : {
 	top : "0%",
 	width : "90%",
 	height : "35%",
-}
+},
 "#ctImage" : {
 	width : "50%",
 	height : "40%",
 	top : "40%",
 	left : "0%",
-}
+},
 
 "#nuclearImage" : {
 	width : "50%",
 	height : "40%",
 	top : "40%",
 	right : "0%",
-}
+},
 
 
 /*
@@ -57,25 +56,25 @@
 		fontSize : "32dp",
 		color : "blue"
 	}, 
-}
+},
 "#version[formFactor=tablet]": { 
 	top : 5,
 	font : {
 		fontWeight : "bold",
 		fontSize : "16dp",
 	}, 
-}
+},
 "#eLearningLogo[formFactor=tablet]": { 
 	top : 20,
 	width : "40%"
-}
+},
 "#aboutHeading[formFactor=tablet]": { 
 	top : 15,
 	font : {
 		fontWeight : "bold",
 		fontSize : "30dp",
 	}, 
-}
+},
 "#aboutInfo[platform=ios formFactor=tablet]": { 
 	top : 10,
 	left : "5%",
@@ -83,7 +82,7 @@
 	font : {
 		fontSize : "24dp",
 	}, 
-}
+},
 	"#aboutInfo[platform=android formFactor=tablet]": { 
 		top : 10,
 		left : "5%",
@@ -91,19 +90,19 @@
 		font : {
 			fontSize : "21dp",
 		}, 
-	}
+	},
 "#donateImage[formFactor=tablet]": { 
 	top : 15,
 	height : "70dp",
 	width : "25%"
-}
+},
 "#copyright[formFactor=tablet]": { 
 	top : 50,
 	font : {
 		fontWeight : "bold",
 		fontSize : "14dp",
 	}, 
-}
+},
 
 
 
@@ -116,25 +115,25 @@
 	font : {
 		fontWeight : "bold"
 	}, 
-}
+},
 "#version[formFactor=handheld]": { 
 	top : 5,
 	font : {
 		fontWeight : "bold",
 		fontSize : "8dp",
 	}, 
-}
+},
 "#eLearningLogo[formFactor=handheld]": { 
 	top : 7,
 	width : "27%"
-}
+},
 "#aboutHeading[formFactor=handheld]": { 
 	top : 3,
 	font : {
 		fontWeight : "bold",
 		fontSize : "13dp", //See how this compares to not specifiying in aboutINfo
 	}, 
-}
+},
 "#aboutInfo[formFactor=handheld]": { 
 	top : 3,
 	left : "5%",
@@ -142,12 +141,12 @@
 	font : {
 		fontSize : "11dp", //See how this compares to not specifiying in aboutINfo
 	}
-}
+},
 "#donateImage[formFactor=handheld]": { 
 	top : 5,
 	height : "40dp",
 	width : "25%"
-}
+},
 "#copyright[formFactor=handheld]": { 
 	top : 5,
 	font : {

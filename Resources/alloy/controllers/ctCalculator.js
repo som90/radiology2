@@ -28,13 +28,13 @@ function Controller() {
     var $ = this;
     var exports = {};
     var __defers = {};
-    $.__views.ctCalculator = Ti.UI.createWindow({
+    $.__views.winCtCalc = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
+        id: "winCtCalc",
         title: "CT Dosage Calculator",
-        layout: "vertical",
-        id: "ctCalculator"
+        layout: "vertical"
     });
-    $.__views.ctCalculator && $.addTopLevelView($.__views.ctCalculator);
+    $.__views.winCtCalc && $.addTopLevelView($.__views.winCtCalc);
     $.__views.dlpValueLabel = Ti.UI.createLabel(function() {
         var o = {};
         _.extend(o, {});
@@ -58,7 +58,7 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.ctCalculator.add($.__views.dlpValueLabel);
+    $.__views.winCtCalc.add($.__views.dlpValueLabel);
     $.__views.dlpValueTextfield = Ti.UI.createTextField({
         height: "45dp",
         width: "95%",
@@ -71,7 +71,7 @@ function Controller() {
         borderRadius: "10px",
         id: "dlpValueTextfield"
     });
-    $.__views.ctCalculator.add($.__views.dlpValueTextfield);
+    $.__views.winCtCalc.add($.__views.dlpValueTextfield);
     $.__views.bodypartLabel = Ti.UI.createLabel(function() {
         var o = {};
         _.extend(o, {});
@@ -94,7 +94,7 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.ctCalculator.add($.__views.bodypartLabel);
+    $.__views.winCtCalc.add($.__views.bodypartLabel);
     $.__views.bodyPartTextfield = Ti.UI.createTextField({
         height: "45dp",
         width: "95%",
@@ -108,7 +108,7 @@ function Controller() {
         id: "bodyPartTextfield",
         editable: "false"
     });
-    $.__views.ctCalculator.add($.__views.bodyPartTextfield);
+    $.__views.winCtCalc.add($.__views.bodyPartTextfield);
     selectBodyPart ? $.__views.bodyPartTextfield.addEventListener("click", selectBodyPart) : __defers["$.__views.bodyPartTextfield!click!selectBodyPart"] = true;
     var __alloyId1 = [];
     __alloyId1.push("Head");
@@ -145,7 +145,7 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.ctCalculator.add($.__views.ageRangeLabel);
+    $.__views.winCtCalc.add($.__views.ageRangeLabel);
     $.__views.ageRangeTextfield = Ti.UI.createTextField({
         height: "45dp",
         width: "95%",
@@ -159,7 +159,7 @@ function Controller() {
         id: "ageRangeTextfield",
         editable: "false"
     });
-    $.__views.ctCalculator.add($.__views.ageRangeTextfield);
+    $.__views.winCtCalc.add($.__views.ageRangeTextfield);
     selectAgeRange ? $.__views.ageRangeTextfield.addEventListener("click", selectAgeRange) : __defers["$.__views.ageRangeTextfield!click!selectAgeRange"] = true;
     var __alloyId9 = [];
     __alloyId9.push("Less than 1 year");
@@ -178,7 +178,7 @@ function Controller() {
         title: "Submit",
         id: "ctCalcButton"
     });
-    $.__views.ctCalculator.add($.__views.ctCalcButton);
+    $.__views.winCtCalc.add($.__views.ctCalcButton);
     calculateDosage ? $.__views.ctCalcButton.addEventListener("click", calculateDosage) : __defers["$.__views.ctCalcButton!click!calculateDosage"] = true;
     $.__views.resultLabel = Ti.UI.createLabel(function() {
         var o = {};
@@ -196,20 +196,45 @@ function Controller() {
                 fontSize: "25dp"
             }
         });
-        _.extend(o, {
-            top: 20,
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: "7%",
             font: {
                 fontWeight: "bold",
-                fontSize: "16dp"
+                fontSize: "15dp"
             },
-            textAlign: "center",
+            textAlign: "center"
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: "7%",
+            font: {
+                fontWeight: "bold",
+                fontSize: "25dp"
+            },
+            textAlign: "center"
+        });
+        _.extend(o, {
             id: "resultLabel"
         });
         return o;
     }());
-    $.__views.ctCalculator.add($.__views.resultLabel);
+    $.__views.winCtCalc.add($.__views.resultLabel);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    if ("black" == Ti.App.Properties.getString("theme")) {
+        $.winCtCalc.backgroundImage = "/images/radiologyBackgroundInverted.jpg";
+        $.dlpValueLabel.setColor("white");
+        $.bodypartLabel.setColor("white");
+        $.ageRangeLabel.setColor("white");
+        $.resultLabel.setColor("white");
+    } else {
+        $.winCtCalc.backgroundImage = "/images/radiologyBackground.jpg";
+        $.dlpValueLabel.setColor("black");
+        $.bodypartLabel.setColor("black");
+        $.ageRangeLabel.setColor("black");
+        $.resultLabel.setColor("black");
+    }
     __defers["$.__views.bodyPartTextfield!click!selectBodyPart"] && $.__views.bodyPartTextfield.addEventListener("click", selectBodyPart);
     __defers["$.__views.bodyPart!click!addBodypart"] && $.__views.bodyPart.addEventListener("click", addBodypart);
     __defers["$.__views.ageRangeTextfield!click!selectAgeRange"] && $.__views.ageRangeTextfield.addEventListener("click", selectAgeRange);

@@ -1,4 +1,13 @@
 
+if(Ti.App.Properties.getString("theme") == "black")
+{
+	$.scrollableView.backgroundImage="/images/itemViewerBackgroundInverted.jpg";
+}
+
+else
+{
+	$.scrollableView.backgroundImage="/images/itemViewerBackground.jpg";
+}
 
 /* Accessing arguments that are passed through
  * 

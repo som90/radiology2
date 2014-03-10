@@ -1,5 +1,5 @@
 <Alloy>
-	<Window title="CT Dosage Calculator" layout="vertical">
+	<Window id="winCtCalc" title="CT Dosage Calculator" layout="vertical">
 			       		 
 		<Label id="dlpValueLabel">Dose length product value (DLP):</Label>
 		<TextField id="dlpValueTextfield"></TextField>

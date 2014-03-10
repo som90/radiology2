@@ -1,5 +1,5 @@
 <Alloy>
-	<Window title="Procedure Tables">
+	<Window id="winProcTables" title="Procedure Tables">
 
 		<Label id="procedureLabel" ></Label>
   		<Button id="procedureButton" onClick="chooseProcedure">Procedures</Button>

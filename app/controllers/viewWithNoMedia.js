@@ -28,6 +28,17 @@ else
 		$.heading.setFont({fontSize:"15dp"});
 	}
 }
+if(Ti.App.Properties.getString("theme") == "black")
+{
+	$.heading.setColor("black");
+	$.label.setColor("white");
+}
+
+else
+{
+	$.heading.setColor("white");
+	$.label.setColor("black");
+}
 
 var args = arguments[0] || {};
 

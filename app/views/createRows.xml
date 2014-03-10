@@ -1,7 +1,5 @@
 <Alloy>
 	<TableViewRow id="newRow" class="container">
 		<Label id="label"></Label>
-		<!-- the following could get an icon in... 
-			<ImageView right="5">  -->
 	</TableViewRow>
 </Alloy>

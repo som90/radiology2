@@ -7,3 +7,9 @@
   width: "80%",
   top : "10dp"
 }
+
+"#heading" : {
+	font : {
+		fontWeight : "bold",
+	} 
+}

@@ -1,4 +1,16 @@
 
+/*
+ * Checking the theme property to set the backGroundImage appropriately 
+ */
+if(Ti.App.Properties.getString("theme") == "black")
+{
+	$.win.backgroundImage="/images/radiologyBackgroundInverted.jpg";
+}
+		
+else
+{
+	$.win.backgroundImage="/images/radiologyBackground.jpg";
+}
 
 /* Accessing arguments that are passed through
  * 

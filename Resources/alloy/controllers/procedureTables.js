@@ -111,6 +111,19 @@ function Controller() {
                 },
                 text: vrl
             }));
+        } else if ("black" == Ti.App.Properties.getString("theme")) {
+            examView.add(Ti.UI.createLabel({
+                color: "white",
+                text: exam
+            }));
+            aedView.add(Ti.UI.createLabel({
+                color: "white",
+                text: aed
+            }));
+            vrlView.add(Ti.UI.createLabel({
+                color: "white",
+                text: vrl
+            }));
         } else {
             examView.add(Ti.UI.createLabel({
                 color: "black",
@@ -139,12 +152,12 @@ function Controller() {
     var $ = this;
     var exports = {};
     var __defers = {};
-    $.__views.procedureTables = Ti.UI.createWindow({
+    $.__views.winProcTables = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
-        title: "Procedure Tables",
-        id: "procedureTables"
+        id: "winProcTables",
+        title: "Procedure Tables"
     });
-    $.__views.procedureTables && $.addTopLevelView($.__views.procedureTables);
+    $.__views.winProcTables && $.addTopLevelView($.__views.winProcTables);
     $.__views.procedureLabel = Ti.UI.createLabel(function() {
         var o = {};
         _.extend(o, {});
@@ -183,7 +196,7 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.procedureTables.add($.__views.procedureLabel);
+    $.__views.winProcTables.add($.__views.procedureLabel);
     $.__views.procedureButton = Ti.UI.createButton(function() {
         var o = {};
         _.extend(o, {});
@@ -214,17 +227,17 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.procedureTables.add($.__views.procedureButton);
+    $.__views.winProcTables.add($.__views.procedureButton);
     chooseProcedure ? $.__views.procedureButton.addEventListener("click", chooseProcedure) : __defers["$.__views.procedureButton!click!chooseProcedure"] = true;
-    var __alloyId22 = [];
-    __alloyId22.push("Radiography");
-    __alloyId22.push("CT");
-    __alloyId22.push("Interventional Radiology");
-    __alloyId22.push("Dental Radiography");
-    __alloyId22.push("Nuclear Medicine");
-    __alloyId22.push("Cancel");
+    var __alloyId20 = [];
+    __alloyId20.push("Radiography");
+    __alloyId20.push("CT");
+    __alloyId20.push("Interventional Radiology");
+    __alloyId20.push("Dental Radiography");
+    __alloyId20.push("Nuclear Medicine");
+    __alloyId20.push("Cancel");
     $.__views.procedureOptions = Ti.UI.createOptionDialog({
-        options: __alloyId22,
+        options: __alloyId20,
         id: "procedureOptions",
         title: "Select Investigation/Procedure:"
     });
@@ -252,7 +265,7 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.procedureTables.add($.__views.instructionLabel);
+    $.__views.winProcTables.add($.__views.instructionLabel);
     $.__views.procedureTable = Ti.UI.createTableView(function() {
         var o = {};
         _.extend(o, {
@@ -273,9 +286,18 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.procedureTables.add($.__views.procedureTable);
+    $.__views.winProcTables.add($.__views.procedureTable);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    if ("black" == Ti.App.Properties.getString("theme")) {
+        $.winProcTables.backgroundImage = "/images/radiologyBackgroundInverted.jpg";
+        $.procedureLabel.setColor("white");
+        $.instructionLabel.setColor("white");
+    } else {
+        $.winProcTables.backgroundImage = "/images/radiologyBackground.jpg";
+        $.procedureLabel.setColor("black");
+        $.instructionLabel.setColor("black");
+    }
     __defers["$.__views.procedureButton!click!chooseProcedure"] && $.__views.procedureButton.addEventListener("click", chooseProcedure);
     __defers["$.__views.procedureOptions!click!addProcedure"] && $.__views.procedureOptions.addEventListener("click", addProcedure);
     _.extend($, exports);

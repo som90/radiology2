@@ -1,32 +1,36 @@
 <Alloy autoStyle="true">
 	<TabGroup>
 		<Tab id="tabChapters" title="Home" onClick="checkIfUpdateIsNeeded" icon="KS_nav_ui.png">
-			<Window title="eLearning Home" id="win">
+			<Window id="winHome" title="eLearning Home">
 				<TableView id="table" onClick="sectionsWindow"></TableView>
 			</Window>
 		</Tab>
 		
 		
-		<Tab id="tabUpdates" title="Preferences" icon="KS_nav_views_preferences.png">
-			<Window id="win" title="Preferences" layout="vertical">
-				<Button id="updateButton" onClick="makeUpdates">Check for updates</Button>
-				<Label id="switchLabel">"Switch On" for large font reader:</Label>
-				<Switch id="fontSwitch" value="false" onChange="switchFonts"/>
-			</Window>
-		</Tab>
-		
 		
 		<Tab title="Tools" id="tools" icon="KS_nav_views_tools.png">
-			<Window title="Average Radiation Doses">
+			<Window id="winTools" title="Average Radiation Doses">
 				<ImageView id="proceduresImage" onClick="procedures" image="/images/procedures.png" />
 				<ImageView id="ctImage" onClick="ctCalculator" image="images/ctCalculator.png" />
 				<ImageView id="nuclearImage" onClick="nucCalculator" image="/images/nuclearCalculator.png" />
 			</Window>
 		</Tab>
+		
+		
+		
+		<Tab id="tabUpdates" title="Preferences" icon="KS_nav_views_preferences.png">
+			<Window id="winPreferences" title="Preferences" layout="vertical">
+				<Button id="updateButton" onClick="makeUpdates">Check for updates</Button>
+				<!-- <Button id="fontSwitch" onClick="switchFonts">Large Font</Button> -->				<Label id="switchLabel">Enlarge Viewer Font</Label>
+				<Switch id="fontSwitch" value="false" onChange="switchFonts"/>
+				<Button id="updateButton" onClick="themeSwitch">Change Theme</Button>
+			</Window>
+		</Tab>
+		
 
 		
 		<Tab title="Info" icon="KS_nav_views_info.png">
-			<Window title="Info" layout="vertical">
+			<Window id="winInfo" title="Info" layout="vertical">
 					<Label id="appTitle">eLearning MadeEasy - Radiology</Label>
 					<Label id="version">Version 1.0.0</Label>
 					<ImageView id="eLearningLogo" image="/images/eLearningLogo.png" />

@@ -14,14 +14,14 @@ function Controller() {
             for (var i in examData) {
                 $.examChosenTextfield.value = examChosen;
                 $.adminActivityTextfield.value = examData[i].meanAdministeredActivity + " (*Average value - click to edit)";
-                $.effectDoseTextfield.value = examData[i].meanEffectiveDose;
+                $.resultLabel.text = "Effective Dose: " + examData[i].meanEffectiveDose + "mSv";
                 $.adminActivityTextfield.addEventListener("click", function() {
                     $.adminActivityTextfield.value = examData[i].meanAdministeredActivity;
                 });
                 $.adminActivityTextfield.addEventListener("change", function() {
                     var newValue = $.adminActivityTextfield.getValue();
                     var newDose = newValue * examData[i].effectiveDosePerAdministeredActivity;
-                    $.effectDoseTextfield.value = newDose;
+                    $.resultLabel.text = "Effective Dose: " + newDose + "mSv";
                 });
             }
         });
@@ -35,13 +35,13 @@ function Controller() {
     var $ = this;
     var exports = {};
     var __defers = {};
-    $.__views.nucCalculator = Ti.UI.createWindow({
+    $.__views.winNucCalc = Ti.UI.createWindow({
         backgroundImage: "/images/radiologyBackground.jpg",
+        id: "winNucCalc",
         title: "Nuclear Medicine Calculator",
-        layout: "vertical",
-        id: "nucCalculator"
+        layout: "vertical"
     });
-    $.__views.nucCalculator && $.addTopLevelView($.__views.nucCalculator);
+    $.__views.winNucCalc && $.addTopLevelView($.__views.winNucCalc);
     $.__views.examChosenLabel = Ti.UI.createLabel(function() {
         var o = {};
         _.extend(o, {});
@@ -65,7 +65,7 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.nucCalculator.add($.__views.examChosenLabel);
+    $.__views.winNucCalc.add($.__views.examChosenLabel);
     $.__views.examChosenTextfield = Ti.UI.createTextField({
         height: "45dp",
         width: "95%",
@@ -79,7 +79,7 @@ function Controller() {
         id: "examChosenTextfield",
         editable: "false"
     });
-    $.__views.nucCalculator.add($.__views.examChosenTextfield);
+    $.__views.winNucCalc.add($.__views.examChosenTextfield);
     nuclearMedicine ? $.__views.examChosenTextfield.addEventListener("click", nuclearMedicine) : __defers["$.__views.examChosenTextfield!click!nuclearMedicine"] = true;
     $.__views.adminActivityLabel = Ti.UI.createLabel(function() {
         var o = {};
@@ -103,7 +103,7 @@ function Controller() {
         });
         return o;
     }());
-    $.__views.nucCalculator.add($.__views.adminActivityLabel);
+    $.__views.winNucCalc.add($.__views.adminActivityLabel);
     $.__views.adminActivityTextfield = Ti.UI.createTextField({
         height: "45dp",
         width: "95%",
@@ -116,8 +116,8 @@ function Controller() {
         borderRadius: "10px",
         id: "adminActivityTextfield"
     });
-    $.__views.nucCalculator.add($.__views.adminActivityTextfield);
-    $.__views.effectDoseLabel = Ti.UI.createLabel(function() {
+    $.__views.winNucCalc.add($.__views.adminActivityTextfield);
+    $.__views.resultLabel = Ti.UI.createLabel(function() {
         var o = {};
         _.extend(o, {});
         Alloy.isHandheld && _.extend(o, {
@@ -133,29 +133,43 @@ function Controller() {
                 fontSize: "25dp"
             }
         });
+        _.extend(o, {});
+        Alloy.isHandheld && _.extend(o, {
+            top: "7%",
+            font: {
+                fontWeight: "bold",
+                fontSize: "15dp"
+            },
+            textAlign: "center"
+        });
+        _.extend(o, {});
+        Alloy.isTablet && _.extend(o, {
+            top: "7%",
+            font: {
+                fontWeight: "bold",
+                fontSize: "25dp"
+            },
+            textAlign: "center"
+        });
         _.extend(o, {
-            text: "Effective Dose (mSv):",
-            id: "effectDoseLabel"
+            id: "resultLabel"
         });
         return o;
     }());
-    $.__views.nucCalculator.add($.__views.effectDoseLabel);
-    $.__views.effectDoseTextfield = Ti.UI.createTextField({
-        height: "45dp",
-        width: "95%",
-        tintColor: "red",
-        opacity: ".4",
-        top: 2,
-        bottom: 5,
-        textAlign: "center",
-        borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-        borderRadius: "10px",
-        id: "effectDoseTextfield",
-        editable: "false"
-    });
-    $.__views.nucCalculator.add($.__views.effectDoseTextfield);
+    $.__views.winNucCalc.add($.__views.resultLabel);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    if ("black" == Ti.App.Properties.getString("theme")) {
+        $.winNucCalc.backgroundImage = "/images/radiologyBackgroundInverted.jpg";
+        $.examChosenLabel.setColor("white");
+        $.adminActivityLabel.setColor("white");
+        $.resultLabel.setColor("white");
+    } else {
+        $.winNucCalc.backgroundImage = "/images/radiologyBackground.jpg";
+        $.examChosenLabel.setColor("black");
+        $.adminActivityLabel.setColor("black");
+        $.resultLabel.setColor("black");
+    }
     __defers["$.__views.examChosenTextfield!click!nuclearMedicine"] && $.__views.examChosenTextfield.addEventListener("click", nuclearMedicine);
     _.extend($, exports);
 }

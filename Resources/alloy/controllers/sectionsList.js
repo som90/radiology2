@@ -28,6 +28,7 @@ function Controller() {
     subsectionsWindow ? $.__views.table.addEventListener("click", subsectionsWindow) : __defers["$.__views.table!click!subsectionsWindow"] = true;
     exports.destroy = function() {};
     _.extend($, $.__views);
+    $.win.backgroundImage = "black" == Ti.App.Properties.getString("theme") ? "/images/radiologyBackgroundInverted.jpg" : "/images/radiologyBackground.jpg";
     var args = arguments[0] || {};
     Ti.API.info("Page Title " + args.title);
     var sections = Alloy.Globals.radiologyDB.sections(args.title);
